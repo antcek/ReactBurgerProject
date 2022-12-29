@@ -1,0 +1,15 @@
+.ingredients {
+    padding: 40px 0;
+    display: flex;
+    flex-direction: column;
+    max-width: 1240px;
+    margin: 0 auto;
+
+
+
+}
+
+.tabs {
+    margin-top: 20px;
+    margin-bottom: 40px;
+}

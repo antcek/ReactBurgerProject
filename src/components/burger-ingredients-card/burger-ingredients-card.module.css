@@ -1,0 +1,19 @@
+.card {
+    position: relative;
+    display: grid;
+
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+}
+
+.cardBody {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.container {
+    height: 600px;
+    overflow-y: auto;
+}
