@@ -1,0 +1,33 @@
+.header {
+    box-sizing: border-box;
+    background-color: rgba(28, 28, 33, 1);
+    display: flex;
+    margin: 40px 40px 0px 40px;
+    align-items: center;
+    justify-content: center;
+
+
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 16px 20px;
+    gap: 8px;
+
+
+}
+
+.wrapper {
+    display: flex;
+    gap: 8px;
+
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-right: 18%;
+    margin-left: 6%;
+}
