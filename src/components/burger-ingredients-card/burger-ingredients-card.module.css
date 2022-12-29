@@ -1,28 +1,29 @@
 .card {
     position: relative;
-
-
     gap: 4px;
+    display: flex;
     align-items: center;
-    justify-content: flex-start;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .cardBody {
     width: 100%;
     display: flex;
     gap: 8px;
-    justify-content: flex-start;
+    justify-content: center;
 }
 
 .container {
 
 
     display: grid;
-    grid-template-columns: auto 272px;
+    grid-template-columns: 272px 272px;
     width: 100%;
     height: calc(100vh - 40px);
     overflow-y: auto;
     scrollbar-color: #6969dd;
+    gap: 24px;
 }
 
 .container::-webkit-scrollbar {
