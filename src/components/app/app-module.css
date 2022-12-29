@@ -2,3 +2,11 @@
     display: flex;
     flex-direction: column;
 }
+
+.sections-wrapper {
+    max-width: 1240px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    gap: 40px;
+}

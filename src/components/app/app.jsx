@@ -9,9 +9,13 @@ function App() {
 
             <AppHeader />
             <main>
-                <BurgerIngredients />
-            </main>
+                <div className='sections-wrapper'>
 
+                    <BurgerIngredients />
+
+
+                </div>
+            </main>
         </div>
     );
 }

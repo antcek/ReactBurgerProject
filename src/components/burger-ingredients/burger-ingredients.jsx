@@ -1,27 +1,27 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import styles from './burger-ingredients.module.css';
+import IngredientStyles from './burger-ingredients.module.css';
 import BurgerIngredientsTab from './burger-ingredients-tabs';
 import { ingredients } from '../../utils/data.js';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 
 function BurgerIngredients() {
     return (
-        <section className={styles.ingredients}>
+        <section >
+            <div className={IngredientStyles.ingredients}>
+                <h1 className="text text_type_main-large">
+                    Соберите бургер
+                </h1>
+                <div className={IngredientStyles.tabs} >
+                    <BurgerIngredientsTab />
+                </div>
+                <p className="text text_type_main-medium">
+                    Булки
+                </p>
 
-            <h1 className="text text_type_main-large">
-                Соберите бургер
-            </h1>
-            <div className={styles.tabs} >
-                <BurgerIngredientsTab />
+                <IngredientCard ingredients={ingredients} />
             </div>
-            <p className="text text_type_main-medium">
-                Булки
-            </p>
-
-            <IngredientCard ingredients={ingredients} />
-
         </section>
     )
 }
