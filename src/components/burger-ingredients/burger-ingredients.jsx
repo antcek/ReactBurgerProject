@@ -18,9 +18,17 @@ function BurgerIngredients() {
                 </div>
                 <p className="text text_type_main-medium">
                     Булки
+
+                </p>
+                <IngredientCard ingredients={ingredients} />
+                <p className="text text_type_main-medium">
+                    Соусы
+                </p>
+                <p className="text text_type_main-medium">
+                    Начинки
                 </p>
 
-                <IngredientCard ingredients={ingredients} />
+
             </div>
         </section>
     )

@@ -7,9 +7,9 @@ import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 function IngredientCard(props) {
     return (
         <div className={styles.container}>
-            {props.ingredients.map((product, index) => (
+            {props.ingredients.map((product, index) => {
 
-                (<div className={styles.card} key={index}>
+                return (<div className={styles.card} key={index}>
 
                     <img src={props.ingredients[index].image} />
                     <div className={styles.cardBody}>
@@ -22,7 +22,7 @@ function IngredientCard(props) {
                     </p>
 
                 </div>)
-            ))}
+            })}
         </div>
 
     );
