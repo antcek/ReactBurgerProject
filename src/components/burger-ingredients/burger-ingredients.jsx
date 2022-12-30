@@ -2,15 +2,41 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import IngredientStyles from './burger-ingredients.module.css';
-import BurgerIngredientsTab from './burger-ingredients-tabs';
 import { ingredients } from '../../utils/data.js';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const buns = ingredients.filter(ingredient => ingredient.type === 'bun');
 const main = ingredients.filter(ingredient => ingredient.type === 'main');
 const sauce = ingredients.filter(ingredient => ingredient.type === 'sauce');
 
 function BurgerIngredients() {
+
+    const BurgerIngredientsTab = () => {
+
+        const handleClick = (value) => {
+            setCurrent(value)
+
+        }
+        const [current, setCurrent] = React.useState('Булки')
+
+        return (
+            <div style={{ display: 'flex' }}>
+
+                <Tab value="Булки" active={current === 'Булки'} onClick={handleClick}>
+                    Булки
+                </Tab>
+                <Tab value="Соусы" active={current === 'Соусы'} onClick={handleClick}>
+                    Соусы
+                </Tab>
+                <Tab value="Начинки" active={current === 'Начинки'} onClick={handleClick}>
+                    Начинки
+                </Tab>
+
+            </div>
+        )
+    }
+
     return (
         <section >
             <div className={IngredientStyles.ingredients}>
@@ -18,26 +44,22 @@ function BurgerIngredients() {
                     Соберите бургер
                 </h1>
                 <div className={IngredientStyles.tabs} >
-                    <BurgerIngredientsTab />
+                    {<BurgerIngredientsTab />}
                 </div>
                 <div className={IngredientStyles.container}>
-
-                    <p className="text text_type_main-medium">
+                    <p id="bun" className="text text_type_main-medium">
                         Булки
-
                     </p>
                     <div className={IngredientStyles.wrapper}>
                         <IngredientCard ingredients={buns} />
                     </div>
-
-                    <p className="text text_type_main-medium">
+                    <p id="sauce" className="text text_type_main-medium">
                         Соусы
                     </p>
                     <div className={IngredientStyles.wrapper} >
                         <IngredientCard ingredients={sauce} />
                     </div>
-
-                    <p className="text text_type_main-medium">
+                    <p id="main" className="text text_type_main-medium">
                         Начинки
                     </p>
                     <div className={IngredientStyles.wrapper}>
