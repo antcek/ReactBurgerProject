@@ -2,15 +2,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import ingredientStyles from './burger-ingredients.module.css';
-import { ingredients } from '../../utils/data.js';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
-const buns = ingredients.filter(ingredient => ingredient.type === 'bun');
-const main = ingredients.filter(ingredient => ingredient.type === 'main');
-const sauce = ingredients.filter(ingredient => ingredient.type === 'sauce');
 
-function BurgerIngredients() {
+
+function BurgerIngredients(props) {
+
+    const buns = props.ingredients.filter(ingredient => ingredient.type === 'bun');
+    const main = props.ingredients.filter(ingredient => ingredient.type === 'main');
+    const sauce = props.ingredients.filter(ingredient => ingredient.type === 'sauce');
 
     const BurgerIngredientsTab = () => {
 
@@ -52,19 +53,19 @@ function BurgerIngredients() {
                     Булки
                 </p>
                 <div className={ingredientStyles.wrapper}>
-                    <IngredientCard ingredients={buns} />
+                    <IngredientCard category={buns} />
                 </div>
                 <p id="sauce" className="text text_type_main-medium">
                     Соусы
                 </p>
                 <div className={ingredientStyles.wrapper} >
-                    <IngredientCard ingredients={sauce} />
+                    <IngredientCard category={sauce} />
                 </div>
                 <p id="main" className="text text_type_main-medium">
                     Начинки
                 </p>
                 <div className={ingredientStyles.wrapper}>
-                    <IngredientCard ingredients={main} />
+                    <IngredientCard category={main} />
                 </div>
             </div>
 
@@ -73,8 +74,7 @@ function BurgerIngredients() {
 }
 
 
-
 BurgerIngredients.propTypes = {
-
+    ingredients: PropTypes.array
 }
 export default BurgerIngredients;

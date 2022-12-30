@@ -1,12 +1,12 @@
 import React from 'react';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ingredients } from '../../utils/data.js';
+
 import constructorStyles from './burger-constructor.module.css';
+import PropTypes from 'prop-types';
 
+function BurgerConstructor(props) {
 
-function BurgerConstructor() {
-
-    const img = ingredients.find((bun) => bun.name === "Краторная булка N-200i").image;
+    const img = props.ingredients.find((bun) => bun.name === "Краторная булка N-200i").image;
 
     return (
 
@@ -21,15 +21,16 @@ function BurgerConstructor() {
                 />
             </div>
             <div className={constructorStyles.wrapper} >
-                {ingredients.map((ingredient) => {
+                {props.ingredients.map((ingredient) => {
 
                     if (ingredient.type === 'sauce' || ingredient.type === 'main') {
                         return (
-                            <div className={constructorStyles.main}>
+                            <div key={ingredient._id} className={constructorStyles.main} >
                                 <DragIcon />
                                 <ConstructorElement
+                                    type={undefined}
                                     text={ingredient.name}
-                                    price={200}
+                                    price={ingredient.price}
                                     thumbnail={ingredient.image}
                                 />
                             </div>
@@ -62,5 +63,11 @@ function BurgerConstructor() {
 
     )
 }
+
+
+BurgerConstructor.propTypes = {
+    ingredients: PropTypes.array
+}
+
 
 export default BurgerConstructor
