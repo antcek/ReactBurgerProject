@@ -6,6 +6,10 @@ import BurgerIngredientsTab from './burger-ingredients-tabs';
 import { ingredients } from '../../utils/data.js';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 
+const buns = ingredients.filter(ingredient => ingredient.type === 'bun');
+const main = ingredients.filter(ingredient => ingredient.type === 'main');
+const sauce = ingredients.filter(ingredient => ingredient.type === 'sauce');
+
 function BurgerIngredients() {
     return (
         <section >
@@ -16,19 +20,27 @@ function BurgerIngredients() {
                 <div className={IngredientStyles.tabs} >
                     <BurgerIngredientsTab />
                 </div>
-                <p className="text text_type_main-medium">
-                    Булки
+                <div className={IngredientStyles.container}>
 
-                </p>
-                <IngredientCard ingredients={ingredients} />
-                <p className="text text_type_main-medium">
-                    Соусы
-                </p>
-                <p className="text text_type_main-medium">
-                    Начинки
-                </p>
+                    <p className="text text_type_main-medium">
+                        Булки
+
+                    </p>
+                    <IngredientCard ingredients={buns} />
 
 
+                    <p className="text text_type_main-medium">
+                        Соусы
+                    </p>
+                    <IngredientCard ingredients={sauce} />
+
+
+                    <p className="text text_type_main-medium">
+                        Начинки
+                    </p>
+                    <IngredientCard ingredients={main} />
+
+                </div>
             </div>
         </section>
     )

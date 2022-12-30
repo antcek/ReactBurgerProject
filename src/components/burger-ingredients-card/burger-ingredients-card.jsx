@@ -4,9 +4,11 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import styles from './burger-ingredients-card.module.css';
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
+
+
 function IngredientCard(props) {
     return (
-        <div className={styles.container}>
+        <div>
             {props.ingredients.map((product, index) => {
 
                 return (<div className={styles.card} key={index}>

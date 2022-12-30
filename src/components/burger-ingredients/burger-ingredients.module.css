@@ -10,3 +10,20 @@
     margin-top: 20px;
     margin-bottom: 40px;
 }
+
+.container {
+    height: calc(100vh - 40px);
+    overflow-y: auto;
+}
+
+.container::-webkit-scrollbar {
+    background: #2F2F37;
+    width: 8px;
+
+}
+
+.container::-webkit-scrollbar-thumb {
+    background: #8585AD;
+    border: 3px solid #8585AD;
+
+}
