@@ -1,14 +1,12 @@
 .ingredients {
-    margin: 40px 0;
+    padding: 40px 0;
     display: flex;
     flex-direction: column;
-
-
 }
 
 .tabs {
-    margin-top: 20px;
-    margin-bottom: 40px;
+    padding-top: 20px;
+    padding-bottom: 40px;
 }
 
 .wrapper {
@@ -20,7 +18,7 @@
 }
 
 .container {
-    max-height: 912px;
+
     overflow-y: auto;
     overflow-x: hidden;
 }
