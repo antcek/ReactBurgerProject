@@ -26,20 +26,23 @@ function BurgerIngredients() {
                         Булки
 
                     </p>
-                    <IngredientCard ingredients={buns} />
-
+                    <div className={IngredientStyles.wrapper}>
+                        <IngredientCard ingredients={buns} />
+                    </div>
 
                     <p className="text text_type_main-medium">
                         Соусы
                     </p>
-                    <IngredientCard ingredients={sauce} />
-
+                    <div className={IngredientStyles.wrapper} >
+                        <IngredientCard ingredients={sauce} />
+                    </div>
 
                     <p className="text text_type_main-medium">
                         Начинки
                     </p>
-                    <IngredientCard ingredients={main} />
-
+                    <div className={IngredientStyles.wrapper}>
+                        <IngredientCard ingredients={main} />
+                    </div>
                 </div>
             </div>
         </section>

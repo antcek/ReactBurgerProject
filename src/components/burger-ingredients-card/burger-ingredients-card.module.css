@@ -1,9 +1,11 @@
 .card {
     position: relative;
     gap: 4px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: 120px 24px 48px;
+    align-items: start;
+    text-align: center;
+    justify-content: center;
 
 }
 
@@ -13,5 +15,3 @@
     gap: 8px;
     justify-content: center;
 }
-
-.container {}
