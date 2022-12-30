@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import IngredientStyles from './burger-ingredients.module.css';
+import ingredientStyles from './burger-ingredients.module.css';
 import { ingredients } from '../../utils/data.js';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -18,7 +18,8 @@ function BurgerIngredients() {
             setCurrent(value)
 
         }
-        const [current, setCurrent] = React.useState('Булки')
+
+        const [current, setCurrent] = React.useState('Булки');
 
         return (
             <div style={{ display: 'flex' }}>
@@ -38,35 +39,35 @@ function BurgerIngredients() {
     }
 
     return (
-        <section >
-            <div className={IngredientStyles.ingredients}>
-                <h1 className="text text_type_main-large">
-                    Соберите бургер
-                </h1>
-                <div className={IngredientStyles.tabs} >
-                    {<BurgerIngredientsTab />}
+        <section className={ingredientStyles.ingredients} >
+
+            <h1 className="text text_type_main-large">
+                Соберите бургер
+            </h1>
+            <div className={ingredientStyles.tabs} >
+                <BurgerIngredientsTab />
+            </div>
+            <div className={ingredientStyles.container}>
+                <p id="bun" className="text text_type_main-medium">
+                    Булки
+                </p>
+                <div className={ingredientStyles.wrapper}>
+                    <IngredientCard ingredients={buns} />
                 </div>
-                <div className={IngredientStyles.container}>
-                    <p id="bun" className="text text_type_main-medium">
-                        Булки
-                    </p>
-                    <div className={IngredientStyles.wrapper}>
-                        <IngredientCard ingredients={buns} />
-                    </div>
-                    <p id="sauce" className="text text_type_main-medium">
-                        Соусы
-                    </p>
-                    <div className={IngredientStyles.wrapper} >
-                        <IngredientCard ingredients={sauce} />
-                    </div>
-                    <p id="main" className="text text_type_main-medium">
-                        Начинки
-                    </p>
-                    <div className={IngredientStyles.wrapper}>
-                        <IngredientCard ingredients={main} />
-                    </div>
+                <p id="sauce" className="text text_type_main-medium">
+                    Соусы
+                </p>
+                <div className={ingredientStyles.wrapper} >
+                    <IngredientCard ingredients={sauce} />
+                </div>
+                <p id="main" className="text text_type_main-medium">
+                    Начинки
+                </p>
+                <div className={ingredientStyles.wrapper}>
+                    <IngredientCard ingredients={main} />
                 </div>
             </div>
+
         </section>
     )
 }

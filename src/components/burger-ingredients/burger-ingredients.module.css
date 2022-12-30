@@ -16,12 +16,13 @@
     grid-template-columns: 272px 272px;
     gap: 32px 24px;
     justify-content: center;
-    margin: 24px 0 40px 0;
+    margin-top: 24px
 }
 
 .container {
-    height: calc(100vh - 40px);
+    max-height: 912px;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .container::-webkit-scrollbar {
