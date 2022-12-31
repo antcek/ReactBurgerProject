@@ -1,6 +1,6 @@
 import React from 'react';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import constructorStyles from './burger-constructor.module.css';
+import styles from './burger-constructor.module.css';
 import PropTypes from 'prop-types';
 
 function BurgerConstructor(props) {
@@ -9,8 +9,8 @@ function BurgerConstructor(props) {
 
     return (
 
-        <section className={constructorStyles.constructor}>
-            <div className={constructorStyles.buns}>
+        <section className={styles.constructor}>
+            <div className={styles.buns}>
                 <ConstructorElement
                     type="top"
                     isLocked={true}
@@ -19,12 +19,12 @@ function BurgerConstructor(props) {
                     thumbnail={img}
                 />
             </div>
-            <div className={constructorStyles.wrapper} >
+            <div className={styles.wrapper} >
                 {props.ingredients.map((ingredient) => {
 
                     if (ingredient.type === 'sauce' || ingredient.type === 'main') {
                         return (
-                            <div key={ingredient._id} className={constructorStyles.main} >
+                            <div key={ingredient._id} className={styles.main} >
                                 <DragIcon />
                                 <ConstructorElement
                                     type={undefined}
@@ -38,7 +38,7 @@ function BurgerConstructor(props) {
 
                 })}
             </div>
-            <div className={constructorStyles.buns}>
+            <div className={styles.buns}>
                 <ConstructorElement
                     type="bottom"
                     isLocked={true}
@@ -47,10 +47,10 @@ function BurgerConstructor(props) {
                     thumbnail={img}
                 />
             </div>
-            <div className={constructorStyles.order}>
-                <div className={constructorStyles.price}>
+            <div className={styles.order}>
+                <div className={styles.price}>
                     <p className="text text_type_digits-medium">600</p>
-                    <div className={constructorStyles.icon}>
+                    <div className={styles.icon}>
                         <CurrencyIcon type="primary" />
                     </div>
                 </div>

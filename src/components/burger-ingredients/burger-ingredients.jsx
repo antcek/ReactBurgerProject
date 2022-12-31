@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import ingredientStyles from './burger-ingredients.module.css';
+import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -40,31 +40,32 @@ function BurgerIngredients(props) {
     }
 
     return (
-        <section className={ingredientStyles.ingredients} >
+        <section className={styles.ingredients} >
 
             <h1 className="text text_type_main-large">
                 Соберите бургер
             </h1>
-            <div className={ingredientStyles.tabs} >
+            <div className={styles.tabs} >
                 <BurgerIngredientsTab />
             </div>
-            <div className={ingredientStyles.container}>
+            <div className={styles.container}>
                 <p id="bun" className="text text_type_main-medium">
                     Булки
                 </p>
-                <div className={ingredientStyles.wrapper}>
+                <div className={styles.wrapper}>
+
                     <IngredientCard category={buns} />
                 </div>
                 <p id="sauce" className="text text_type_main-medium">
                     Соусы
                 </p>
-                <div className={ingredientStyles.wrapper} >
+                <div className={styles.wrapper} >
                     <IngredientCard category={sauce} />
                 </div>
                 <p id="main" className="text text_type_main-medium">
                     Начинки
                 </p>
-                <div className={ingredientStyles.wrapper}>
+                <div className={styles.wrapper}>
                     <IngredientCard category={main} />
                 </div>
             </div>
