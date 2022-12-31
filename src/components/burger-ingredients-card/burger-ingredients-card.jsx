@@ -9,19 +9,22 @@ function IngredientCard(props) {
 
         props.category.map((product, index) => {
 
-            return (<div className={styles.card} key={product._id}>
 
-                <img src={props.category[index].image} />
-                <div className={styles.cardBody}>
-                    <p className="text text_type_digits-default">{props.category[index].price}</p>
-                    <CurrencyIcon type="primary" />
-                </div>
 
-                <p className="text text_type_main-default">
-                    {props.category[index].name}
-                </p>
+            return (
+                <div className={styles.card} key={product._id}>
 
-            </div>)
+                    <img src={props.category[index].image} />
+                    <div className={styles.cardBody}>
+                        <p className="text text_type_digits-default">{props.category[index].price}</p>
+                        <CurrencyIcon type="primary" />
+                    </div>
+
+                    <p className="text text_type_main-default">
+                        {props.category[index].name}
+                    </p>
+
+                </div>)
         })
 
 
