@@ -9,18 +9,19 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 function BurgerIngredients(props) {
 
-    const buns = props.ingredients.filter(ingredient => ingredient.type === 'bun');
-    const main = props.ingredients.filter(ingredient => ingredient.type === 'main');
-    const sauce = props.ingredients.filter(ingredient => ingredient.type === 'sauce');
+    const [current, setCurrent] = React.useState('Булки');
+
+    const buns = props.products.filter(ingredient => ingredient.type === 'bun');
+    const main = props.products.filter(ingredient => ingredient.type === 'main');
+    const sauce = props.products.filter(ingredient => ingredient.type === 'sauce');
 
     const BurgerIngredientsTab = () => {
 
         const handleClick = (value) => {
+
             setCurrent(value)
 
         }
-
-        const [current, setCurrent] = React.useState('Булки');
 
         return (
             <div style={{ display: 'flex' }}>
@@ -76,6 +77,6 @@ function BurgerIngredients(props) {
 
 
 BurgerIngredients.propTypes = {
-    ingredients: PropTypes.array
+
 }
 export default BurgerIngredients;

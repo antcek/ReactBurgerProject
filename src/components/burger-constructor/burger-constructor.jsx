@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 
 function BurgerConstructor(props) {
 
-    const img = props.ingredients.find((bun) => bun.name === "Краторная булка N-200i").image;
+    const filterBun = props.products.find((bun) => bun.name === "Краторная булка N-200i");
+    const img = filterBun ? filterBun.image : null;
 
     return (
 
@@ -20,7 +21,7 @@ function BurgerConstructor(props) {
                 />
             </div>
             <div className={styles.wrapper} >
-                {props.ingredients.map((ingredient) => {
+                {props.products.map((ingredient) => {
 
                     if (ingredient.type === 'sauce' || ingredient.type === 'main') {
                         return (
