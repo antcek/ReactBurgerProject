@@ -12,7 +12,7 @@ function App() {
     const apiIngredients = 'https://norma.nomoreparties.space/api/ingredients';
     const [products, setProducts] = useState([]);
     const [visible, setVisible] = useState(false);
-    const [modalContent, setModalContent] = useState();
+    const [modalContent, setModalContent] = useState(null);
 
     useEffect(() => {
 
@@ -35,11 +35,12 @@ function App() {
         let target = event.target;
         let currentTarget = event.currentTarget;
         if (currentTarget.getAttribute('id')) {
-            setModalContent(<IngredientDetails currentTarget={currentTarget} products={products} onCloseModal={onCloseModal} />)
+            setModalContent(<IngredientDetails currentTarget={currentTarget} products={products} onCloseModal={onCloseModal} />);
             setVisible(true)
         }
-        else if (target.closest(' button')) {
-            setModalContent(<OrderDetails onCloseModal={onCloseModal} />)
+
+        else if (target.closest('button')) {
+            setModalContent(<OrderDetails onCloseModal={onCloseModal} />);
             setVisible(true);
         }
     }
