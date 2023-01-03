@@ -4,7 +4,7 @@ import React from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-
+import Modal from '../modal/modal.jsx';
 
 
 function BurgerIngredients(props) {
@@ -17,7 +17,7 @@ function BurgerIngredients(props) {
 
     const BurgerIngredientsTab = () => {
 
-        const handleClick = (value) => {
+        const categoryChange = (value) => {
 
             setCurrent(value)
 
@@ -26,19 +26,21 @@ function BurgerIngredients(props) {
         return (
             <div style={{ display: 'flex' }}>
 
-                <Tab value="Булки" active={current === 'Булки'} onClick={handleClick}>
+                <Tab value="Булки" active={current === 'Булки'} onClick={categoryChange}>
                     Булки
                 </Tab>
-                <Tab value="Соусы" active={current === 'Соусы'} onClick={handleClick}>
+                <Tab value="Соусы" active={current === 'Соусы'} onClick={categoryChange}>
                     Соусы
                 </Tab>
-                <Tab value="Начинки" active={current === 'Начинки'} onClick={handleClick}>
+                <Tab value="Начинки" active={current === 'Начинки'} onClick={categoryChange}>
                     Начинки
                 </Tab>
 
             </div>
         )
     }
+
+
 
     return (
         <section className={styles.ingredients} >
@@ -49,21 +51,21 @@ function BurgerIngredients(props) {
             <div className={styles.tabs} >
                 <BurgerIngredientsTab />
             </div>
-            <div className={styles.container}>
-                <p id="bun" className="text text_type_main-medium">
+            <div className={styles.container} >
+                <p id="bun" className="text text_type_main-medium ">
                     Булки
                 </p>
                 <div className={styles.wrapper}>
 
                     <IngredientCard category={buns} />
                 </div>
-                <p id="sauce" className="text text_type_main-medium">
+                <p id="sauce" className="text text_type_main-medium mt-10">
                     Соусы
                 </p>
                 <div className={styles.wrapper} >
                     <IngredientCard category={sauce} />
                 </div>
-                <p id="main" className="text text_type_main-medium">
+                <p id="main" className="text text_type_main-medium mt-10">
                     Начинки
                 </p>
                 <div className={styles.wrapper}>

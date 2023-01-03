@@ -6,7 +6,7 @@
     align-items: start;
     text-align: center;
     justify-content: center;
-
+    cursor: pointer;
 }
 
 .cardBody {

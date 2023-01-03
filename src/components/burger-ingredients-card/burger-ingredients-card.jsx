@@ -3,6 +3,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import styles from './burger-ingredients-card.module.css';
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
+import Modal from '../modal/modal.jsx';
 
 function IngredientCard(props) {
 
@@ -11,7 +12,7 @@ function IngredientCard(props) {
         props.category.map((product) => {
 
             return (
-                <div className={styles.card} key={product._id}>
+                <div onClick={props.onOpenModal} className={styles.card} key={product._id}>
 
                     <img src={product.image} />
                     <div className={styles.cardBody}>

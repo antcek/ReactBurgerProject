@@ -1,0 +1,25 @@
+.details {
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 64px;
+    gap: 36px;
+    padding-left: 40px;
+    padding-top: 40px;
+}
+
+.close {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 40px;
+    top: 60px;
+    cursor: pointer;
+}

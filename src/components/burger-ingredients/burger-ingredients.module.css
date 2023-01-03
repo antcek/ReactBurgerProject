@@ -5,8 +5,8 @@
 }
 
 .tabs {
-    padding-top: 20px;
-    padding-bottom: 40px;
+    margin-top: 20px;
+    margin-bottom: 40px;
 }
 
 .wrapper {
@@ -14,7 +14,8 @@
     grid-template-columns: 272px 272px;
     gap: 32px 24px;
     justify-content: center;
-    margin-top: 24px
+    margin-top: 24px;
+
 }
 
 .container {
