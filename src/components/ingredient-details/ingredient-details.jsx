@@ -1,13 +1,12 @@
 import styles from './ingredient-details.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import PropTypes from 'prop-types';
 
 function IngredientDetails(props) {
-
 
     return (
         <div className={styles.details} >
             <div className={styles.header} >
-
                 <p className="text text_type_main-large">
                     Детали ингредиента
                 </p>
@@ -68,6 +67,12 @@ function IngredientDetails(props) {
         </div>
 
     )
+}
+
+IngredientDetails.propTypes = {
+    currentTarget: PropTypes.object,
+    products: PropTypes.array,
+    onCloseModal: PropTypes.func.isRequired,
 }
 
 export default IngredientDetails

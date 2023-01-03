@@ -7,12 +7,14 @@ import { React, useEffect, useState } from 'react';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details.jsx';
 
+
 function App() {
 
     const apiIngredients = 'https://norma.nomoreparties.space/api/ingredients';
     const [products, setProducts] = useState([]);
     const [visible, setVisible] = useState(false);
     const [modalContent, setModalContent] = useState(null);
+
 
     useEffect(() => {
 
@@ -48,13 +50,11 @@ function App() {
     function onCloseModal() {
 
         setVisible(false)
-
     }
 
     return (
 
         <div className={styles.container}>
-
             <AppHeader />
             <main>
                 <div className={styles.sections}>
@@ -62,7 +62,8 @@ function App() {
                     <BurgerConstructor onOpenModal={onOpenModal} products={products} />
                 </div>
             </main>
-            {visible && <Modal onCloseModal={onCloseModal} >
+
+            {visible && <Modal onCloseModal={onCloseModal}>
                 {modalContent}
             </Modal>}
         </div>

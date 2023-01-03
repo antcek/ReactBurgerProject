@@ -71,7 +71,9 @@ function BurgerConstructor(props) {
 }
 
 BurgerConstructor.propTypes = {
-    ingredients: PropTypes.array
+    products: PropTypes.array.isRequired,
+    onOpenModal: PropTypes.func.isRequired,
+
 }
 
 

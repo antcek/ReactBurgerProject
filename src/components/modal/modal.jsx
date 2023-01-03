@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay.jsx';
-import OrderDetails from '../order-details/order-details.jsx';
-import IngredientDetails from '../ingredient-details/ingredient-details.jsx';
+import PropTypes from 'prop-types';
 
 function Modal(props) {
 
@@ -31,10 +30,15 @@ function Modal(props) {
 
             </div>
 
-            <ModalOverlay onOpenModal={props.onCloseModal} />
+            <ModalOverlay onCloseModal={props.onCloseModal} />
         </div>,
         document.getElementById("react-modals")
     )
 }
+
+Modal.propTypes = {
+    onCloseModal: PropTypes.func.isRequired,
+
+};
 
 export default Modal

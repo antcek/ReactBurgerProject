@@ -1,8 +1,8 @@
 import styles from './order-details.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import PropTypes from 'prop-types';
 
 function OrderDetails(props) {
-
 
     return (
         <div className={styles.order} >
@@ -40,6 +40,11 @@ function OrderDetails(props) {
 
         </div>
     )
+}
+
+OrderDetails.propTypes = {
+    onCloseModal: PropTypes.func.isRequired,
+
 }
 
 export default OrderDetails

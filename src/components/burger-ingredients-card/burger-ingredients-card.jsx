@@ -1,13 +1,11 @@
-import React, { useRef } from 'react';
+
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients-card.module.css';
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
-import Modal from '../modal/modal.jsx';
+
 
 function IngredientCard(props) {
-
-
 
     return (
 
@@ -34,7 +32,8 @@ function IngredientCard(props) {
 }
 
 IngredientCard.propTypes = {
-
+    onOpenModal: PropTypes.func.isRequired,
+    category: PropTypes.array.isRequired,
 }
 
 export default IngredientCard

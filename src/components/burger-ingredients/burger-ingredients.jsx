@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -24,6 +23,7 @@ function BurgerIngredients(props) {
         setCurrent(value);
 
         const scrollCategory = () => {
+
             if (value === 'Булки') {
                 return (scrollBun - ingredientsContainer.getBoundingClientRect().top)
             }
@@ -35,21 +35,14 @@ function BurgerIngredients(props) {
             else if (value === 'Начинки') {
                 return (scrollMain - ingredientsContainer.getBoundingClientRect().top)
             }
+        };
 
-
-
-
-        }
         ingredientsContainer.scrollBy(0, scrollCategory())
 
     }
 
-
-
-
     return (
         <section className={styles.ingredients} >
-
             <h1 className="text text_type_main-large">
                 Соберите бургер
             </h1 >
@@ -95,8 +88,9 @@ function BurgerIngredients(props) {
     )
 }
 
-
 BurgerIngredients.propTypes = {
-
+    products: PropTypes.array.isRequired,
+    onOpenModal: PropTypes.func.isRequired,
 }
+
 export default BurgerIngredients;
