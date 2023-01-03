@@ -3,7 +3,7 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients.jsx';
 import BurgerConstructor from '../burger-constructor/burger-constructor.jsx';
 import Modal from '../modal/modal.jsx';
 import styles from './app.module.css';
-import { React, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details.jsx';
 
@@ -21,10 +21,12 @@ function App() {
         const getData = async () => {
             try {
                 const response = await fetch(apiIngredients);
-                const ingredients = await response.json();
-
-                setProducts(...products, ingredients.data);
+                if (response.status === 200) {
+                    const ingredients = await response.json();
+                    setProducts(ingredients.data);
+                }
             } catch (err) {
+
                 console.log(err)
             }
         };
@@ -45,12 +47,12 @@ function App() {
             setModalContent(<OrderDetails onCloseModal={onCloseModal} />);
             setVisible(true);
         }
-    }
+    };
 
     function onCloseModal() {
 
-        setVisible(false)
-    }
+        return setVisible(false)
+    };
 
     return (
 
