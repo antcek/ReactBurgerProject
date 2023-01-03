@@ -18,7 +18,7 @@ function IngredientDetails(props) {
             <div>
                 {props.products.map((product) => {
 
-                    if (product._id === props.target.closest('div').getAttribute('id')) {
+                    if (product._id === props.currentTarget.getAttribute('id')) {
 
                         return (<div className={styles.body} key={product._id}>
                             <img src={product.image_large} />

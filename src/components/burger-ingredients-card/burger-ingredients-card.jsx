@@ -7,8 +7,7 @@ import Modal from '../modal/modal.jsx';
 
 function IngredientCard(props) {
 
-    const [cardData, setCardData] = React.useState([props.category]);
-    // console.log(cardData)
+
 
     return (
 

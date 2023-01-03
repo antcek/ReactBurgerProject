@@ -6,18 +6,20 @@ import PropTypes from 'prop-types';
 function BurgerConstructor(props) {
 
     const filterBun = props.products.find((bun) => bun.name === "Краторная булка N-200i");
-    const img = filterBun ? filterBun.image : null;
+    const imgBun = filterBun ? filterBun.image : null;
+    const idBun = filterBun ? filterBun._id : null;
+
 
     return (
 
         <section className={styles.constructor}>
-            <div onClick={props.onOpenModal} className={styles.buns}>
+            <div id={idBun} onClick={props.onOpenModal} className={styles.buns}>
                 <ConstructorElement
                     type="top"
                     isLocked={true}
                     text="Краторная булка N-200i (верх)"
                     price={200}
-                    thumbnail={img}
+                    thumbnail={imgBun}
                 />
             </div>
             <div className={styles.wrapper} >
@@ -33,6 +35,7 @@ function BurgerConstructor(props) {
                                     text={ingredient.name}
                                     price={ingredient.price}
                                     thumbnail={ingredient.image}
+
                                 />
                             </div>
                         )
@@ -40,13 +43,13 @@ function BurgerConstructor(props) {
 
                 })}
             </div>
-            <div onClick={props.onOpenModal} className={styles.buns}>
+            <div id={idBun} onClick={props.onOpenModal} className={styles.buns}>
                 <ConstructorElement
                     type="bottom"
                     isLocked={true}
                     text="Краторная булка N-200i (низ)"
                     price={200}
-                    thumbnail={img}
+                    thumbnail={imgBun}
                 />
             </div>
             <div className={styles.order}>
@@ -56,7 +59,7 @@ function BurgerConstructor(props) {
                         <CurrencyIcon type="primary" />
                     </div>
                 </div>
-                <div onClick={props.onOpenModal}>
+                <div onClick={props.onOpenModal} >
                     <Button htmlType="button" type="primary" size="large">
                         Оформить заказ
                     </Button>

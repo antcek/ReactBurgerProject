@@ -4,7 +4,8 @@ import BurgerConstructor from '../burger-constructor/burger-constructor.jsx';
 import Modal from '../modal/modal.jsx';
 import styles from './app.module.css';
 import { React, useEffect, useState } from 'react';
-import IngredientDetails from '../ingredient-details/ingredient-details'
+import IngredientDetails from '../ingredient-details/ingredient-details';
+import OrderDetails from '../order-details/order-details.jsx';
 
 function App() {
 
@@ -32,12 +33,15 @@ function App() {
 
     function onOpenModal(event) {
         let target = event.target;
-        console.log(target.closest('div'))
-        setModalContent(<IngredientDetails target={target} products={products} onCloseModal={onCloseModal} />)
-
-
-        setVisible(true);
-
+        let currentTarget = event.currentTarget;
+        if (currentTarget.getAttribute('id')) {
+            setModalContent(<IngredientDetails currentTarget={currentTarget} products={products} onCloseModal={onCloseModal} />)
+            setVisible(true)
+        }
+        else if (target.closest(' button')) {
+            setModalContent(<OrderDetails onCloseModal={onCloseModal} />)
+            setVisible(true);
+        }
     }
 
     function onCloseModal() {
