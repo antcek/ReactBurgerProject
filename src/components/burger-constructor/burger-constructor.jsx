@@ -26,11 +26,11 @@ function BurgerConstructor(props) {
                 {props.products.map((ingredient) => {
 
                     if (ingredient.type === 'sauce' || ingredient.type === 'main') {
+
                         return (
                             <div id={ingredient._id} onClick={props.onOpenModal} key={ingredient._id} className={styles.main} >
                                 <DragIcon />
                                 <ConstructorElement
-
                                     type={undefined}
                                     text={ingredient.name}
                                     price={ingredient.price}
@@ -40,6 +40,7 @@ function BurgerConstructor(props) {
                             </div>
                         )
                     }
+                    else return null
 
                 })}
             </div>

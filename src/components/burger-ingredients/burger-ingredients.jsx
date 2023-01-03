@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
-import { Tab, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 
 function BurgerIngredients(props) {
@@ -25,6 +25,7 @@ function BurgerIngredients(props) {
         const scrollCategory = () => {
 
             if (value === 'Булки') {
+
                 return (scrollBun - ingredientsContainer.getBoundingClientRect().top)
             }
 

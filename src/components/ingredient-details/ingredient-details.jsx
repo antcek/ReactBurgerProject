@@ -15,6 +15,7 @@ function IngredientDetails(props) {
                 </div>
             </div>
             <div>
+
                 {props.products.map((product) => {
 
                     if (product._id === props.currentTarget.getAttribute('id')) {
@@ -59,7 +60,8 @@ function IngredientDetails(props) {
                                 </div>
                             </div>
                         </div>)
-                    };
+                    }
+                    else return null
                 })}
 
             </div>
