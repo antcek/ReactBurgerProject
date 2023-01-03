@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Tab, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
 
 function BurgerIngredients(props) {
