@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients-card.module.css';
 import { Counter } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -7,12 +7,15 @@ import Modal from '../modal/modal.jsx';
 
 function IngredientCard(props) {
 
+    const [cardData, setCardData] = React.useState([props.category]);
+    // console.log(cardData)
+
     return (
 
         props.category.map((product) => {
 
             return (
-                <div onClick={props.onOpenModal} className={styles.card} key={product._id}>
+                <div onClick={props.onOpenModal} id={product._id} className={styles.card} key={product._id}>
 
                     <img src={product.image} />
                     <div className={styles.cardBody}>

@@ -11,7 +11,7 @@ function BurgerConstructor(props) {
     return (
 
         <section className={styles.constructor}>
-            <div className={styles.buns}>
+            <div onClick={props.onOpenModal} className={styles.buns}>
                 <ConstructorElement
                     type="top"
                     isLocked={true}
@@ -25,9 +25,10 @@ function BurgerConstructor(props) {
 
                     if (ingredient.type === 'sauce' || ingredient.type === 'main') {
                         return (
-                            <div key={ingredient._id} className={styles.main} >
+                            <div id={ingredient._id} onClick={props.onOpenModal} key={ingredient._id} className={styles.main} >
                                 <DragIcon />
                                 <ConstructorElement
+
                                     type={undefined}
                                     text={ingredient.name}
                                     price={ingredient.price}
@@ -39,7 +40,7 @@ function BurgerConstructor(props) {
 
                 })}
             </div>
-            <div className={styles.buns}>
+            <div onClick={props.onOpenModal} className={styles.buns}>
                 <ConstructorElement
                     type="bottom"
                     isLocked={true}
@@ -55,9 +56,11 @@ function BurgerConstructor(props) {
                         <CurrencyIcon type="primary" />
                     </div>
                 </div>
-                <Button htmlType="button" type="primary" size="large">
-                    Оформить заказ
-                </Button>
+                <div onClick={props.onOpenModal}>
+                    <Button htmlType="button" type="primary" size="large">
+                        Оформить заказ
+                    </Button>
+                </div>
             </div>
         </section>
 

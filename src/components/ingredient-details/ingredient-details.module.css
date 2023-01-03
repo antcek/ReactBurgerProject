@@ -15,6 +15,33 @@
     padding-top: 40px;
 }
 
+.body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.body>img {
+    width: 480px;
+    height: 240px;
+    align-self: center;
+}
+
+.wrapperCalories {
+    display: flex;
+    padding-bottom: 60px;
+    gap: 20px;
+}
+
+.substances {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+}
+
 .close {
     width: 24px;
     height: 24px;

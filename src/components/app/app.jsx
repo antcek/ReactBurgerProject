@@ -11,6 +11,7 @@ function App() {
     const apiIngredients = 'https://norma.nomoreparties.space/api/ingredients';
     const [products, setProducts] = useState([]);
     const [visible, setVisible] = useState(false);
+    const [modalContent, setModalContent] = useState();
 
     useEffect(() => {
 
@@ -30,12 +31,19 @@ function App() {
     }, []);
 
     function onOpenModal(event) {
-        setVisible(true)
-        console.log(event.target)
+        let target = event.target;
+        console.log(target.closest('div'))
+        setModalContent(<IngredientDetails target={target} products={products} onCloseModal={onCloseModal} />)
+
+
+        setVisible(true);
+
     }
 
-    function onCloseModal(event) {
+    function onCloseModal() {
+
         setVisible(false)
+
     }
 
     return (
@@ -46,11 +54,11 @@ function App() {
             <main>
                 <div className={styles.sections}>
                     <BurgerIngredients onOpenModal={onOpenModal} products={products} />
-                    <BurgerConstructor products={products} />
+                    <BurgerConstructor onOpenModal={onOpenModal} products={products} />
                 </div>
             </main>
-            {visible && <Modal >
-                {<IngredientDetails onCloseModal={onCloseModal} products={products} />}
+            {visible && <Modal onCloseModal={onCloseModal} >
+                {modalContent}
             </Modal>}
         </div>
 

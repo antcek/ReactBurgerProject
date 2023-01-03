@@ -1,10 +1,10 @@
 import styles from './modal-overlay.module.css';
 
-function ModalOverlay() {
+function ModalOverlay(props) {
 
     return (
 
-        <div className={styles.overlay} >
+        <div onClick={props.onOpenModal} className={styles.overlay} >
 
         </div>
 
