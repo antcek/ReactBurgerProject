@@ -47,7 +47,7 @@ function BurgerIngredients(props) {
 
             <h1 className="text text_type_main-large">
                 Соберите бургер
-            </h1>
+            </h1 >
             <div className={styles.tabs} >
                 <BurgerIngredientsTab />
             </div>
@@ -57,19 +57,19 @@ function BurgerIngredients(props) {
                 </p>
                 <div className={styles.wrapper}>
 
-                    <IngredientCard category={buns} />
+                    <IngredientCard onOpenModal={props.onOpenModal} category={buns} />
                 </div>
                 <p id="sauce" className="text text_type_main-medium mt-10">
                     Соусы
                 </p>
                 <div className={styles.wrapper} >
-                    <IngredientCard category={sauce} />
+                    <IngredientCard onOpenModal={props.onOpenModal} category={sauce} />
                 </div>
                 <p id="main" className="text text_type_main-medium mt-10">
                     Начинки
                 </p>
                 <div className={styles.wrapper}>
-                    <IngredientCard category={main} />
+                    <IngredientCard onOpenModal={props.onOpenModal} category={main} />
                 </div>
             </div>
 

@@ -50,7 +50,8 @@ function App() {
                 </div>
             </main>
             {visible && <Modal >
-                {<IngredientDetails onCloseModal={onCloseModal} products={products} />} </Modal>}
+                {<IngredientDetails onCloseModal={onCloseModal} products={products} />}
+            </Modal>}
         </div>
 
     );
