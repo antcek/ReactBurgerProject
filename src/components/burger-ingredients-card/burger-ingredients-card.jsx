@@ -15,7 +15,7 @@ function IngredientCard(props) {
                 <div onClick={props.onOpenModal} id={product._id} className={styles.card} key={product._id}>
                     {product.name === 'Краторная булка N-200i' ? <Counter count={1} size="default" extraClass="m-1" /> :
                         product.name === 'Соус традиционный галактический' ? <Counter count={1} size="default" extraClass="m-1" /> : null}
-                    <img src={product.image} />
+                    <img src={product.image} alt='картинка' />
                     <div className={styles.cardBody}>
                         <p className="text text_type_digits-default">{product.price}</p>
                         <CurrencyIcon type="primary" />

@@ -20,7 +20,7 @@ function IngredientDetails(props) {
                     if (product._id === props.currentTarget.getAttribute('id')) {
 
                         return (<div className={styles.body} key={product._id}>
-                            <img src={product.image_large} />
+                            <img src={product.image_large} alt='ингредиент' />
                             <p className="text text_type_main-medium mt-4 mb-8">
                                 {product.name}
                             </p>
