@@ -1,17 +1,23 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import ingredientTypes from '../../prop-types/prop-types.jsx';
+import Modal from '../modal/modal.jsx';
+import IngredientDetails from '../ingredient-details/ingredient-details';
 
 
-function BurgerIngredients(props) {
+
+function BurgerIngredients({ products }) {
 
     const [current, setCurrent] = React.useState('Булки');
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalContent, setModalContent] = useState(null);
 
-    const buns = props.products.filter(ingredient => ingredient.type === 'bun');
-    const main = props.products.filter(ingredient => ingredient.type === 'main');
-    const sauce = props.products.filter(ingredient => ingredient.type === 'sauce');
+    const buns = products.filter(ingredient => ingredient.type === 'bun');
+    const main = products.filter(ingredient => ingredient.type === 'main');
+    const sauce = products.filter(ingredient => ingredient.type === 'sauce');
 
     const categoryChange = (value) => {
 
@@ -42,6 +48,18 @@ function BurgerIngredients(props) {
 
     }
 
+    function onOpenModal(event) {
+
+        let currentTarget = event.currentTarget;
+
+        setModalContent(<IngredientDetails currentTarget={currentTarget} products={products} onCloseModal={onCloseModal} />);
+        setModalVisible(true)
+    };
+
+    function onCloseModal() {
+        setModalVisible(false)
+    };
+
     return (
         <section className={styles.ingredients} >
             <h1 className="text text_type_main-large">
@@ -69,43 +87,33 @@ function BurgerIngredients(props) {
                 </p>
                 <div className={styles.wrapper}>
 
-                    <IngredientCard onOpenModal={props.onOpenModal} category={buns} />
+                    <IngredientCard onOpenModal={onOpenModal} category={buns} />
                 </div>
                 <p id="sauce" className="text text_type_main-medium mt-10">
                     Соусы
                 </p>
                 <div className={styles.wrapper} >
-                    <IngredientCard onOpenModal={props.onOpenModal} category={sauce} />
+                    <IngredientCard onOpenModal={onOpenModal} category={sauce} />
                 </div>
                 <p id="main" className="text text_type_main-medium mt-10">
                     Начинки
                 </p>
                 <div className={styles.wrapper}>
-                    <IngredientCard onOpenModal={props.onOpenModal} category={main} />
+                    <IngredientCard onOpenModal={onOpenModal} category={main} />
                 </div>
             </div>
 
+            {modalVisible && <Modal onCloseModal={onCloseModal}>
+                {modalContent}
+            </Modal>}
         </section>
+
     )
 }
 
 BurgerIngredients.propTypes = {
-    products: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string,
-        name: PropTypes.string,
-        type: PropTypes.string,
-        proteins: PropTypes.number,
-        fat: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        calories: PropTypes.number,
-        price: PropTypes.number,
-        image: PropTypes.string,
-        image_mobile: PropTypes.string,
-        image_large: PropTypes.string,
-        __v: PropTypes.number
-    })).isRequired,
+    products: PropTypes.arrayOf(PropTypes.shape(ingredientTypes)).isRequired,
 
-    onOpenModal: PropTypes.func.isRequired,
 }
 
 export default BurgerIngredients;

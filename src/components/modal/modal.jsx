@@ -4,14 +4,14 @@ import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay.jsx';
 import PropTypes from 'prop-types';
 
-function Modal(props) {
+function Modal({ onCloseModal, children }) {
 
     useEffect(() => {
 
         function modalEscClose(event) {
 
             if (event.code === 'Escape')
-                props.onCloseModal()
+                onCloseModal()
         }
 
         document.addEventListener('keydown', modalEscClose);
@@ -20,17 +20,17 @@ function Modal(props) {
             document.removeEventListener('keydown', modalEscClose)
         }
 
-    }, [props]);
+    }, [onCloseModal]);
 
     return ReactDOM.createPortal(
         <div >
             <div className={styles.modal}>
 
-                {props.children}
+                {children}
 
             </div>
 
-            <ModalOverlay onCloseModal={props.onCloseModal} />
+            <ModalOverlay onCloseModal={onCloseModal} />
         </div>,
         document.getElementById("react-modals")
     )
@@ -38,7 +38,7 @@ function Modal(props) {
 
 Modal.propTypes = {
     onCloseModal: PropTypes.func.isRequired,
-
+    children: PropTypes.element.isRequired,
 };
 
 export default Modal

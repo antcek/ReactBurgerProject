@@ -1,19 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import PropTypes from 'prop-types';
+import ingredientTypes from '../../prop-types/prop-types.jsx';
+import IngredientDetails from '../ingredient-details/ingredient-details';
+import OrderDetails from '../order-details/order-details.jsx';
+import Modal from '../modal/modal.jsx';
 
-function BurgerConstructor(props) {
 
-    const filterBun = props.products.find((bun) => bun.name === "Краторная булка N-200i");
+
+function BurgerConstructor({ products }) {
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalContent, setModalContent] = useState(null);
+
+    const filterBun = products.find((bun) => bun.name === "Краторная булка N-200i");
     const imgBun = filterBun ? filterBun.image : null;
-    const idBun = filterBun ? filterBun._id : null;
+    const idBun = filterBun ? filterBun.id : null;
 
+    const filteredIngredients = products.filter((ingredient) => ingredient.type === 'sauce' || ingredient.type === 'main')
+    console.log(filteredIngredients)
+
+    function onOpenModal(event) {
+        let target = event.target;
+        let currentTarget = event.currentTarget;
+        console.log(currentTarget)
+        if (currentTarget.getAttribute('id')) {
+            setModalContent(<IngredientDetails currentTarget={currentTarget} products={products} onCloseModal={onCloseModal} />);
+            setModalVisible(true);
+        }
+
+        else if (target.closest('button')) {
+            setModalContent(<OrderDetails onCloseModal={onCloseModal} />);
+            setModalVisible(true);
+        }
+    };
+
+    function onCloseModal() {
+
+        setModalVisible(false)
+    };
 
     return (
 
         <section className={styles.constructor}>
-            <div id={idBun} onClick={props.onOpenModal} className={styles.buns}>
+
+            <div id={idBun} onClick={onOpenModal} className={styles.buns}>
                 <ConstructorElement
                     type="top"
                     isLocked={true}
@@ -22,29 +54,26 @@ function BurgerConstructor(props) {
                     thumbnail={imgBun}
                 />
             </div>
-            <div className={styles.wrapper} >
-                {props.products.map((ingredient) => {
+            <div className={styles.wrapper}>
 
-                    if (ingredient.type === 'sauce' || ingredient.type === 'main') {
+                {filteredIngredients.map((ingredient) => {
 
-                        return (
-                            <div id={ingredient._id} onClick={props.onOpenModal} key={ingredient._id} className={styles.main} >
-                                <DragIcon />
-                                <ConstructorElement
-                                    type={undefined}
-                                    text={ingredient.name}
-                                    price={ingredient.price}
-                                    thumbnail={ingredient.image}
+                    return (
+                        <div id={ingredient._id} onClick={onOpenModal} key={ingredient._id} className={styles.main} >
+                            <DragIcon />
+                            <ConstructorElement
+                                type={undefined}
+                                text={ingredient.name}
+                                price={ingredient.price}
+                                thumbnail={ingredient.image}
+                            />
+                        </div>
+                    )
 
-                                />
-                            </div>
-                        )
-                    }
-                    else return null
-
-                })}
+                })
+                }
             </div>
-            <div id={idBun} onClick={props.onOpenModal} className={styles.buns}>
+            <div id={idBun} onClick={onOpenModal} className={styles.buns}>
                 <ConstructorElement
                     type="bottom"
                     isLocked={true}
@@ -60,34 +89,23 @@ function BurgerConstructor(props) {
                         <CurrencyIcon type="primary" />
                     </div>
                 </div>
-                <div onClick={props.onOpenModal} >
+                <div onClick={onOpenModal} >
                     <Button htmlType="button" type="primary" size="large">
                         Оформить заказ
                     </Button>
                 </div>
             </div>
+            {modalVisible && <Modal onCloseModal={onCloseModal}>
+                {modalContent}
+            </Modal>}
         </section>
 
     )
 }
 
 BurgerConstructor.propTypes = {
-    products: PropTypes.arrayOf(PropTypes.shape({
-        _id: PropTypes.string,
-        name: PropTypes.string,
-        type: PropTypes.string,
-        proteins: PropTypes.number,
-        fat: PropTypes.number,
-        carbohydrates: PropTypes.number,
-        calories: PropTypes.number,
-        price: PropTypes.number,
-        image: PropTypes.string,
-        image_mobile: PropTypes.string,
-        image_large: PropTypes.string,
-        __v: PropTypes.number
-    })).isRequired,
+    products: PropTypes.arrayOf(PropTypes.shape(ingredientTypes)).isRequired,
 
-    onOpenModal: PropTypes.func.isRequired,
 
 }
 

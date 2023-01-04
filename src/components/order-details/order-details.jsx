@@ -2,11 +2,11 @@ import styles from './order-details.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 
-function OrderDetails(props) {
+function OrderDetails({ onCloseModal }) {
 
     return (
         <div className={styles.order} >
-            <div onClick={props.onCloseModal} className={styles.close}>
+            <div onClick={onCloseModal} className={styles.close}>
                 <CloseIcon type="primary" />
             </div>
             <p className="text text_type_digits-large pt-30">034536</p>
