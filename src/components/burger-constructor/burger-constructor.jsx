@@ -16,7 +16,7 @@ function BurgerConstructor({ products }) {
 
     const filterBun = products.find((bun) => bun.name === "Краторная булка N-200i");
     const imgBun = filterBun ? filterBun.image : null;
-    const idBun = filterBun ? filterBun.id : null;
+    const idBun = filterBun ? filterBun._id : null;
 
     const filteredIngredients = products.filter((ingredient) => ingredient.type === 'sauce' || ingredient.type === 'main')
 
@@ -34,6 +34,7 @@ function BurgerConstructor({ products }) {
             setModalContent(<OrderDetails onCloseModal={onCloseModal} />);
             setModalVisible(true);
         }
+
     };
 
     function onCloseModal() {
