@@ -19,12 +19,12 @@ function BurgerConstructor({ products }) {
     const idBun = filterBun ? filterBun.id : null;
 
     const filteredIngredients = products.filter((ingredient) => ingredient.type === 'sauce' || ingredient.type === 'main')
-    console.log(filteredIngredients)
+
 
     function onOpenModal(event) {
         let target = event.target;
         let currentTarget = event.currentTarget;
-        console.log(currentTarget)
+
         if (currentTarget.getAttribute('id')) {
             setModalContent(<IngredientDetails currentTarget={currentTarget} products={products} onCloseModal={onCloseModal} />);
             setModalVisible(true);
