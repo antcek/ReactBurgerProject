@@ -1,0 +1,11 @@
+.overlay {
+
+    width: 100vw;
+    left: 0;
+    top: 0;
+    background: #000000;
+    opacity: 0.6;
+    position: absolute;
+    height: 100vh;
+    cursor: pointer;
+}

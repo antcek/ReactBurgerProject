@@ -1,0 +1,17 @@
+.card {
+    position: relative;
+    gap: 4px;
+    display: grid;
+    grid-template-rows: 120px 24px 48px;
+    align-items: start;
+    text-align: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.cardBody {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}

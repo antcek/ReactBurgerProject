@@ -1,0 +1,52 @@
+.details {
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 64px;
+    gap: 36px;
+    padding-left: 40px;
+    padding-top: 40px;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.body>img {
+    width: 480px;
+    height: 240px;
+    align-self: center;
+}
+
+.wrapperCalories {
+    display: flex;
+    padding-bottom: 60px;
+    gap: 20px;
+}
+
+.substances {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+}
+
+.close {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 40px;
+    top: 60px;
+    cursor: pointer;
+}

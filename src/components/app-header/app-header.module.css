@@ -1,0 +1,45 @@
+.header {
+    box-sizing: border-box;
+    background-color: #1c1c21;
+
+    align-items: center;
+    width: 100%;
+    padding: 19px 0;
+    margin: 0 auto;
+
+
+}
+
+.element {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    white-space: nowrap;
+    gap: 8px;
+    text-decoration: none;
+    color: white;
+
+}
+
+.wrapper {
+    display: flex;
+    gap: 48px;
+    padding-right: 20px;
+    box-sizing: border-box;
+
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    margin-left: 9%;
+}
+
+
+
+.container {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: flex;
+}
