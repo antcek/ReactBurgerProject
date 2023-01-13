@@ -4,6 +4,7 @@ import BurgerConstructor from '../burger-constructor/burger-constructor.jsx';
 import styles from './app.module.css';
 import React, { useEffect, useState } from 'react';
 import getIngredients from '../../utils/burger-api.js';
+import { ProductsContext } from '../../utils/products-context.js';
 
 function App() {
 
@@ -26,11 +27,8 @@ function App() {
 
     }, []);
 
-
-
-
     return (
-        <div>
+        <>
             {error ? <div className={styles.error}> Произошла ошибка, попробуйте перезагрузить страницу </div> :
                 <div className={styles.container}>
 
@@ -38,14 +36,16 @@ function App() {
                     <main>
                         <div className={styles.sections}>
                             <BurgerIngredients products={products} />
-                            <BurgerConstructor products={products} />
+                            <ProductsContext.Provider value={products}>
+                                <BurgerConstructor />
+                            </ProductsContext.Provider>
                         </div>
                     </main>
 
 
                 </div>
             }
-        </div>
+        </>
     )
 }
 

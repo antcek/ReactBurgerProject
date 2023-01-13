@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useReducer, useEffect } from 'react';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import PropTypes from 'prop-types';
@@ -6,19 +6,70 @@ import ingredientTypes from '../../prop-types/prop-types.jsx';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details.jsx';
 import Modal from '../modal/modal.jsx';
+import { ProductsContext } from '../../utils/products-context.js';
 
 
+function BurgerConstructor() {
 
-function BurgerConstructor({ products }) {
+    const products = useContext(ProductsContext);
+
+    const initialPriceCount = { count: 0 };
+
+    const [priceCount, priceCountDispatcher] = useReducer(reducer, initialPriceCount)
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState(null);
 
-    const filterBun = products.find((bun) => bun.name === "Краторная булка N-200i");
+    const filterBun = products.filter((ingredient) => ingredient.type === "bun")[0];
+
     const imgBun = filterBun ? filterBun.image : null;
     const idBun = filterBun ? filterBun._id : null;
+    const nameBun = filterBun ? filterBun.name : null;
+    const priceBun = filterBun ? filterBun.price : null;
 
-    const filteredIngredients = products.filter((ingredient) => ingredient.type === 'sauce' || ingredient.type === 'main')
+    const filteredIngredients = products.filter((ingredient) => ingredient.type === 'sauce' || ingredient.type === 'main');
+
+    useEffect(() => {
+
+        priceCountDispatcher({ price: priceBun * 2 })
+
+    }, [priceBun])
+
+
+    function reducer(state, action) {
+
+        return { count: action.price }
+    };
+
+    async function sendOrder() {
+
+        const constructorElem = document.querySelector(`.${styles.constructor}`)
+        const idNodeElements = constructorElem.querySelectorAll('[id]');
+
+        const idConstructor = { ingredients: Array.from(idNodeElements).map(ingredient => ingredient.id) };
+
+
+        try {
+
+            const response = await fetch('https://norma.nomoreparties.space/api/orders',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(idConstructor)
+                })
+            if (response.status === 200) {
+
+                const result = await response.json();
+                return result.order.number;
+
+            };
+        } catch (err) {
+            return 'Ошибка'
+        }
+
+    }
 
 
     function onOpenModal(event) {
@@ -26,12 +77,14 @@ function BurgerConstructor({ products }) {
         let currentTarget = event.currentTarget;
 
         if (currentTarget.getAttribute('id')) {
+
             setModalContent(<IngredientDetails currentTarget={currentTarget} products={products} onCloseModal={onCloseModal} />);
             setModalVisible(true);
         }
 
         else if (target.closest('button')) {
-            setModalContent(<OrderDetails onCloseModal={onCloseModal} />);
+
+            setModalContent(<OrderDetails sendOrder={sendOrder()} onCloseModal={onCloseModal} />);
             setModalVisible(true);
         }
 
@@ -42,6 +95,7 @@ function BurgerConstructor({ products }) {
         setModalVisible(false)
     };
 
+
     return (
 
         <section className={styles.constructor}>
@@ -50,48 +104,34 @@ function BurgerConstructor({ products }) {
                 <ConstructorElement
                     type="top"
                     isLocked={true}
-                    text="Краторная булка N-200i (верх)"
-                    price={200}
+                    text={nameBun + ' ' + '(верх)'}
+                    price={priceBun}
                     thumbnail={imgBun}
                 />
             </div>
             <div className={styles.wrapper}>
 
-                {filteredIngredients.map((ingredient) => {
 
-                    return (
-                        <div id={ingredient._id} onClick={onOpenModal} key={ingredient._id} className={styles.main} >
-                            <DragIcon />
-                            <ConstructorElement
-                                type={undefined}
-                                text={ingredient.name}
-                                price={ingredient.price}
-                                thumbnail={ingredient.image}
-                            />
-                        </div>
-                    )
 
-                })
-                }
             </div>
             <div id={idBun} onClick={onOpenModal} className={styles.buns}>
                 <ConstructorElement
                     type="bottom"
                     isLocked={true}
-                    text="Краторная булка N-200i (низ)"
-                    price={200}
+                    text={nameBun + ' ' + '(низ)'}
+                    price={priceBun}
                     thumbnail={imgBun}
                 />
             </div>
             <div className={styles.order}>
                 <div className={styles.price}>
-                    <p className="text text_type_digits-medium">600</p>
+                    <p className="text text_type_digits-medium">{priceCount.count}</p>
                     <div className={styles.icon}>
                         <CurrencyIcon type="primary" />
                     </div>
                 </div>
                 <div onClick={onOpenModal} >
-                    <Button htmlType="button" type="primary" size="large">
+                    <Button onClick={sendOrder} htmlType="button" type="primary" size="large">
                         Оформить заказ
                     </Button>
                 </div>
@@ -105,7 +145,7 @@ function BurgerConstructor({ products }) {
 }
 
 BurgerConstructor.propTypes = {
-    products: PropTypes.arrayOf(PropTypes.shape(ingredientTypes)).isRequired,
+    // products: PropTypes.arrayOf(PropTypes.shape(ingredientTypes)).isRequired,
 
 
 }
