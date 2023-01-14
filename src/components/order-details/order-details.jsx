@@ -65,7 +65,7 @@ function OrderDetails({ onCloseModal, sendOrder }) {
 
 OrderDetails.propTypes = {
     onCloseModal: PropTypes.func.isRequired,
-
+    sendOrder: PropTypes.instanceOf(Promise).isRequired
 }
 
 export default OrderDetails

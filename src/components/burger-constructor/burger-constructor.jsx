@@ -57,7 +57,7 @@ function BurgerConstructor() {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(idConstructor)
+                    body: JSON.stringify(idConstructor),
                 })
             if (response.status === 200) {
 
