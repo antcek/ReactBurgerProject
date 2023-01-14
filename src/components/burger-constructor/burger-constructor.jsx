@@ -7,13 +7,13 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details.jsx';
 import Modal from '../modal/modal.jsx';
 import { ProductsContext } from '../../utils/products-context.js';
+import { sendOrder } from '../../utils/burger-api.js';
 
+const initialPriceCount = { count: 0 };
 
 function BurgerConstructor() {
 
     const products = useContext(ProductsContext);
-
-    const initialPriceCount = { count: 0 };
 
     const [priceCount, priceCountDispatcher] = useReducer(reducer, initialPriceCount)
 
@@ -41,36 +41,6 @@ function BurgerConstructor() {
 
         return { count: action.price }
     };
-
-    async function sendOrder() {
-
-        const constructorElem = document.querySelector(`.${styles.constructor}`)
-        const idNodeElements = constructorElem.querySelectorAll('[id]');
-
-        const idConstructor = { ingredients: Array.from(idNodeElements).map(ingredient => ingredient.id) };
-
-
-        try {
-
-            const response = await fetch('https://norma.nomoreparties.space/api/orders',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(idConstructor),
-                })
-            if (response.status === 200) {
-
-                const result = await response.json();
-                return result.order.number;
-
-            };
-        } catch (err) {
-            return 'Ошибка'
-        }
-
-    }
 
 
     function onOpenModal(event) {
@@ -100,7 +70,7 @@ function BurgerConstructor() {
 
     return (
 
-        <section className={styles.constructor}>
+        <section id='constructor' className={styles.constructor}>
 
             <div id={idBun} onClick={onOpenModal} className={styles.buns}>
                 <ConstructorElement

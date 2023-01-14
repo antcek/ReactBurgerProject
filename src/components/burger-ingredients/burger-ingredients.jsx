@@ -1,15 +1,17 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientTypes from '../../prop-types/prop-types.jsx';
 import Modal from '../modal/modal.jsx';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import { ProductsContext } from '../../utils/products-context.js';
 
 
+function BurgerIngredients() {
 
-function BurgerIngredients({ products }) {
+    const products = useContext(ProductsContext);
 
     const [current, setCurrent] = React.useState('Булки');
     const [modalVisible, setModalVisible] = useState(false);
@@ -112,7 +114,7 @@ function BurgerIngredients({ products }) {
 }
 
 BurgerIngredients.propTypes = {
-    products: PropTypes.arrayOf(PropTypes.shape(ingredientTypes)).isRequired,
+    // products: PropTypes.arrayOf(PropTypes.shape(ingredientTypes)).isRequired,
 
 }
 
