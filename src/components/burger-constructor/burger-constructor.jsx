@@ -29,6 +29,7 @@ function BurgerConstructor() {
 
     const filteredIngredients = products.filter((ingredient) => ingredient.type === 'sauce' || ingredient.type === 'main');
 
+
     useEffect(() => {
 
         priceCountDispatcher({ price: priceBun * 2 })
@@ -96,6 +97,7 @@ function BurgerConstructor() {
     };
 
 
+
     return (
 
         <section className={styles.constructor}>
@@ -111,7 +113,23 @@ function BurgerConstructor() {
             </div>
             <div className={styles.wrapper}>
 
+                {/* {filteredIngredients.map((ingredient) => {
 
+                    return (
+                        <div id={ingredient._id} onClick={onOpenModal} key={ingredient._id} className={styles.main} >
+                            <DragIcon />
+                            <ConstructorElement
+                                type={undefined}
+                                text={ingredient.name}
+                                price={ingredient.price}
+                                thumbnail={ingredient.image}
+
+                            />
+                        </div>
+                    )
+
+                })
+                } */}
 
             </div>
             <div id={idBun} onClick={onOpenModal} className={styles.buns}>
