@@ -13,23 +13,23 @@ function AppHeader() {
             <div className={styles.container}>
                 <div className={styles.wrapper}>
 
-                    <a className={styles.element} href='#'>
+                    <a className={styles.element} href='/'>
                         <BurgerIcon type="primary" />
-                        <p href='#' className="text text_type_main-default ">
+                        <p className="text text_type_main-default ">
                             Конструктор</p>
                     </a>
 
-                    <a href='#' className={styles.element}>
+                    <a href='/' className={styles.element}>
                         <ListIcon type="secondary" />
                         <p className="text text_type_main-default text_color_inactive ">
                             Лента заказов</p>
                     </a>
                 </div>
-                <a href='#' className={styles.logo}>
+                <a href='/' className={styles.logo}>
                     <Logo />
                 </a>
 
-                <a href='#' className={styles.element}>
+                <a href='/' className={styles.element}>
                     <ProfileIcon type="secondary" />
                     <p className="text text_type_main-default text_color_inactive " >
                         Личный кабинет</p>

@@ -1,8 +1,6 @@
 import React, { useState, useContext, useReducer, useEffect } from 'react';
-import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
-import PropTypes from 'prop-types';
-import ingredientTypes from '../../prop-types/prop-types.jsx';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details.jsx';
 import Modal from '../modal/modal.jsx';
@@ -27,7 +25,7 @@ function BurgerConstructor() {
     const nameBun = filterBun ? filterBun.name : null;
     const priceBun = filterBun ? filterBun.price : null;
 
-    const filteredIngredients = products.filter((ingredient) => ingredient.type === 'sauce' || ingredient.type === 'main');
+    // const filteredIngredients = products.filter((ingredient) => ingredient.type === 'sauce' || ingredient.type === 'main');
 
 
     useEffect(() => {
@@ -76,7 +74,7 @@ function BurgerConstructor() {
                 <ConstructorElement
                     type="top"
                     isLocked={true}
-                    text={nameBun + ' ' + '(верх)'}
+                    text={`${nameBun} (верх)`}
                     price={priceBun}
                     thumbnail={imgBun}
                 />
@@ -106,7 +104,7 @@ function BurgerConstructor() {
                 <ConstructorElement
                     type="bottom"
                     isLocked={true}
-                    text={nameBun + ' ' + '(низ)'}
+                    text={`${nameBun} (низ)`}
                     price={priceBun}
                     thumbnail={imgBun}
                 />

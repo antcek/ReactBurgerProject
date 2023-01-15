@@ -1,9 +1,7 @@
-import PropTypes from 'prop-types';
 import React, { useState, useContext } from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import ingredientTypes from '../../prop-types/prop-types.jsx';
 import Modal from '../modal/modal.jsx';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { ProductsContext } from '../../utils/products-context.js';
@@ -21,7 +19,7 @@ function BurgerIngredients() {
     const main = products.filter(ingredient => ingredient.type === 'main');
     const sauce = products.filter(ingredient => ingredient.type === 'sauce');
 
-    const categoryChange = (value) => {
+    const categoryChange = () => (value) => {
 
         const ingredientsContainer = document.querySelector(`.${styles.container}`);
         const scrollBun = document.getElementById('bun').getBoundingClientRect().top;
@@ -48,7 +46,7 @@ function BurgerIngredients() {
 
         ingredientsContainer.scrollBy(0, scrollCategory())
 
-    }
+    };
 
     function onOpenModal(event) {
 
