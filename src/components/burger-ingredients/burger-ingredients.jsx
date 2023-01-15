@@ -19,7 +19,7 @@ function BurgerIngredients() {
     const main = products.filter(ingredient => ingredient.type === 'main');
     const sauce = products.filter(ingredient => ingredient.type === 'sauce');
 
-    const categoryChange = () => (value) => {
+    const categoryChange =  (value) => {
 
         const ingredientsContainer = document.querySelector(`.${styles.container}`);
         const scrollBun = document.getElementById('bun').getBoundingClientRect().top;
