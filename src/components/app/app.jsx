@@ -13,7 +13,8 @@ function App() {
     const [error, setError] = useState(false)
 
     useEffect(() => {
-
+// диспатчим getData в редьюсер с получением ингредиентов, в редьюсере возвращаем массив ингредиентов 
+//в виде объекта. потом получаем с помощью useSelector и передаем в пропсы
         const getData = async () => {
 
             const loadedProducts = await getIngredients();
