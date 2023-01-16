@@ -10,9 +10,7 @@ import { ProductsContext } from '../../utils/products-context.js';
 function App() {
 
     const [products, setProducts] = useState([]);
-
     const [error, setError] = useState(false)
-
 
     useEffect(() => {
 
@@ -30,7 +28,10 @@ function App() {
 
     return (
         <>
-            {error ? <div className={styles.error}> Произошла ошибка, попробуйте перезагрузить страницу </div> :
+            {error ? <div className={styles.error}>
+                Произошла ошибка, попробуйте перезагрузить страницу
+            </div> :
+
                 <div className={styles.container}>
                     <AppHeader />
                     <main>
@@ -43,6 +44,7 @@ function App() {
                         </div>
                     </main>
                 </div>
+
             }
         </>
     )
