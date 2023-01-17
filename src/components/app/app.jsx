@@ -4,26 +4,27 @@ import BurgerConstructor from '../burger-constructor/burger-constructor.jsx';
 import styles from './app.module.css';
 import React, { useEffect, useState, } from 'react';
 import { getIngredients } from '../../utils/burger-api.js';
-import { ProductsContext } from '../../utils/products-context.js';
-
+import { useDispatch, useSelector } from 'react-redux';
 
 function App() {
 
-    const [products, setProducts] = useState([]);
-    const [error, setError] = useState(false)
+    const dispatch = useDispatch();
+
+    const [error, setError] = useState(false);
+    const { products, productsRequest, productsFailed } = useSelector((store) => console.log(store.getProducts))
 
     useEffect(() => {
-// диспатчим getData в редьюсер с получением ингредиентов, в редьюсере возвращаем массив ингредиентов 
-//в виде объекта. потом получаем с помощью useSelector и передаем в пропсы
-        const getData = async () => {
+        // диспатчим getData в редьюсер с получением ингредиентов, в редьюсере возвращаем массив ингредиентов 
+        //в виде объекта. потом получаем с помощью useSelector и передаем в пропсы
+        //     const getData = async () => {
+        //  console.log( await  getIngredients())
+        //         const loadedProducts = await getIngredients();
 
-            const loadedProducts = await getIngredients();
+        //         setProducts(loadedProducts);
+        //         setError(loadedProducts === false)
+        //     }
 
-            setProducts(loadedProducts);
-            setError(loadedProducts === false)
-        }
-
-        getData()
+        dispatch(getIngredients)
 
     }, []);
 
@@ -38,10 +39,10 @@ function App() {
                     <main>
                         <div className={styles.sections}>
 
-                            <ProductsContext.Provider value={products}>
-                                <BurgerIngredients />
-                                <BurgerConstructor />
-                            </ProductsContext.Provider>
+
+                            <BurgerIngredients />
+                            <BurgerConstructor />
+
                         </div>
                     </main>
                 </div>

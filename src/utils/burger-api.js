@@ -1,22 +1,46 @@
+import {
+    ALL_INGREDIENTS_SUCCESS,
+    ALL_INGREDIENTS_REQUEST,
+    ALL_INGREDIENTS_FAILED
+} from "../services/actions/app";
+
+
+
 export async function getIngredients() {
 
-    const apiIngredients = 'https://norma.nomoreparties.space/api/ingredients';
+    return async function (dispatch) {
 
-    try {
-        const response = await fetch(apiIngredients);
+        dispatch({
+            type: ALL_INGREDIENTS_REQUEST
+        });
 
-        if (response.ok) {
-            const ingredients = await response.json();
+        const apiIngredients = 'https://norma.nomoreparties.space/api/ingredients';
 
-            return ingredients.data
+        try {
+            const response = await fetch(apiIngredients);
+
+            if (response && response.ok) {
+                const ingredients = await response.json();
+                console.log(ingredients)
+                dispatch({
+                    type: ALL_INGREDIENTS_SUCCESS,
+                    products: ingredients.data
+                })
+
+            }
+            else dispatch({
+                type:ALL_INGREDIENTS_FAILED
+            })
+
+        } catch (err) {
+
+             dispatch({
+                type:ALL_INGREDIENTS_FAILED
+            })
 
         }
-
-    } catch (err) {
-
-        return false
-
     }
+
 };
 
 
