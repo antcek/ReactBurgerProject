@@ -13,7 +13,7 @@ const initialState = {
 
 }
 
-export const getProducts = (state = [initialState], action) => {
+export const getProducts = (state = initialState, action) => {
 
   switch (action.type) {
 
@@ -21,15 +21,17 @@ export const getProducts = (state = [initialState], action) => {
       return {
         ...state,
         productsRequest: true,
-        productsFailed,
+
       }
-    };
+    }
 
     case ALL_INGREDIENTS_SUCCESS: {
+
       return {
         ...state,
-        productsRequst: false,
-        products
+        productsRequest: false,
+        products: action.products
+
       }
     }
 
@@ -38,13 +40,11 @@ export const getProducts = (state = [initialState], action) => {
       return {
         ...state,
         productsRequest: false,
-        productsFailed:true,
+        productsFailed: true,
       };
     }
 
-
-
-        default: {
+    default: {
       return state
     }
 

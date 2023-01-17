@@ -6,7 +6,7 @@ import {
 
 
 
-export async function getIngredients() {
+export function getIngredients() {
 
     return async function (dispatch) {
 
@@ -21,7 +21,7 @@ export async function getIngredients() {
 
             if (response && response.ok) {
                 const ingredients = await response.json();
-                console.log(ingredients)
+
                 dispatch({
                     type: ALL_INGREDIENTS_SUCCESS,
                     products: ingredients.data
@@ -29,13 +29,13 @@ export async function getIngredients() {
 
             }
             else dispatch({
-                type:ALL_INGREDIENTS_FAILED
+                type: ALL_INGREDIENTS_FAILED
             })
 
         } catch (err) {
 
-             dispatch({
-                type:ALL_INGREDIENTS_FAILED
+            dispatch({
+                type: ALL_INGREDIENTS_FAILED
             })
 
         }

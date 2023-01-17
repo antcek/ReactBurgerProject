@@ -1,10 +1,10 @@
-import {combineReducers} from 'redux';
-import {getProducts} from './app';
+import { combineReducers } from 'redux';
+import { getProducts } from './app';
 
 
 
-export const rootReducer = combineReducers ({
-   
+export const rootReducer = combineReducers({
+
     getProducts,
 
 })

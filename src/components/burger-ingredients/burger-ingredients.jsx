@@ -4,14 +4,14 @@ import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal.jsx';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { ProductsContext } from '../../utils/products-context.js';
-
+import { useDispatch, useSelector } from 'react-redux';
 
 function BurgerIngredients() {
 
-    const products = useContext(ProductsContext);
+    const products= useSelector((store) => store.getProducts.products);
 
     const [current, setCurrent] = React.useState('Булки');
+    
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState(null);
 
@@ -19,7 +19,7 @@ function BurgerIngredients() {
     const main = products.filter(ingredient => ingredient.type === 'main');
     const sauce = products.filter(ingredient => ingredient.type === 'sauce');
 
-    const categoryChange =  (value) => {
+    const categoryChange = (value) => {
 
         const ingredientsContainer = document.querySelector(`.${styles.container}`);
         const scrollBun = document.getElementById('bun').getBoundingClientRect().top;

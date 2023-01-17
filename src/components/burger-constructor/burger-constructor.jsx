@@ -4,14 +4,14 @@ import styles from './burger-constructor.module.css';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details.jsx';
 import Modal from '../modal/modal.jsx';
-import { ProductsContext } from '../../utils/products-context.js';
+import { useSelector, useDispatch } from 'react-redux';
 import { sendOrder } from '../../utils/burger-api.js';
 
 const initialPriceCount = { count: 0 };
 
 function BurgerConstructor() {
 
-    const products = useContext(ProductsContext);
+    const products = useSelector(store => store.getProducts.products);
 
     const [priceCount, priceCountDispatcher] = useReducer(reducer, initialPriceCount)
 

@@ -2,35 +2,25 @@ import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients.jsx';
 import BurgerConstructor from '../burger-constructor/burger-constructor.jsx';
 import styles from './app.module.css';
-import React, { useEffect, useState, } from 'react';
+import React, { useEffect} from 'react';
 import { getIngredients } from '../../utils/burger-api.js';
 import { useDispatch, useSelector } from 'react-redux';
+
 
 function App() {
 
     const dispatch = useDispatch();
-
-    const [error, setError] = useState(false);
-    const { products, productsRequest, productsFailed } = useSelector((store) => console.log(store.getProducts))
+    const { productsFailed } = useSelector((store) => store.getProducts.productsFailed)
 
     useEffect(() => {
-        // диспатчим getData в редьюсер с получением ингредиентов, в редьюсере возвращаем массив ингредиентов 
-        //в виде объекта. потом получаем с помощью useSelector и передаем в пропсы
-        //     const getData = async () => {
-        //  console.log( await  getIngredients())
-        //         const loadedProducts = await getIngredients();
 
-        //         setProducts(loadedProducts);
-        //         setError(loadedProducts === false)
-        //     }
-
-        dispatch(getIngredients)
+        dispatch(getIngredients())
 
     }, []);
 
     return (
         <>
-            {error ? <div className={styles.error}>
+            {productsFailed ? <div className={styles.error}>
                 Произошла ошибка, попробуйте перезагрузить страницу
             </div> :
 
@@ -38,7 +28,6 @@ function App() {
                     <AppHeader />
                     <main>
                         <div className={styles.sections}>
-
 
                             <BurgerIngredients />
                             <BurgerConstructor />
