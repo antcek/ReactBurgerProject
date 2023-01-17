@@ -1,11 +1,13 @@
-import React, { useState, useContext, useReducer, useEffect } from 'react';
-import { ConstructorElement, CurrencyIcon,DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useState, useReducer, useEffect } from 'react';
+import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details.jsx';
 import Modal from '../modal/modal.jsx';
 import { useSelector, useDispatch } from 'react-redux';
-import { sendOrder } from '../../utils/burger-api.js';
+import { sendOrder } from '../../utils/burger-api';
+
+
 
 const initialPriceCount = { count: 0 };
 
@@ -13,10 +15,11 @@ function BurgerConstructor() {
 
     const products = useSelector(store => store.getProducts.products);
 
-    const [priceCount, priceCountDispatcher] = useReducer(reducer, initialPriceCount)
+    const [priceCount, priceCountDispatcher] = useReducer(priceReducer, initialPriceCount)
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState(null);
+    //  const {modalVisible, modalContent} = useSelector((store) =>)
 
     const filterBun = products.filter((ingredient) => ingredient.type === "bun")[0];
 
@@ -30,12 +33,13 @@ function BurgerConstructor() {
 
     useEffect(() => {
 
-        priceCountDispatcher({ price: priceBun * 2 })
+        priceCountDispatcher({ price: priceBun * 2 });
+
 
     }, [priceBun])
 
 
-    function reducer(state, action) {
+    function priceReducer(state, action) {
 
         return { count: action.price }
     };
@@ -53,7 +57,7 @@ function BurgerConstructor() {
 
         else if (target.closest('button')) {
 
-            setModalContent(<OrderDetails sendOrder={sendOrder()} onCloseModal={onCloseModal} />);
+            setModalContent(<OrderDetails onCloseModal={onCloseModal} />);
             setModalVisible(true);
         }
 
@@ -72,6 +76,7 @@ function BurgerConstructor() {
 
             <div id={idBun} onClick={onOpenModal} className={styles.buns}>
                 <ConstructorElement
+
                     type="top"
                     isLocked={true}
                     text={`${nameBun} (верх)`}
@@ -81,7 +86,7 @@ function BurgerConstructor() {
             </div>
             <div className={styles.wrapper}>
 
-                 {/* {filteredIngredients.map((ingredient) => {
+                {/* {filteredIngredients.map((ingredient) => {
 
                     return ( <div className={styles.ingredientsContainer}>
                         
@@ -120,11 +125,11 @@ function BurgerConstructor() {
                         <CurrencyIcon type="primary" />
                     </div>
                 </div>
-                <div onClick={onOpenModal} >
-                    <Button onClick={sendOrder} htmlType="button" type="primary" size="large">
-                        Оформить заказ
-                    </Button>
-                </div>
+
+                <Button onClick={onOpenModal} htmlType="button" type="primary" size="large">
+                    Оформить заказ
+                </Button>
+
             </div>
             {modalVisible && <Modal onCloseModal={onCloseModal}>
                 {modalContent}

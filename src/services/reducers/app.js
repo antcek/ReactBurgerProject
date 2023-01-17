@@ -2,7 +2,7 @@ import {
   ALL_INGREDIENTS_REQUEST,
   ALL_INGREDIENTS_SUCCESS,
   ALL_INGREDIENTS_FAILED
-} from '../actions/app.jsx';
+} from '../actions/app';
 
 
 const initialState = {
@@ -13,7 +13,7 @@ const initialState = {
 
 }
 
-export const getProducts = (state = initialState, action) => {
+export const getProductsReducer = (state = initialState, action) => {
 
   switch (action.type) {
 

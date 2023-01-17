@@ -1,26 +1,27 @@
 import styles from './order-details.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { sendOrder } from '../../utils/burger-api';
 
-function OrderDetails({ onCloseModal, sendOrder }) {
+function OrderDetails({ onCloseModal }) {
 
-    const [orderNumber, setOrderNumber] = useState('');
-    const [orderError, setOrderError] = useState(false);
+    const dispatch = useDispatch();
 
-    sendOrder
-        .then(response => {
+    const { orderNumber } = useSelector(store => store.orderNumber);
+    const orderFailed = useSelector(store => store.orderFailed);
 
-            if (response === 'Ошибка') {
-                setOrderError(true)
-            }
+    useEffect(() => {
 
-            else setOrderNumber(response)
-        });
+        dispatch(sendOrder())
+
+    }, [dispatch])
+
 
 
     return (
-        orderError ? <>
+        orderFailed ? <>
             <div className={styles.error}>Произошла ошибка, попробуйте обновить заказ </div>
             <div onClick={onCloseModal} className={styles.close}>
                 <CloseIcon type="primary" />
@@ -30,7 +31,7 @@ function OrderDetails({ onCloseModal, sendOrder }) {
                 <div onClick={onCloseModal} className={styles.close}>
                     <CloseIcon type="primary" />
                 </div>
-                <p className="text text_type_digits-large pt-30">{orderNumber}</p>
+                <p className="text text_type_digits-large pt-30">{orderNumber === null ? null : orderNumber}</p>
                 <p className="text text_type_main-medium pt-8">идентификатор заказа</p>
                 <div className={styles.gif}>
                     <svg width="107" height="102" viewBox="0 0 107 102" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -65,7 +66,7 @@ function OrderDetails({ onCloseModal, sendOrder }) {
 
 OrderDetails.propTypes = {
     onCloseModal: PropTypes.func.isRequired,
-    sendOrder: PropTypes.instanceOf(Promise).isRequired
+
 }
 
 export default OrderDetails

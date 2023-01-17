@@ -6,6 +6,8 @@ import ingredientTypes from '../../prop-types/prop-types.jsx';
 
 function IngredientCard({ onOpenModal, category }) {
 
+
+
     return (
 
         category.map((product) => {

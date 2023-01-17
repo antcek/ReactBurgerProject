@@ -2,10 +2,22 @@ import styles from './ingredient-details.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import ingredientTypes from '../../prop-types/prop-types.jsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
 
 function IngredientDetails({ onCloseModal, currentTarget, products }) {
 
-    const filteredIngredients = products.filter((product) => product._id === currentTarget.getAttribute('id'))
+    const dispatch = useDispatch();
+
+    const targetProduct = products.find((product) => product._id === currentTarget.getAttribute('id'))
+
+    dispatch({
+        type: CURRENT_INGREDIENT_DETAILS,
+        product: targetProduct
+
+    });
+
+    const { name, calories, proteins, fat, carbohydrates, image_large, _id } = useSelector((store) => store.ingredientDetails.current);
 
     return (
         <div className={styles.details} >
@@ -18,53 +30,46 @@ function IngredientDetails({ onCloseModal, currentTarget, products }) {
                 </div>
             </div>
             <div>
-
-                {filteredIngredients.map((product) => {
-
-                    return (<div className={styles.body} key={product}>
-                        <img src={product.image_large} alt='ингредиент' />
-                        <p className="text text_type_main-medium mt-4 mb-8">
-                            {product.name}
-                        </p>
-                        <div className={styles.wrapperCalories}>
-                            <div className={styles.substances}>
-                                <p className="text text_type_main-default text_color_inactive">
-                                    Калории,ккал
-                                </p>
-                                <p className="text text_type_digits-default text_color_inactive ">
-                                    {product.calories}
-                                </p>
-                            </div>
-                            <div className={styles.substances}>
-                                <p className="text text_type_main-default text_color_inactive">
-                                    Белки, г
-                                </p>
-                                <p className="text text_type_digits-default text_color_inactive ">
-                                    {product.proteins}
-                                </p>
-                            </div>
-                            <div className={styles.substances}>
-                                <p className="text text_type_main-default text_color_inactive">
-                                    Жиры, г
-                                </p>
-                                <p className="text text_type_digits-default text_color_inactive ">
-                                    {product.fat}
-                                </p>
-                            </div>
-                            <div className={styles.substances}>
-                                <p className="text text_type_main-default text_color_inactive">
-                                    Углеводы, г
-                                </p>
-                                <p className="text text_type_digits-default text_color_inactive ">
-                                    {product.carbohydrates}
-                                </p>
-                            </div>
+                <div className={styles.body} key={_id}>
+                    <img src={image_large} alt='ингредиент' />
+                    <p className="text text_type_main-medium mt-4 mb-8">
+                        {name}
+                    </p>
+                    <div className={styles.wrapperCalories}>
+                        <div className={styles.substances}>
+                            <p className="text text_type_main-default text_color_inactive">
+                                Калории,ккал
+                            </p>
+                            <p className="text text_type_digits-default text_color_inactive ">
+                                {calories}
+                            </p>
                         </div>
-                    </div>)
-
-
-                })}
-
+                        <div className={styles.substances}>
+                            <p className="text text_type_main-default text_color_inactive">
+                                Белки, г
+                            </p>
+                            <p className="text text_type_digits-default text_color_inactive ">
+                                {proteins}
+                            </p>
+                        </div>
+                        <div className={styles.substances}>
+                            <p className="text text_type_main-default text_color_inactive">
+                                Жиры, г
+                            </p>
+                            <p className="text text_type_digits-default text_color_inactive ">
+                                {fat}
+                            </p>
+                        </div>
+                        <div className={styles.substances}>
+                            <p className="text text_type_main-default text_color_inactive">
+                                Углеводы, г
+                            </p>
+                            <p className="text text_type_digits-default text_color_inactive ">
+                                {carbohydrates}
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>

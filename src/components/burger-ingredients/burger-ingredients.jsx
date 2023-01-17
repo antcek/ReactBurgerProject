@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 function BurgerIngredients() {
 
-    const products= useSelector((store) => store.getProducts.products);
+    const products = useSelector((store) => store.getProducts.products);
 
     const [current, setCurrent] = React.useState('Булки');
     
@@ -112,8 +112,7 @@ function BurgerIngredients() {
 }
 
 BurgerIngredients.propTypes = {
-    // products: PropTypes.arrayOf(PropTypes.shape(ingredientTypes)).isRequired,
-
+    
 }
 
 export default BurgerIngredients;

@@ -3,6 +3,7 @@ import {
     ALL_INGREDIENTS_REQUEST,
     ALL_INGREDIENTS_FAILED
 } from "../services/actions/app";
+import { ORDER_FAILED, ORDER_SUCCESS, ORDER_REQUEST } from "../services/actions/order-details";
 
 
 
@@ -44,35 +45,52 @@ export function getIngredients() {
 };
 
 
-export async function sendOrder() {
+export function sendOrder() {
 
+    return async function (dispatch) {
 
-    const constructorElem = document.getElementById('constructor');
-    const idNodeElements = constructorElem.querySelectorAll('[id]');
+        dispatch({
+            type: ORDER_REQUEST
+        });
 
-    const idConstructor = { ingredients: Array.from(idNodeElements).map(ingredient => ingredient.id) };
+        const constructorElem = document.getElementById('constructor');
+        const idNodeElements = constructorElem.querySelectorAll('[id]');
 
-    try {
+        const idConstructor = { ingredients: Array.from(idNodeElements).map(ingredient => ingredient.id) };
 
-        const response = await fetch('https://norma.nomoreparties.space/api/orders',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(idConstructor),
+        try {
+
+            const response = await fetch('https://norma.nomoreparties.space/api/orders',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(idConstructor),
+                });
+
+            if (response && response.ok) {
+
+                const result = await response.json();
+
+                dispatch({
+                    type: ORDER_SUCCESS,
+                    orderNumber: result.order.number
+                });
+
+            }
+            else {
+                dispatch({
+                    type: ORDER_FAILED
+                })
+            }
+        } catch (err) {
+
+            dispatch({
+                type: ORDER_FAILED
             })
-        if (response.ok) {
-
-            const result = await response.json();
-            return result.order.number;
-
-        };
-    } catch (err) {
-
-        return 'Ошибка'
+        }
     }
-
 }
 
 
