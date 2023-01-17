@@ -1,5 +1,5 @@
 import React, { useState, useContext, useReducer, useEffect } from 'react';
-import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, CurrencyIcon,DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details.jsx';
@@ -25,7 +25,7 @@ function BurgerConstructor() {
     const nameBun = filterBun ? filterBun.name : null;
     const priceBun = filterBun ? filterBun.price : null;
 
-    // const filteredIngredients = products.filter((ingredient) => ingredient.type === 'sauce' || ingredient.type === 'main');
+    //  const filteredIngredients = products.filter((ingredient) => ingredient.type === 'sauce' || ingredient.type === 'main');
 
 
     useEffect(() => {
@@ -81,11 +81,14 @@ function BurgerConstructor() {
             </div>
             <div className={styles.wrapper}>
 
-                {/* {filteredIngredients.map((ingredient) => {
+                 {/* {filteredIngredients.map((ingredient) => {
 
-                    return (
+                    return ( <div className={styles.ingredientsContainer}>
+                        
+                    <DragIcon />
+                    
                         <div id={ingredient._id} onClick={onOpenModal} key={ingredient._id} className={styles.main} >
-                            <DragIcon />
+                           
                             <ConstructorElement
                                 type={undefined}
                                 text={ingredient.name}
@@ -93,6 +96,7 @@ function BurgerConstructor() {
                                 thumbnail={ingredient.image}
 
                             />
+                        </div>
                         </div>
                     )
 
