@@ -3,8 +3,8 @@ import { CURRENT_INGREDIENT_DETAILS } from '../actions/ingredient-details';
 
 const initialState = {
 
-    current: [],
-  
+    current: null,
+    visible: false,
 }
 
 export const ingredientDetailsReducer = (state = initialState, action) => {
@@ -16,7 +16,7 @@ export const ingredientDetailsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 current: action.product,
-               
+               visible: action.visible,
             }
         }
         default: {

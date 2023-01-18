@@ -15,9 +15,11 @@ function BurgerIngredients() {
 
     const [current, setCurrent] = React.useState('Булки');
 
-    const [modalContent, setModalContent] = useState(null);
-    const [modalVisible, setModalVisible] = useState(false);
-
+    const modalVisible = useSelector(store => store.ingredientDetails.visible);
+   
+    // const [modalContent, setModalContent] = useState(null);
+    // const [modalVisible, setModalVisible] = useState(false);
+    const currentTarget = useSelector(store => store.ingredientDetails.current);
     const buns = products.filter(ingredient => ingredient.type === 'bun');
     const main = products.filter(ingredient => ingredient.type === 'main');
     const sauce = products.filter(ingredient => ingredient.type === 'sauce');
@@ -58,12 +60,9 @@ function BurgerIngredients() {
 
         dispatch({
             type: CURRENT_INGREDIENT_DETAILS,
-            product: targetProduct
+            product: targetProduct,
+            visible: true,
         })
-
-
-        setModalContent(<IngredientDetails currentTarget={currentTarget} products={products} onCloseModal={onCloseModal} />);
-        setModalVisible(true);
 
 
     };
@@ -73,10 +72,9 @@ function BurgerIngredients() {
 
         dispatch({
             type: CURRENT_INGREDIENT_DETAILS,
-            product: null
+            product: null,
+            visible: false,
         });
-
-        setModalVisible(false);
 
 
     };
@@ -125,7 +123,8 @@ function BurgerIngredients() {
             </div>
 
             {modalVisible && <Modal onCloseModal={onCloseModal}>
-                {modalContent}
+                {currentTarget ? <IngredientDetails  products={products} onCloseModal={onCloseModal} />
+                    : <></>}
             </Modal>}
         </section>
 

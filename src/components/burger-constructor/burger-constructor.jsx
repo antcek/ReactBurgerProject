@@ -17,10 +17,9 @@ function BurgerConstructor() {
     const dispatch = useDispatch();
     const [priceCount, priceCountDispatcher] = useReducer(priceReducer, initialPriceCount);
 
-    const [modalVisible, setModalVisible] = useState(false);
-    const [modalContent, setModalContent] = useState(null);
-
-
+    const currentIngredient = useSelector(store => store.ingredientDetails.current);
+    const modalVisible = useSelector(store => store.ingredientDetails.visible);
+    
     const filterBun = products.filter((ingredient) => ingredient.type === "bun")[0];
 
     const imgBun = filterBun ? filterBun.image : null;
@@ -47,38 +46,25 @@ function BurgerConstructor() {
 
     function onOpenModal(event) {
 
-        let target = event.target;
         let currentTarget = event.currentTarget;
         const targetProduct = products.find((product) => product._id === currentTarget.getAttribute('id'))
         dispatch({
             type: CURRENT_INGREDIENT_DETAILS,
-            product: targetProduct
+            product: targetProduct,
+            visible: true
         })
-
-        if (currentTarget.getAttribute('id')) {
-            setModalContent(<IngredientDetails currentTarget={currentTarget} products={products} onCloseModal={onCloseModal} />);
-            setModalVisible(true);
-        }
-
-        else if (target.closest('button')) {
-
-            setModalContent(<OrderDetails onCloseModal={onCloseModal} />);
-            setModalVisible(true);
-        }
 
     };
 
     function onCloseModal() {
         dispatch({
             type: CURRENT_INGREDIENT_DETAILS,
-            product: null
+            product: null,
+            visible: false
         })
 
-        setModalVisible(false)
 
     };
-
-
 
     return (
 
@@ -142,7 +128,9 @@ function BurgerConstructor() {
 
             </div>
             {modalVisible && <Modal onCloseModal={onCloseModal}>
-                {modalContent}
+                {currentIngredient ? <IngredientDetails  products={products} onCloseModal={onCloseModal} />
+                    : <OrderDetails onCloseModal={onCloseModal} />
+                }
             </Modal>}
         </section>
 

@@ -5,7 +5,7 @@ import ingredientTypes from '../../prop-types/prop-types.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 
 
-function IngredientDetails({ onCloseModal, currentTarget }) {
+function IngredientDetails({ onCloseModal,  }) {
 
     const dispatch = useDispatch();
 
