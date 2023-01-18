@@ -1,4 +1,4 @@
-import React, {  } from 'react';
+import React, { } from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -16,20 +16,21 @@ function BurgerIngredients() {
     const [current, setCurrent] = React.useState('Булки');
 
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
-   
-    // const [modalContent, setModalContent] = useState(null);
-    // const [modalVisible, setModalVisible] = useState(false);
+
     const currentTarget = useSelector(store => store.ingredientDetails.current);
     const buns = products.filter(ingredient => ingredient.type === 'bun');
     const main = products.filter(ingredient => ingredient.type === 'main');
     const sauce = products.filter(ingredient => ingredient.type === 'sauce');
 
-    const categoryChange = (value) => {
+    const ingredientsContainer = document.querySelector(`.${styles.container}`);
+    const scrollBun = document.getElementById('bun');
+    const scrollMain = document.getElementById('main');
+    const scrollSauce = document.getElementById('sauce');
+    
+   
+  
 
-        const ingredientsContainer = document.querySelector(`.${styles.container}`);
-        const scrollBun = document.getElementById('bun').getBoundingClientRect().top;
-        const scrollMain = document.getElementById('main').getBoundingClientRect().top;
-        const scrollSauce = document.getElementById('sauce').getBoundingClientRect().top;
+    const categoryChange = (value) => {
 
         setCurrent(value);
 
@@ -37,21 +38,38 @@ function BurgerIngredients() {
 
             if (value === 'Булки') {
 
-                return (scrollBun - ingredientsContainer.getBoundingClientRect().top)
+                return (scrollBun.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)
             }
 
             else if (value === 'Соусы') {
-                return (scrollSauce - ingredientsContainer.getBoundingClientRect().top)
+                return (scrollSauce.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)
             }
 
             else if (value === 'Начинки') {
-                return (scrollMain - ingredientsContainer.getBoundingClientRect().top)
+                return (scrollMain.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)
             }
         };
 
-        ingredientsContainer.scrollBy(0, scrollCategory())
+        ingredientsContainer.scrollBy(0, scrollCategory());
+
 
     };
+
+    const scrollNavigation = () => {
+        
+        if (Math.abs(scrollBun.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)
+        < Math.abs(scrollSauce.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)) {
+            setCurrent('Булки')
+        }
+
+        else setCurrent('Соусы');
+
+         if (Math.abs(scrollMain.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)
+         < Math.abs(scrollSauce.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)) {
+            setCurrent('Начинки');
+        };
+
+    }
 
     function onOpenModal(event) {
 
@@ -100,7 +118,7 @@ function BurgerIngredients() {
 
                 </div>
             </div>
-            <div className={styles.container} >
+            <div onScroll={scrollNavigation} className={styles.container} >
                 <p id="bun" className="text text_type_main-medium ">
                     Булки
                 </p>
@@ -123,7 +141,7 @@ function BurgerIngredients() {
             </div>
 
             {modalVisible && <Modal onCloseModal={onCloseModal}>
-                {currentTarget ? <IngredientDetails  products={products} onCloseModal={onCloseModal} />
+                {currentTarget ? <IngredientDetails products={products} onCloseModal={onCloseModal} />
                     : <></>}
             </Modal>}
         </section>
