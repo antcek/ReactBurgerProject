@@ -2,12 +2,10 @@ import styles from './ingredient-details.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import ingredientTypes from '../../prop-types/prop-types.jsx';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 
 function IngredientDetails({ onCloseModal,  }) {
-
-    const dispatch = useDispatch();
 
     const { name, calories, proteins, fat, carbohydrates, image_large, _id } = useSelector((store) => (store.ingredientDetails.current));
 
