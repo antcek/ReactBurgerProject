@@ -8,12 +8,9 @@ import { useSelector } from 'react-redux';
 
 function IngredientCard({ onOpenModal, product }) {
    
-    const products = useSelector(store => store.getProducts.products);
-   
-    const sortedIngredient = product ? product : null;
-
-    const itemId = ''
-    console.log(itemId)
+    // const products = useSelector(store => store.getProducts.products);
+    const itemId = product._id
+    
     const [{ isDrag }, dragRef] = useDrag({
         type: 'ingredients',
         item: { itemId },
@@ -26,7 +23,7 @@ function IngredientCard({ onOpenModal, product }) {
     return (
 
                 <div onClick={onOpenModal}
-                    id={sortedIngredient._id}
+                    id={product._id}
                     className={styles.card}
                     key={product._id}
                     ref={dragRef}>

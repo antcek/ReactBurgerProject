@@ -34,7 +34,7 @@ function BurgerConstructor({ dropHandler }) {
     const [, dropTarget] = useDrop({
         accept: 'ingredients',
         drop(itemId) {
-            
+
             dropHandler(itemId)
         }
     });
@@ -79,7 +79,7 @@ function BurgerConstructor({ dropHandler }) {
 
     return (
 
-        <section  ref={dropTarget} id='constructor' className={styles.constructor}>
+        <section ref={dropTarget} id='constructor' className={styles.constructor}>
 
             <div id={idBun} onClick={onOpenModal} className={styles.buns}>
                 <ConstructorElement
@@ -91,7 +91,7 @@ function BurgerConstructor({ dropHandler }) {
                     thumbnail={imgBun}
                 />
             </div>
-            <div  className={styles.wrapper}>
+            <div className={styles.wrapper}>
 
                 {constructorIngredient.map((ingredient) => {
 

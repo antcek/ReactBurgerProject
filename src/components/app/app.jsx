@@ -17,10 +17,12 @@ function App() {
     
     const dropHandler = (itemId) => {
         console.log(itemId)
-      console.log(products.filter(elem => elem._id === itemId))
+      
         dispatch({type:BURGER_CONSTRUCTOR_ELEMENT,
             
-            ingredient: products.filter(elem => elem._id === itemId)
+            ingredient: products.filter(elem => 
+                console.log(elem._id === itemId)
+           )
         })
     }
     

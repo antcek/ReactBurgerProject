@@ -32,7 +32,6 @@ function BurgerIngredients() {
     const scrollSauce = document.getElementById('sauce');
 
 
-
     const categoryChange = (value) => {
 
         setCurrent(value);
@@ -118,19 +117,19 @@ function BurgerIngredients() {
                 </p>
                 <div className={styles.wrapper}>
 
-                    {buns.map((product) => <IngredientCard product={product} onOpenModal={onOpenModal}  />)}
+                    {buns.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal}  />)}
                 </div>
                 <p id="sauce" className="text text_type_main-medium mt-10">
                     Соусы
                 </p>
                 <div className={styles.wrapper} >
-                    <IngredientCard onOpenModal={onOpenModal} category={sauce} />
+                {sauce.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal}  />)}
                 </div>
                 <p id="main" className="text text_type_main-medium mt-10">
                     Начинки
                 </p>
                 <div className={styles.wrapper}>
-                    <IngredientCard onOpenModal={onOpenModal} category={main} />
+                {main.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal}  />)}
                 </div>
 
             </div>
