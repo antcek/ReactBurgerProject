@@ -15,3 +15,8 @@
     gap: 8px;
     justify-content: center;
 }
+
+.dragging {
+
+    transition: all 400ms ease-in-out;
+}

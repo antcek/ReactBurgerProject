@@ -5,7 +5,10 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal.jsx';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useDispatch, useSelector } from 'react-redux';
-import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details'
+import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useDrag } from 'react-dnd/dist/hooks';
 
 function BurgerIngredients() {
 
@@ -18,6 +21,7 @@ function BurgerIngredients() {
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
 
     const currentTarget = useSelector(store => store.ingredientDetails.current);
+
     const buns = products.filter(ingredient => ingredient.type === 'bun');
     const main = products.filter(ingredient => ingredient.type === 'main');
     const sauce = products.filter(ingredient => ingredient.type === 'sauce');
@@ -26,9 +30,8 @@ function BurgerIngredients() {
     const scrollBun = document.getElementById('bun');
     const scrollMain = document.getElementById('main');
     const scrollSauce = document.getElementById('sauce');
-    
-   
-  
+
+
 
     const categoryChange = (value) => {
 
@@ -37,7 +40,6 @@ function BurgerIngredients() {
         const scrollCategory = () => {
 
             if (value === 'Булки') {
-
                 return (scrollBun.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)
             }
 
@@ -49,23 +51,20 @@ function BurgerIngredients() {
                 return (scrollMain.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)
             }
         };
-
         ingredientsContainer.scrollBy(0, scrollCategory());
-
-
     };
 
     const scrollNavigation = () => {
-        
+
         if (Math.abs(scrollBun.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)
-        < Math.abs(scrollSauce.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)) {
-            setCurrent('Булки')
+            < Math.abs(scrollSauce.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)) {
+            setCurrent('Булки');
         }
 
         else setCurrent('Соусы');
 
-         if (Math.abs(scrollMain.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)
-         < Math.abs(scrollSauce.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)) {
+        if (Math.abs(scrollMain.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)
+            < Math.abs(scrollSauce.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)) {
             setCurrent('Начинки');
         };
 
@@ -82,20 +81,17 @@ function BurgerIngredients() {
             visible: true,
         })
 
-
     };
 
     function onCloseModal() {
-
 
         dispatch({
             type: CURRENT_INGREDIENT_DETAILS,
             product: null,
             visible: false,
         });
-
-
     };
+
 
     return (
         <section className={styles.ingredients} >
@@ -103,9 +99,7 @@ function BurgerIngredients() {
                 Соберите бургер
             </h1 >
             <div className={styles.tabs} >
-
                 <div style={{ display: 'flex' }}>
-
                     <Tab value="Булки" active={current === 'Булки'} onClick={categoryChange}>
                         Булки
                     </Tab>
@@ -115,16 +109,16 @@ function BurgerIngredients() {
                     <Tab value="Начинки" active={current === 'Начинки'} onClick={categoryChange}>
                         Начинки
                     </Tab>
-
                 </div>
             </div>
+
             <div onScroll={scrollNavigation} className={styles.container} >
                 <p id="bun" className="text text_type_main-medium ">
                     Булки
                 </p>
                 <div className={styles.wrapper}>
 
-                    <IngredientCard onOpenModal={onOpenModal} category={buns} />
+                    {buns.map((product) => <IngredientCard product={product} onOpenModal={onOpenModal}  />)}
                 </div>
                 <p id="sauce" className="text text_type_main-medium mt-10">
                     Соусы
@@ -138,6 +132,7 @@ function BurgerIngredients() {
                 <div className={styles.wrapper}>
                     <IngredientCard onOpenModal={onOpenModal} category={main} />
                 </div>
+
             </div>
 
             {modalVisible && <Modal onCloseModal={onCloseModal}>

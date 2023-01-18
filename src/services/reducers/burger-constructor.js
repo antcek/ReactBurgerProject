@@ -16,5 +16,9 @@ export const burgerConstructorReducer = (state = initialState, action) => {
                ingredient: action.ingredient
             }
         }
+
+        default: {
+            return state
+        }
     }
 }

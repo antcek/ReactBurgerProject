@@ -5,13 +5,16 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details.jsx';
 import Modal from '../modal/modal.jsx';
 import { useSelector, useDispatch } from 'react-redux';
-
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
+import { DndProvider } from 'react-dnd/dist/core';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useDrop } from 'react-dnd';
+import { BURGER_CONSTRUCTOR_ELEMENT } from '../../services/actions/burger-constructor';
 
 
 const initialPriceCount = { count: 0 };
 
-function BurgerConstructor() {
+function BurgerConstructor({ dropHandler }) {
 
     const products = useSelector(store => store.getProducts.products);
     const dispatch = useDispatch();
@@ -19,16 +22,24 @@ function BurgerConstructor() {
 
     const currentIngredient = useSelector(store => store.ingredientDetails.current);
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
-    
-    const filterBun = products.filter((ingredient) => ingredient.type === "bun")[0];
+
+    const filterBun = products.filter((ingredient) => ingredient.type === "bun")[1];
 
     const imgBun = filterBun ? filterBun.image : null;
     const idBun = filterBun ? filterBun._id : null;
     const nameBun = filterBun ? filterBun.name : null;
     const priceBun = filterBun ? filterBun.price : null;
 
-    //  const filteredIngredients = products.filter((ingredient) => ingredient.type === 'sauce' || ingredient.type === 'main');
+    const constructorIngredient = useSelector(store => store.burgerConstructor.ingredient)
+    const [, dropTarget] = useDrop({
+        accept: 'ingredients',
+        drop(itemId) {
+            
+            dropHandler(itemId)
+        }
+    });
 
+    //  const filteredIngredients = products.filter((ingredient) => ingredient.type === 'sauce' || ingredient.type === 'main');
 
     useEffect(() => {
 
@@ -68,7 +79,7 @@ function BurgerConstructor() {
 
     return (
 
-        <section id='constructor' className={styles.constructor}>
+        <section  ref={dropTarget} id='constructor' className={styles.constructor}>
 
             <div id={idBun} onClick={onOpenModal} className={styles.buns}>
                 <ConstructorElement
@@ -80,16 +91,16 @@ function BurgerConstructor() {
                     thumbnail={imgBun}
                 />
             </div>
-            <div className={styles.wrapper}>
+            <div  className={styles.wrapper}>
 
-                {/* {filteredIngredients.map((ingredient) => {
+                {constructorIngredient.map((ingredient) => {
 
-                    return ( <div className={styles.ingredientsContainer}>
-                        
-                    <DragIcon />
-                    
+                    return (<div className={styles.ingredientsContainer}>
+
+                        <DragIcon />
+
                         <div id={ingredient._id} onClick={onOpenModal} key={ingredient._id} className={styles.main} >
-                           
+
                             <ConstructorElement
                                 type={undefined}
                                 text={ingredient.name}
@@ -98,11 +109,11 @@ function BurgerConstructor() {
 
                             />
                         </div>
-                        </div>
+                    </div>
                     )
 
                 })
-                } */}
+                }
 
             </div>
             <div id={idBun} onClick={onOpenModal} className={styles.buns}>
@@ -128,10 +139,11 @@ function BurgerConstructor() {
 
             </div>
             {modalVisible && <Modal onCloseModal={onCloseModal}>
-                {currentIngredient ? <IngredientDetails  products={products} onCloseModal={onCloseModal} />
+                {currentIngredient ? <IngredientDetails products={products} onCloseModal={onCloseModal} />
                     : <OrderDetails onCloseModal={onCloseModal} />
                 }
             </Modal>}
+
         </section>
 
     )
