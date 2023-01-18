@@ -6,7 +6,7 @@ import OrderDetails from '../order-details/order-details.jsx';
 import Modal from '../modal/modal.jsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendOrder } from '../../utils/burger-api';
-
+import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
 
 
 const initialPriceCount = { count: 0 };
@@ -14,12 +14,12 @@ const initialPriceCount = { count: 0 };
 function BurgerConstructor() {
 
     const products = useSelector(store => store.getProducts.products);
-
-    const [priceCount, priceCountDispatcher] = useReducer(priceReducer, initialPriceCount)
+    const dispatch = useDispatch();
+    const [priceCount, priceCountDispatcher] = useReducer(priceReducer, initialPriceCount);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState(null);
-    //  const {modalVisible, modalContent} = useSelector((store) =>)
+
 
     const filterBun = products.filter((ingredient) => ingredient.type === "bun")[0];
 
@@ -46,11 +46,16 @@ function BurgerConstructor() {
 
 
     function onOpenModal(event) {
+
         let target = event.target;
         let currentTarget = event.currentTarget;
+        const targetProduct = products.find((product) => product._id === currentTarget.getAttribute('id'))
+        dispatch({
+            type: CURRENT_INGREDIENT_DETAILS,
+            product: targetProduct
+        })
 
         if (currentTarget.getAttribute('id')) {
-
             setModalContent(<IngredientDetails currentTarget={currentTarget} products={products} onCloseModal={onCloseModal} />);
             setModalVisible(true);
         }
@@ -64,8 +69,13 @@ function BurgerConstructor() {
     };
 
     function onCloseModal() {
+        dispatch({
+            type: CURRENT_INGREDIENT_DETAILS,
+            product: null
+        })
 
         setModalVisible(false)
+
     };
 
 

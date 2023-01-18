@@ -3,21 +3,13 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import ingredientTypes from '../../prop-types/prop-types.jsx';
 import { useDispatch, useSelector } from 'react-redux';
-import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
 
-function IngredientDetails({ onCloseModal, currentTarget, products }) {
+
+function IngredientDetails({ onCloseModal, currentTarget }) {
 
     const dispatch = useDispatch();
 
-    const targetProduct = products.find((product) => product._id === currentTarget.getAttribute('id'))
-
-    dispatch({
-        type: CURRENT_INGREDIENT_DETAILS,
-        product: targetProduct
-
-    });
-
-    const { name, calories, proteins, fat, carbohydrates, image_large, _id } = useSelector((store) => store.ingredientDetails.current);
+    const { name, calories, proteins, fat, carbohydrates, image_large, _id } = useSelector((store) => (store.ingredientDetails.current));
 
     return (
         <div className={styles.details} >

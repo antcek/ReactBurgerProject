@@ -5,6 +5,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendOrder } from '../../utils/burger-api';
 
+
+
 function OrderDetails({ onCloseModal }) {
 
     const dispatch = useDispatch();
@@ -14,9 +16,11 @@ function OrderDetails({ onCloseModal }) {
 
     useEffect(() => {
 
-        dispatch(sendOrder())
+        dispatch(sendOrder());
+
 
     }, [dispatch])
+
 
 
 

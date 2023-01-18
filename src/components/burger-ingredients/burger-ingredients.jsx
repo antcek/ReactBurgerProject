@@ -5,15 +5,18 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal.jsx';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useDispatch, useSelector } from 'react-redux';
+import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details'
 
 function BurgerIngredients() {
+
+    const dispatch = useDispatch();
 
     const products = useSelector((store) => store.getProducts.products);
 
     const [current, setCurrent] = React.useState('Булки');
-    
-    const [modalVisible, setModalVisible] = useState(false);
+
     const [modalContent, setModalContent] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
 
     const buns = products.filter(ingredient => ingredient.type === 'bun');
     const main = products.filter(ingredient => ingredient.type === 'main');
@@ -50,14 +53,32 @@ function BurgerIngredients() {
 
     function onOpenModal(event) {
 
-        let currentTarget = event.currentTarget;
+        const currentTarget = event.currentTarget;
+        const targetProduct = products.find((product) => product._id === currentTarget.getAttribute('id'))
+
+        dispatch({
+            type: CURRENT_INGREDIENT_DETAILS,
+            product: targetProduct
+        })
+
 
         setModalContent(<IngredientDetails currentTarget={currentTarget} products={products} onCloseModal={onCloseModal} />);
-        setModalVisible(true)
+        setModalVisible(true);
+
+
     };
 
     function onCloseModal() {
-        setModalVisible(false)
+
+
+        dispatch({
+            type: CURRENT_INGREDIENT_DETAILS,
+            product: null
+        });
+
+        setModalVisible(false);
+
+
     };
 
     return (
@@ -112,7 +133,7 @@ function BurgerIngredients() {
 }
 
 BurgerIngredients.propTypes = {
-    
+
 }
 
 export default BurgerIngredients;
