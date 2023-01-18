@@ -2,7 +2,9 @@ import { BURGER_CONSTRUCTOR_ELEMENT } from "../actions/burger-constructor";
 
 const initialState = {
 
-    ingredient: []
+    ingredient: [],
+    container: ['ingredient', 'buns']
+
 }
 
 export const burgerConstructorReducer = (state = initialState, action) => {

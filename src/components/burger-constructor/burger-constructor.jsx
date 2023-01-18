@@ -6,10 +6,7 @@ import OrderDetails from '../order-details/order-details.jsx';
 import Modal from '../modal/modal.jsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
-import { DndProvider } from 'react-dnd/dist/core';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useDrop } from 'react-dnd';
-import { BURGER_CONSTRUCTOR_ELEMENT } from '../../services/actions/burger-constructor';
 
 
 const initialPriceCount = { count: 0 };
@@ -31,6 +28,7 @@ function BurgerConstructor({ dropHandler }) {
     const priceBun = filterBun ? filterBun.price : null;
 
     const constructorIngredient = useSelector(store => store.burgerConstructor.ingredient)
+    console.log(constructorIngredient.length === 0)
     const [, dropTarget] = useDrop({
         accept: 'ingredients',
         drop(itemId) {
@@ -93,7 +91,9 @@ function BurgerConstructor({ dropHandler }) {
             </div>
             <div className={styles.wrapper}>
 
-                {constructorIngredient.map((ingredient) => {
+                {constructorIngredient.length === 0 ? 'сюда ингредиенты'
+
+                    : {/* {constructorIngredient.map((ingredient) => {
 
                     return (<div className={styles.ingredientsContainer}>
 
@@ -113,7 +113,8 @@ function BurgerConstructor({ dropHandler }) {
                     )
 
                 })
-                }
+                } */}}
+
 
             </div>
             <div id={idBun} onClick={onOpenModal} className={styles.buns}>

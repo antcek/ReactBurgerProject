@@ -13,21 +13,20 @@ function App() {
 
     const dispatch = useDispatch();
     const { productsFailed } = useSelector((store) => store.getProducts.productsFailed);
-    const products = useSelector((store) => store.getProducts.products)
-    
+    const products = useSelector((store) => store.getProducts.products);
+
+
     const dropHandler = (itemId) => {
-        console.log(itemId)
-      
-        dispatch({type:BURGER_CONSTRUCTOR_ELEMENT,
-            
-            ingredient: products.filter(elem => 
-                console.log(elem._id === itemId)
-           )
+
+
+        dispatch({
+            type: BURGER_CONSTRUCTOR_ELEMENT,
+
+            ingredient: products.filter((elem) =>
+                (elem._id === itemId)
+            )
         })
     }
-    
-    
-
 
     useEffect(() => {
 
