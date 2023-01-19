@@ -1,4 +1,4 @@
-import React, { } from 'react';
+import React, { useEffect } from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -9,6 +9,7 @@ import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-de
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useDrag } from 'react-dnd/dist/hooks';
+import { SET_CONSTRUCTOR_ELEMENT } from '../../services/actions/burger-constructor';
 
 
 function BurgerIngredients() {
@@ -32,7 +33,7 @@ function BurgerIngredients() {
     const scrollMain = document.getElementById('main');
     const scrollSauce = document.getElementById('sauce');
 
-    
+   
 
 
     const categoryChange = (value) => {

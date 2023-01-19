@@ -21,9 +21,11 @@ function BurgerConstructor({ }) {
     useEffect(() => {
         dispatch({
             type: SET_CONSTRUCTOR_ELEMENT,
-            ingredient: products
+            ingredients: products,
+            container: null
+            
         })
-    }, [products])
+    },[products])
 
     const currentIngredient = useSelector(store => store.ingredientDetails.current);
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
@@ -35,12 +37,12 @@ function BurgerConstructor({ }) {
     // const nameBun = filterBun ? filterBun.name : null;
     // const priceBun = filterBun ? filterBun.price : null;
 
-    const constructorIngredient = useSelector(store => store.burgerConstructor.ingredient);
+    const constructorIngredient = useSelector(store => store.burgerConstructor.ingredients);
     // const bunId = constructorIngredient._id
-
-    const draggedConstructorIngredient = constructorIngredient.filter(ingredient => ingredient.container === 'ingredient');
-
-    console.log(draggedConstructorIngredient)
+    console.log(constructorIngredient)
+       const draggedConstructorIngredient = constructorIngredient.filter(item => item.container );
+console.log(draggedConstructorIngredient)
+     // сделать так что б в конструкторе всегда были ингредиенты
 
     const [, dropBun] = useDrop({
         accept: 'buns',
@@ -51,10 +53,11 @@ function BurgerConstructor({ }) {
                 id: itemId.itemId,
                 container: 'buns'
 
-            })
-
+            });
+            
         }
     });
+ 
 
     const [, dropIngredient] = useDrop({
         accept: 'ingredients',
@@ -62,26 +65,14 @@ function BurgerConstructor({ }) {
 
             dispatch({
                 type: BURGER_CONSTRUCTOR_ELEMENT,
-                ...itemId,
+                id: itemId.itemId,
                 container: 'ingredients'
             })
 
         }
     });
 
-    const [, dropSecondBun] = useDrop({
-        accept: 'buns',
-        drop(itemId) {
 
-            dispatch({
-                type: BURGER_CONSTRUCTOR_ELEMENT,
-                ...itemId,
-                container: 'buns'
-
-            })
-
-        }
-    });
 
     useEffect(() => {
 
@@ -124,7 +115,7 @@ function BurgerConstructor({ }) {
         <section ref={dropBun} id='constructor' className={styles.constructor}>
 
             <div onClick={onOpenModal} className={styles.buns}>
-                {draggedConstructorIngredient.length === 0 ?
+                {/* {draggedConstructorIngredient.length === 0 ?
                     <ConstructorElement
                         type='top'
 
@@ -139,11 +130,11 @@ function BurgerConstructor({ }) {
                         price={bun.price}
                         thumbnail={bun.image_large}
                     />)
-                }
+                } */}
             </div>
             <div ref={dropIngredient} className={styles.wrapper}>
 
-                {draggedConstructorIngredient.length === 0 ?
+                {/* {draggedConstructorIngredient.length === 0 ?
                     <div className={styles.emptyIngredient}>
                         <ConstructorElement
                             type={undefined}
@@ -169,13 +160,13 @@ function BurgerConstructor({ }) {
                         )
 
                     })
-                }
+                } */}
 
 
 
             </div>
-            <div ref={dropSecondBun} onClick={onOpenModal} className={styles.buns}>
-                {draggedConstructorIngredient.length === 0 ?
+            <div  onClick={onOpenModal} className={styles.buns}>
+                {/* {draggedConstructorIngredient.length === 0 ?
                     <ConstructorElement
                         type="bottom"
                         text={'перенесите сюда булку'}
@@ -188,7 +179,7 @@ function BurgerConstructor({ }) {
                         text={`${bun.name} (верх)`}
                         price={bun.price}
                         thumbnail={bun.image_large}
-                    />)}
+                    />)} */}
             </div>
             <div className={styles.order}>
                 <div className={styles.price}>

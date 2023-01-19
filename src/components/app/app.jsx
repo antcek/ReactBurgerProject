@@ -7,7 +7,7 @@ import { getIngredients } from '../../utils/burger-api.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { BURGER_CONSTRUCTOR_ELEMENT } from '../../services/actions/burger-constructor';
+import { BURGER_CONSTRUCTOR_ELEMENT, SET_CONSTRUCTOR_ELEMENT } from '../../services/actions/burger-constructor';
 
 function App() {
 
@@ -15,12 +15,13 @@ function App() {
     const { productsFailed } = useSelector((store) => store.getProducts.productsFailed);
     const products = useSelector((store) => store.getProducts.products);
 
-    
+
 
 
     useEffect(() => {
 
         dispatch(getIngredients())
+       
 
     }, [dispatch]);
 
