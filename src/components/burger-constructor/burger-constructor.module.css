@@ -51,6 +51,15 @@
     grid-template-columns: max-content auto;
 }
 
+.draggedBun {
+    border-style: dotted;
+    border-color: aqua;
+    height: 100px;
+    width:200px
+}
+
+.dragged
+
 .wrapper {
     display: grid;
     gap: 16px;

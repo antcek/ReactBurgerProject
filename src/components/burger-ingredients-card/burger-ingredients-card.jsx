@@ -11,7 +11,7 @@ function IngredientCard({ onOpenModal, product }) {
     // const products = useSelector(store => store.getProducts.products);
     const itemId = product._id;
     const productType = product.type === 'bun' ? 'buns' : 'ingredients';
-    console.log(product)
+    
     const [{ isDrag }, dragRef] = useDrag({
         
         type: productType,

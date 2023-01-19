@@ -2,10 +2,7 @@ import { BURGER_CONSTRUCTOR_ELEMENT, SET_CONSTRUCTOR_ELEMENT } from "../actions/
 
 const initialState = {
 
-    ingredient: {
-        
-     
-    },
+    ingredient: [],
     container: ''
 
 }
@@ -27,7 +24,7 @@ export const burgerConstructorReducer = (state = initialState, action) => {
         case BURGER_CONSTRUCTOR_ELEMENT: {
             return {
                 ...state,
-                ingredient: state.ingredient.filter(ingredient => ingredient._id === action.itemId ),
+                ingredient: state.ingredient.filter((elem) => elem._id === action._id ),
                 container: action.container
 
             };
