@@ -15,18 +15,8 @@ function App() {
     const { productsFailed } = useSelector((store) => store.getProducts.productsFailed);
     const products = useSelector((store) => store.getProducts.products);
 
+    
 
-    const dropHandler = (itemId) => {
-
-
-        dispatch({
-            type: BURGER_CONSTRUCTOR_ELEMENT,
-
-            ingredient: products.filter((elem) =>
-                (elem._id === itemId)
-            )
-        })
-    }
 
     useEffect(() => {
 
@@ -46,7 +36,7 @@ function App() {
                         <div className={styles.sections}>
                             <DndProvider backend={HTML5Backend}>
                                 <BurgerIngredients />
-                                <BurgerConstructor dropHandler={dropHandler} />
+                                <BurgerConstructor />
                             </DndProvider>
                         </div>
                     </main>

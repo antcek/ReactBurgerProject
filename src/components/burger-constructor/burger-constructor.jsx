@@ -7,15 +7,23 @@ import Modal from '../modal/modal.jsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
 import { useDrop } from 'react-dnd';
+import { BURGER_CONSTRUCTOR_ELEMENT, SET_CONSTRUCTOR_ELEMENT } from '../../services/actions/burger-constructor';
 
 
 const initialPriceCount = { count: 0 };
 
-function BurgerConstructor({ dropHandler }) {
+function BurgerConstructor({  }) {
 
     const products = useSelector(store => store.getProducts.products);
     const dispatch = useDispatch();
     const [priceCount, priceCountDispatcher] = useReducer(priceReducer, initialPriceCount);
+  
+    useEffect (() => { 
+        dispatch({
+            type: SET_CONSTRUCTOR_ELEMENT,
+            ingredient: products
+        })
+    },[products])
 
     const currentIngredient = useSelector(store => store.ingredientDetails.current);
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
@@ -28,15 +36,50 @@ function BurgerConstructor({ dropHandler }) {
     const priceBun = filterBun ? filterBun.price : null;
 
     const constructorIngredient = useSelector(store => store.burgerConstructor.ingredient)
-    console.log(constructorIngredient.length === 0)
-    const [, dropTarget] = useDrop({
-        accept: 'ingredients',
-        drop(itemId) {
+      console.log(constructorIngredient)
+   
+    
 
-            dropHandler(itemId)
+    const [, dropFirstBun] = useDrop({
+        accept: 'buns',
+        drop(itemId) {
+           
+          dispatch({
+            type: BURGER_CONSTRUCTOR_ELEMENT,
+            ...itemId,
+            container: 'buns'
+
+          })
+            
         }
     });
 
+    const [, dropIngredient] = useDrop({
+        accept: 'ingredients',
+        drop(itemId) {
+           
+          dispatch({
+            type: BURGER_CONSTRUCTOR_ELEMENT,
+            ...itemId,
+            container: 'ingredients'
+          })
+            
+        }
+    });
+
+    const [, dropSecondBun] = useDrop({
+        accept: 'buns',
+        drop(itemId) {
+            console.log(itemId)
+          dispatch({
+            type: BURGER_CONSTRUCTOR_ELEMENT,
+            ...itemId,
+            container: 'buns'
+
+          })
+            
+        }
+    });
     //  const filteredIngredients = products.filter((ingredient) => ingredient.type === 'sauce' || ingredient.type === 'main');
 
     useEffect(() => {
@@ -77,9 +120,9 @@ function BurgerConstructor({ dropHandler }) {
 
     return (
 
-        <section ref={dropTarget} id='constructor' className={styles.constructor}>
+        <section  id='constructor' className={styles.constructor}>
 
-            <div id={idBun} onClick={onOpenModal} className={styles.buns}>
+            <div ref={dropFirstBun} id={idBun} onClick={onOpenModal} className={styles.buns}>
                 <ConstructorElement
 
                     type="top"
@@ -89,11 +132,10 @@ function BurgerConstructor({ dropHandler }) {
                     thumbnail={imgBun}
                 />
             </div>
-            <div className={styles.wrapper}>
+            <div ref={dropIngredient} className={styles.wrapper}>
 
-                {constructorIngredient.length === 0 ? 'сюда ингредиенты'
-
-                    : {/* {constructorIngredient.map((ingredient) => {
+                 { 'СЮДА ИНГРЕДИЕНТЫ'
+                 /* {constructorIngredient.map((ingredient) => {
 
                     return (<div className={styles.ingredientsContainer}>
 
@@ -113,11 +155,11 @@ function BurgerConstructor({ dropHandler }) {
                     )
 
                 })
-                } */}}
+                } */}
 
 
             </div>
-            <div id={idBun} onClick={onOpenModal} className={styles.buns}>
+            <div ref={dropSecondBun}  id={idBun} onClick={onOpenModal} className={styles.buns}>
                 <ConstructorElement
                     type="bottom"
                     isLocked={true}

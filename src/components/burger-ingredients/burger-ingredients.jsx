@@ -10,6 +10,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useDrag } from 'react-dnd/dist/hooks';
 
+
 function BurgerIngredients() {
 
     const dispatch = useDispatch();
@@ -30,6 +31,8 @@ function BurgerIngredients() {
     const scrollBun = document.getElementById('bun');
     const scrollMain = document.getElementById('main');
     const scrollSauce = document.getElementById('sauce');
+
+    
 
 
     const categoryChange = (value) => {
@@ -53,7 +56,7 @@ function BurgerIngredients() {
         ingredientsContainer.scrollBy(0, scrollCategory());
     };
 
-    const scrollNavigation = () => {
+    const scrollNavigation =  () => {
 
         if (Math.abs(scrollBun.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)
             < Math.abs(scrollSauce.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)) {
