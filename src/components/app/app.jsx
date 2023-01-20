@@ -13,10 +13,7 @@ function App() {
 
     const dispatch = useDispatch();
     const { productsFailed } = useSelector((store) => store.getProducts.productsFailed);
-    const products = useSelector((store) => store.getProducts.products);
-
-
-
+   
 
     useEffect(() => {
 

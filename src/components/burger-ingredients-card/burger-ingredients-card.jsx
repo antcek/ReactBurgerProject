@@ -9,8 +9,9 @@ import { useSelector } from 'react-redux';
 function IngredientCard({ onOpenModal, product }) {
    
     // const products = useSelector(store => store.getProducts.products);
-    const itemId = product._id;
-    const productType = product.type === 'bun' ? 'buns' : 'ingredients';
+    const itemId = product; // объект продукта
+   
+    const productType = product.type === 'bun' ? 'bun' : 'ingredients';
     
     const [{ isDrag }, dragRef] = useDrag({
         

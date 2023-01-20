@@ -55,7 +55,6 @@ export function sendOrder() {
 
         const constructorElem = document.getElementById('constructor');
         const idNodeElements = constructorElem.querySelectorAll('[id]');
-
         const idConstructor = { ingredients: Array.from(idNodeElements).map(ingredient => ingredient.id) };
 
         try {
