@@ -23,26 +23,23 @@ function BurgerConstructor({ }) {
             type: SET_CONSTRUCTOR_ELEMENT,
             ingredients: products,
             container: null
-            
+
         })
-    },[products])
+    }, [products]);
 
     const currentIngredient = useSelector(store => store.ingredientDetails.current);
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
 
-    // const filterBun = products.filter((ingredient) => ingredient.type === "bun")[1];
-
-    // const imgBun = filterBun ? filterBun.image : null;
-    // const idBun = filterBun ? filterBun._id : null;
-    // const nameBun = filterBun ? filterBun.name : null;
-    // const priceBun = filterBun ? filterBun.price : null;
-
     const constructorIngredient = useSelector(store => store.burgerConstructor.ingredients);
-    // const bunId = constructorIngredient._id
+
+    const draggedConstructorIngredient = constructorIngredient.filter(item =>
+        (item.container === ('buns' || 'ingredients')));
+
+    const draggedBuns = constructorIngredient.filter(item => item.container === 'buns').slice(-1);
+    const draggedIngredients = constructorIngredient.filter(item => item.container === 'ingredients');
+
     console.log(constructorIngredient)
-       const draggedConstructorIngredient = constructorIngredient.filter(item => item.container );
-console.log(draggedConstructorIngredient)
-     // сделать так что б в конструкторе всегда были ингредиенты
+
 
     const [, dropBun] = useDrop({
         accept: 'buns',
@@ -54,10 +51,9 @@ console.log(draggedConstructorIngredient)
                 container: 'buns'
 
             });
-            
         }
     });
- 
+
 
     const [, dropIngredient] = useDrop({
         accept: 'ingredients',
@@ -67,12 +63,11 @@ console.log(draggedConstructorIngredient)
                 type: BURGER_CONSTRUCTOR_ELEMENT,
                 id: itemId.itemId,
                 container: 'ingredients'
-            })
+            });
+
 
         }
     });
-
-
 
     useEffect(() => {
 
@@ -86,7 +81,6 @@ console.log(draggedConstructorIngredient)
 
         return { count: action.price }
     };
-
 
     function onOpenModal(event) {
 
@@ -114,27 +108,33 @@ console.log(draggedConstructorIngredient)
 
         <section ref={dropBun} id='constructor' className={styles.constructor}>
 
-            <div onClick={onOpenModal} className={styles.buns}>
-                {/* {draggedConstructorIngredient.length === 0 ?
-                    <ConstructorElement
-                        type='top'
+            {draggedBuns.length === 0 ?
+                <ConstructorElement
+                    type='top'
+                    text={'перенесите сюда булку'} />
+                :
 
-                        text={'перенесите сюда булку'}
+                draggedBuns.filter(item => item.container === 'buns')
+                    .map((bun) =>
+                        <div id={bun._id} onClick={onOpenModal} className={styles.buns}>
+                            <ConstructorElement
 
-                    /> :
+                                style={{ pointerEvents: 'none' }}
+                                key={bun._id}
+                                type="top"
+                                isLocked={true}
+                                text={`${bun.name} (верх)`}
+                                price={bun.price}
+                                thumbnail={bun.image_large}
+                            />
+                        </div>
+                    )
+            }
 
-                    draggedConstructorIngredient.map(bun => <ConstructorElement
-                        type="top"
-                        isLocked={true}
-                        text={`${bun.name} (верх)`}
-                        price={bun.price}
-                        thumbnail={bun.image_large}
-                    />)
-                } */}
-            </div>
             <div ref={dropIngredient} className={styles.wrapper}>
 
-                {/* {draggedConstructorIngredient.length === 0 ?
+
+                {draggedIngredients.length === 0 ?
                     <div className={styles.emptyIngredient}>
                         <ConstructorElement
                             type={undefined}
@@ -142,45 +142,42 @@ console.log(draggedConstructorIngredient)
 
                         /> </div> :
 
-                    draggedConstructorIngredient.map((ingredient) => {
+                    draggedIngredients.filter(item => item.container === 'ingredients')
+                        .map((ingredient, index) =>
 
-                        return (<div className={styles.ingredientsContainer}>
-
+                        (<div key={index} className={styles.ingredientsContainer}>
                             <DragIcon />
-                            <div id={ingredient._id} onClick={onOpenModal} key={ingredient._id} className={styles.main}>
+                            <div id={ingredient._id} onClick={onOpenModal} className={styles.main}>
                                 <ConstructorElement
                                     type={undefined}
                                     text={ingredient.name}
                                     price={ingredient.price}
                                     thumbnail={ingredient.image}
-
                                 />
                             </div>
                         </div>
-                        )
-
-                    })
-                } */}
-
-
-
+                        ))
+                }
             </div>
-            <div  onClick={onOpenModal} className={styles.buns}>
-                {/* {draggedConstructorIngredient.length === 0 ?
-                    <ConstructorElement
-                        type="bottom"
-                        text={'перенесите сюда булку'}
-                    /> :
 
-                    draggedConstructorIngredient.map(bun => <ConstructorElement
+            {draggedBuns.length === 0 ?
+                <ConstructorElement
+                    type="bottom"
+                    text={'перенесите сюда булку'}
+                /> :
+                draggedBuns.filter(item => item.container === 'buns')
+                    .map(bun =>
+                        <div id={bun._id} onClick={onOpenModal} className={styles.buns}>
+                            <ConstructorElement
+                                key={bun._id}
+                                type="bottom"
+                                isLocked={true}
+                                text={`${bun.name} (низ)`}
+                                price={bun.price}
+                                thumbnail={bun.image_large}
+                            />
+                        </div>)}
 
-                        type="bottom"
-                        isLocked={true}
-                        text={`${bun.name} (верх)`}
-                        price={bun.price}
-                        thumbnail={bun.image_large}
-                    />)} */}
-            </div>
             <div className={styles.order}>
                 <div className={styles.price}>
                     <p className="text text_type_digits-medium">{priceCount.count}</p>
