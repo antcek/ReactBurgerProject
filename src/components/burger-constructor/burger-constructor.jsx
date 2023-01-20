@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
 import { useDrop } from 'react-dnd';
 import { SET_CONSTRUCTOR_BUN, SET_CONSTRUCTOR_INGREDIENT, DELETE_CONSTRUCTOR_INGREDIENT } from '../../services/actions/burger-constructor';
+import { isJSDocOverrideTag } from 'typescript';
 
 
 const initialPriceCount = { count: 0 };
@@ -30,9 +31,11 @@ function BurgerConstructor() {
     const draggedIngredients = constructorIngredients.filter(ing => ing.type === 'main' || ing.type === 'sauce');
     const draggedIngredientsPrice = draggedIngredients.reduce((accum, curr) => accum + curr.price, 0);
 
-    const [, dropBun] = useDrop({
+    const [{BunIsHover}, dropBun] = useDrop({
         accept: 'bun',
-      
+         collect: monitor =>({
+            BunIsHover: monitor.isOver()
+         }),
         drop(itemId) {
 
             dispatch({
@@ -44,8 +47,11 @@ function BurgerConstructor() {
     });
     
      
-    const [, dropIngredient] = useDrop({
+    const [{IngIsHover}, dropIngredient] = useDrop({
         accept: 'ingredients',
+        collect: monitor =>({
+            IngIsHover: monitor.isOver()
+          }),
         drop(itemId) {
             
             if (draggedBuns.length !== 0) {
@@ -55,8 +61,12 @@ function BurgerConstructor() {
                     ingredients: [itemId]
                 });
             }
+           
         }
     });
+
+    const bunHovered = BunIsHover ? {borderStyle: 'dashed', borderColor: 'aliceblue'} : null;
+    const ingredientHovered = IngIsHover ? {borderStyle: 'dashed', borderColor: 'aliceblue'} : null;
 
     useEffect(() => {
 
@@ -99,7 +109,7 @@ function BurgerConstructor() {
         <section ref={dropBun} id='constructor' className={styles.constructor}>
             <div ref={dropIngredient} >
                 {draggedBuns.length === 0 ?
-                    <div className={styles.selectTopBun}>
+                    <div style={bunHovered} className={styles.selectTopBun}>
                         Перенесите сюда булку
                     </div>
                     : draggedBuns.map((bun) =>
@@ -120,8 +130,8 @@ function BurgerConstructor() {
 
                     {draggedIngredients.length === 0 ? <div className={styles.ingredientsContainer}>
                         <DragIcon />
-                        <div className={styles.selectMiddleIngredient}>
-                            Перенесите сюда ингредиент
+                        <div style={ingredientHovered} className={styles.selectMiddleIngredient}>
+                            Перенесите ингредиент
                         </div> </div> :
 
                         draggedIngredients.map((ingredient, index) =>
@@ -149,7 +159,7 @@ function BurgerConstructor() {
                 </div>
 
                 {draggedBuns.length === 0 ?
-                    <div className={styles.selectBotBun}>
+                    <div style={bunHovered} className={styles.selectBotBun}>
                         Перенесите сюда булку
                     </div>
                     :
