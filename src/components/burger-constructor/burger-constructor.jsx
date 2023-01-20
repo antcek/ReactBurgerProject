@@ -30,11 +30,9 @@ function BurgerConstructor() {
     const draggedIngredients = constructorIngredients.filter(ing => ing.type === 'main' || ing.type === 'sauce');
     const draggedIngredientsPrice = draggedIngredients.reduce((accum, curr) => accum + curr.price, 0);
 
-    const [{isHover}, dropBun] = useDrop({
+    const [, dropBun] = useDrop({
         accept: 'bun',
-        collect: monitor => ({
-            isHover: monitor.isOver()
-        }),
+      
         drop(itemId) {
 
             dispatch({
@@ -51,7 +49,6 @@ function BurgerConstructor() {
         drop(itemId) {
             
             if (draggedBuns.length !== 0) {
-  
                 dispatch({
                     type: SET_CONSTRUCTOR_INGREDIENT,
                     id: itemId.itemId,
