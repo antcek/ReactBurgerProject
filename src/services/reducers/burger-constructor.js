@@ -26,7 +26,7 @@ export const burgerConstructorReducer = (state = initialState, action) => {
                 ...state,
 
                 ingredients: [...state.ingredients, {
-                    ...state.ingredients.find(elem => elem._id === action.id),
+                    ...state.ingredients.find((elem) => (elem._id === action.id) ),
                     container: action.container
                 }]
 

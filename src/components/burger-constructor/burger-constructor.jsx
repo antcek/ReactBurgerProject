@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import IngredientDetails from '../ingredient-details/ingredient-details';
@@ -17,6 +17,7 @@ function BurgerConstructor({ }) {
     const products = useSelector(store => store.getProducts.products);
     const dispatch = useDispatch();
     const [priceCount, priceCountDispatcher] = useReducer(priceReducer, initialPriceCount);
+    const [visibleIng, setVisible] = useState(true);
 
     useEffect(() => {
         dispatch({
@@ -29,11 +30,8 @@ function BurgerConstructor({ }) {
 
     const currentIngredient = useSelector(store => store.ingredientDetails.current);
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
-
+    console.log(currentIngredient)
     const constructorIngredient = useSelector(store => store.burgerConstructor.ingredients);
-
-    const draggedConstructorIngredient = constructorIngredient.filter(item =>
-        (item.container === ('buns' || 'ingredients')));
 
     const draggedBuns = constructorIngredient.filter(item => item.container === 'buns').slice(-1);
     const draggedIngredients = constructorIngredient.filter(item => item.container === 'ingredients');
@@ -48,7 +46,7 @@ function BurgerConstructor({ }) {
             dispatch({
                 type: BURGER_CONSTRUCTOR_ELEMENT,
                 id: itemId.itemId,
-                container: 'buns'
+                container: 'buns',
 
             });
         }
@@ -58,12 +56,13 @@ function BurgerConstructor({ }) {
     const [, dropIngredient] = useDrop({
         accept: 'ingredients',
         drop(itemId) {
-          if (draggedBuns.length !== 0) 
-           { return dispatch({
-                type: BURGER_CONSTRUCTOR_ELEMENT,
-                id: itemId.itemId,
-                container: 'ingredients'
-            });}
+            if (draggedBuns.length !== 0) {
+                return dispatch({
+                    type: BURGER_CONSTRUCTOR_ELEMENT,
+                    id: itemId.itemId,
+                    container: 'ingredients'
+                });
+            }
 
 
         }
@@ -86,6 +85,7 @@ function BurgerConstructor({ }) {
 
         let currentTarget = event.currentTarget;
         const targetProduct = products.find((product) => product._id === currentTarget.getAttribute('id'))
+
         dispatch({
             type: CURRENT_INGREDIENT_DETAILS,
             product: targetProduct,
@@ -104,15 +104,17 @@ function BurgerConstructor({ }) {
 
     };
 
+    console.log(draggedIngredients)
+
     return (
 
         <section ref={dropBun} id='constructor' className={styles.constructor}>
 
             {draggedBuns.length === 0 ?
-              
-               <div className={styles.selectTopBun}>
-               Перенесите сюда булку
-                    </div> 
+
+                <div className={styles.selectTopBun}>
+                    Перенесите сюда булку
+                </div>
                 :
 
                 draggedBuns.filter(item => item.container === 'buns')
@@ -120,8 +122,6 @@ function BurgerConstructor({ }) {
                         <div key={bun._id} id={bun._id} onClick={onOpenModal} className={styles.buns}>
                             <ConstructorElement
 
-                                style={{ pointerEvents: 'none' }}
-                                
                                 type="top"
                                 isLocked={true}
                                 text={`${bun.name} (верх)`}
@@ -136,39 +136,45 @@ function BurgerConstructor({ }) {
 
 
                 {draggedIngredients.length === 0 ? <div className={styles.ingredientsContainer}>
-                <DragIcon/> 
-                    <div className={styles.selectMiddleIngredient}> 
+                    <DragIcon />
+                    <div className={styles.selectMiddleIngredient}>
                         Перенесите сюда ингредиент
-                         </div> </div>:
+                    </div> </div> :
 
                     draggedIngredients.filter(item => item.container === 'ingredients')
                         .map((ingredient, index) =>
 
-                        (<div key={index} className={styles.ingredientsContainer}>
-                            <DragIcon />
-                            <div id={ingredient._id} onClick={onOpenModal} className={styles.main}>
-                                <ConstructorElement
-                                    type={undefined}
-                                    text={ingredient.name}
-                                    price={ingredient.price}
-                                    thumbnail={ingredient.image}
-                                />
-                            </div>
+                            visibleIng && (<div key={index} id={index} className={styles.ingredientsContainer}>
+                        <DragIcon />
+                        <div id={ingredient._id} onClick={onOpenModal} className={styles.main}>
+                            <ConstructorElement
+                                handleClose={() => {
+                                    setVisible(false);
+                                    const indeh = draggedIngredients.findIndex(el => el._id === ingredient._id);
+                                 draggedIngredients.splice(indeh, 1);
+                                    console.log(draggedIngredients)
+                                }}
+                                type={undefined}
+                                text={ingredient.name}
+                                price={ingredient.price}
+                                thumbnail={ingredient.image}
+                            />
                         </div>
-                        ))
+                    </div>
+                    ))
                 }
             </div>
 
             {draggedBuns.length === 0 ?
-             <div className={styles.selectBotBun}>
+                <div className={styles.selectBotBun}>
                     Перенесите сюда булку
                 </div>
-                 :
+                :
                 draggedBuns.filter(item => item.container === 'buns')
                     .map(bun =>
                         <div key={bun._id} id={bun._id} onClick={onOpenModal} className={styles.buns}>
                             <ConstructorElement
-                                
+
                                 type="bottom"
                                 isLocked={true}
                                 text={`${bun.name} (низ)`}
@@ -190,7 +196,7 @@ function BurgerConstructor({ }) {
                 </Button>
 
             </div>
-            {modalVisible && <Modal onCloseModal={onCloseModal}>
+            {modalVisible && visibleIng && <Modal onCloseModal={onCloseModal}>
                 {currentIngredient ? <IngredientDetails products={products} onCloseModal={onCloseModal} />
                     : <OrderDetails onCloseModal={onCloseModal} />
                 }
