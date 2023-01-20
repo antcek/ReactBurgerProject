@@ -6,11 +6,6 @@ import Modal from '../modal/modal.jsx';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useDispatch, useSelector } from 'react-redux';
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useDrag } from 'react-dnd/dist/hooks';
-import { SET_CONSTRUCTOR_ELEMENT } from '../../services/actions/burger-constructor';
-
 
 function BurgerIngredients() {
 
