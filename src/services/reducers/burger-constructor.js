@@ -1,4 +1,4 @@
-import { BURGER_CONSTRUCTOR_ELEMENT, SET_CONSTRUCTOR_INGREDIENT, DELETE_CONSTRUCTOR_ELEMENT, SET_CONSTRUCTOR_BUN } from "../actions/burger-constructor";
+import { SET_CONSTRUCTOR_INGREDIENT, DELETE_CONSTRUCTOR_INGREDIENT, SET_CONSTRUCTOR_BUN } from "../actions/burger-constructor";
 
 const initialState = {
 
@@ -29,9 +29,11 @@ export const burgerConstructorReducer = (state = initialState, action) => {
                 ...action.buns.map(ingredient => ({ ...ingredient.itemId }))]
             }
         }
-        case DELETE_CONSTRUCTOR_ELEMENT: {
+        case DELETE_CONSTRUCTOR_INGREDIENT: {
             return {
-                ingredients: [...state.ingredients].filter((item, index) => index !== action.index)
+                ...state,
+
+                ingredients: state.ingredients.filter((ingredient, index) => index !== action.id)
             }
         }
 

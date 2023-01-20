@@ -6,6 +6,7 @@ import Modal from '../modal/modal.jsx';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useDispatch, useSelector } from 'react-redux';
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
+import { useDrag } from 'react-dnd';
 
 function BurgerIngredients() {
 
@@ -27,8 +28,6 @@ function BurgerIngredients() {
     const scrollBun = document.getElementById('bun');
     const scrollMain = document.getElementById('main');
     const scrollSauce = document.getElementById('sauce');
-
-   
 
 
     const categoryChange = (value) => {
