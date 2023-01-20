@@ -9,7 +9,7 @@ import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-de
 import { useDrop } from 'react-dnd';
 import { BURGER_CONSTRUCTOR_ELEMENT, SET_CONSTRUCTOR_ELEMENT } from '../../services/actions/burger-constructor';
 
-
+// сделать так что б из массива draggedIng удалялся только 1 ингредиент, а не все одинаковые сразу
 const initialPriceCount = { count: 0 };
 
 function BurgerConstructor({ }) {
@@ -19,6 +19,15 @@ function BurgerConstructor({ }) {
     const [priceCount, priceCountDispatcher] = useReducer(priceReducer, initialPriceCount);
     const [visibleIng, setVisible] = useState(true);
 
+    const currentIngredient = useSelector(store => store.ingredientDetails.current);
+    const modalVisible = useSelector(store => store.ingredientDetails.visible);
+
+    const constructorIngredient = useSelector(store => store.burgerConstructor.ingredients);
+
+    const draggedBuns = constructorIngredient.filter(item => item.container === 'buns').slice(-1);
+    const draggedIngredients = constructorIngredient.filter(item => item.container === 'ingredients');
+
+
     useEffect(() => {
         dispatch({
             type: SET_CONSTRUCTOR_ELEMENT,
@@ -27,17 +36,6 @@ function BurgerConstructor({ }) {
 
         })
     }, [products]);
-
-    const currentIngredient = useSelector(store => store.ingredientDetails.current);
-    const modalVisible = useSelector(store => store.ingredientDetails.visible);
-    console.log(currentIngredient)
-    const constructorIngredient = useSelector(store => store.burgerConstructor.ingredients);
-
-    const draggedBuns = constructorIngredient.filter(item => item.container === 'buns').slice(-1);
-    const draggedIngredients = constructorIngredient.filter(item => item.container === 'ingredients');
-
-    console.log(constructorIngredient)
-
 
     const [, dropBun] = useDrop({
         accept: 'buns',
@@ -86,11 +84,16 @@ function BurgerConstructor({ }) {
         let currentTarget = event.currentTarget;
         const targetProduct = products.find((product) => product._id === currentTarget.getAttribute('id'))
 
-        dispatch({
-            type: CURRENT_INGREDIENT_DETAILS,
-            product: targetProduct,
-            visible: true
-        })
+        if (event.target.closest('.constructor-element__action')) return;
+
+        else {
+
+            dispatch({
+                type: CURRENT_INGREDIENT_DETAILS,
+                product: targetProduct,
+                visible: true
+            })
+        }
 
     };
 
@@ -104,7 +107,7 @@ function BurgerConstructor({ }) {
 
     };
 
-    console.log(draggedIngredients)
+
 
     return (
 
@@ -145,23 +148,25 @@ function BurgerConstructor({ }) {
                         .map((ingredient, index) =>
 
                             visibleIng && (<div key={index} id={index} className={styles.ingredientsContainer}>
-                        <DragIcon />
-                        <div id={ingredient._id} onClick={onOpenModal} className={styles.main}>
-                            <ConstructorElement
-                                handleClose={() => {
-                                    setVisible(false);
-                                    const indeh = draggedIngredients.findIndex(el => el._id === ingredient._id);
-                                 draggedIngredients.splice(indeh, 1);
-                                    console.log(draggedIngredients)
-                                }}
-                                type={undefined}
-                                text={ingredient.name}
-                                price={ingredient.price}
-                                thumbnail={ingredient.image}
-                            />
-                        </div>
-                    </div>
-                    ))
+                                <DragIcon />
+                                <div id={ingredient._id} onClick={onOpenModal} className={styles.main}>
+                                    <ConstructorElement
+                                        handleClose={() => {
+
+                                            draggedIngredients.splice(index, 1);
+                                            setVisible(false);
+                                            console.log(draggedIngredients);
+
+
+                                        }}
+                                        type={undefined}
+                                        text={ingredient.name}
+                                        price={ingredient.price}
+                                        thumbnail={ingredient.image}
+                                    />
+                                </div>
+                            </div>
+                            ))
                 }
             </div>
 
