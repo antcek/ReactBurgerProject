@@ -22,12 +22,12 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
 
     const [, sortedDrop] = useDrop({
         accept: 'sort-ingredients',
-        hover: (item,monitor) => {
+        hover: (item, monitor) => {
 
-            const draggedIndex = item.index; 
+            const draggedIndex = item.index;
             const hoverIndex = index;
-           if (monitor.didDrop()) return;
-           
+            if (monitor.didDrop()) return;
+
             moveIngredient(draggedIndex, hoverIndex);
             item.index = hoverIndex
         },
@@ -38,19 +38,19 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
 
     return (
         <div ref={sortedDrop} >
-            <div  ref={sortedDrag}  id={ingredient._id} className={styles.ingredientsContainer}>
+            <div ref={sortedDrag} className={styles.ingredientsContainer}>
                 <div   >
                     <DragIcon />
                 </div>
                 <div ref={refIng} id={ingredient._id} onClick={onOpenModal} className={styles.main}>
-                    <ConstructorElement 
+                    <ConstructorElement
                         handleClose={() =>
                             dispatch({
                                 type: DELETE_CONSTRUCTOR_INGREDIENT,
                                 id: index
                             })
                         }
-                       
+
                         text={ingredient.name}
                         price={ingredient.price}
                         thumbnail={ingredient.image}
@@ -60,10 +60,10 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
         </div>
 
     )
-} 
+}
 
 DraggedIngredientCard.propTypes = {
-    
+
     onOpenModal: PropTypes.func.isRequired,
     ingredient: PropTypes.shape(ingredientTypes).isRequired,
     index: PropTypes.number.isRequired,

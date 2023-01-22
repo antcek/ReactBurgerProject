@@ -26,8 +26,7 @@ export const burgerConstructorReducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                buns: [
-                    action.buns.product]
+                buns: [ action.buns.product]
             }
         }
         case DELETE_CONSTRUCTOR_INGREDIENT: {

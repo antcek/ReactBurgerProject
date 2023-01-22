@@ -12,13 +12,12 @@ import {
     SET_CONSTRUCTOR_INGREDIENT,
     SORT_CONSTRUCTOR_INGREDIENT
 } from '../../services/actions/burger-constructor';
-
+import { useState } from 'react';
 import DraggedIngredientCard from '../burger-constructor-ingredients/burger-constructor-ingredients';
 
 const initialPriceCount = { count: 0 };
 
 function BurgerConstructor() {
-
 
 
     const dispatch = useDispatch();
@@ -33,6 +32,12 @@ function BurgerConstructor() {
 
     const draggedBunsPrice = constructorBuns.reduce((accum, curr) => accum + curr.price, 0);
     const draggedIngredientsPrice = constructorIngredients.reduce((accum, curr) => accum + curr.price, 0);
+    
+    const bunsForOrder = constructorBuns.slice().concat(constructorBuns);
+    const burgerForOrder = bunsForOrder.concat(constructorIngredients)
+    
+   
+
 
     const [{ BunIsHover }, dropBun] = useDrop({
         accept: 'bun',
@@ -152,7 +157,7 @@ function BurgerConstructor() {
                     {constructorIngredients.length === 0 ?
                         <div className={styles.ingredientsContainer}>
                             <DragIcon />
-                            <div style={ingredientHovered} className={styles.selectMiddleIngredient}>
+                            <div  className={styles.selectMiddleIngredient}>
                                 Перенесите ингредиент
                             </div>
                         </div>
@@ -169,7 +174,7 @@ function BurgerConstructor() {
                 </div>
 
                 {constructorBuns.length === 0 ?
-                    <div style={bunHovered} className={styles.selectBotBun}>
+                    <div className={styles.selectBotBun}>
                         Перенесите сюда булку
                     </div>
                     :
@@ -200,7 +205,7 @@ function BurgerConstructor() {
             </div>
             {modalVisible && <Modal onCloseModal={onCloseModal}>
                 {currentIngredient ? <IngredientDetails products={products} onCloseModal={onCloseModal} />
-                    : <OrderDetails onCloseModal={onCloseModal} />
+                    : <OrderDetails burgerForOrder={burgerForOrder}  onCloseModal={onCloseModal} />
                 }
             </Modal>}
 

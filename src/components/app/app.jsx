@@ -3,7 +3,7 @@ import BurgerIngredients from '../burger-ingredients/burger-ingredients.jsx';
 import BurgerConstructor from '../burger-constructor/burger-constructor.jsx';
 import styles from './app.module.css';
 import React, { useEffect } from 'react';
-import { getIngredients } from '../../utils/burger-api.js';
+import { getIngredients } from '../../services/thunk-actions/thunk-actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
