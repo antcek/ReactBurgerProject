@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState } from 'react';
+import React, { useReducer, useEffect, useCallback } from 'react';
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import IngredientDetails from '../ingredient-details/ingredient-details';
@@ -7,9 +7,13 @@ import Modal from '../modal/modal.jsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
 import { useDrop } from 'react-dnd';
-import { SET_CONSTRUCTOR_BUN, SET_CONSTRUCTOR_INGREDIENT, DELETE_CONSTRUCTOR_INGREDIENT } from '../../services/actions/burger-constructor';
-import { isJSDocOverrideTag } from 'typescript';
+import {
+    SET_CONSTRUCTOR_BUN,
+    SET_CONSTRUCTOR_INGREDIENT,
+    SORT_CONSTRUCTOR_INGREDIENT
+} from '../../services/actions/burger-constructor';
 
+import DraggedIngredientCard from '../burger-constructor-ingredients/burger-constructor-ingredients';
 
 const initialPriceCount = { count: 0 };
 
@@ -25,52 +29,71 @@ function BurgerConstructor() {
     const constructorIngredients = useSelector(store => store.burgerConstructor.ingredients);
     const constructorBuns = useSelector(store => store.burgerConstructor.buns);
 
-    const draggedBuns = constructorBuns.filter(item => item.type === 'bun');
-    const draggedBunsPrice = draggedBuns.reduce((accum, curr) => accum + curr.price, 0);
+    const draggedBunsPrice = constructorBuns.reduce((accum, curr) => accum + curr.price, 0);
+    const draggedIngredientsPrice = constructorIngredients.reduce((accum, curr) => accum + curr.price, 0);
 
-    const draggedIngredients = constructorIngredients.filter(ing => ing.type === 'main' || ing.type === 'sauce');
-    const draggedIngredientsPrice = draggedIngredients.reduce((accum, curr) => accum + curr.price, 0);
-
-    const [{BunIsHover}, dropBun] = useDrop({
+    const [{ BunIsHover }, dropBun] = useDrop({
         accept: 'bun',
-         collect: monitor =>({
+        collect: monitor => ({
             BunIsHover: monitor.isOver()
-         }),
-        drop(itemId) {
+        }),
+        drop(product) {
 
             dispatch({
                 type: SET_CONSTRUCTOR_BUN,
-                id: itemId.itemId,
-                buns: [itemId]
+                buns: product
             });
         }
     });
-    
-     
-    const [{IngIsHover}, dropIngredient] = useDrop({
+
+
+    const moveIngredient = useCallback((draggedIndex, hoverIndex) => {
+
+        const dragItem = constructorIngredients[draggedIndex];
+        const hoverItem = constructorIngredients[hoverIndex];
+
+        const sortedIngredients = [...constructorIngredients];
+        sortedIngredients[draggedIndex] = hoverItem;
+        sortedIngredients[hoverIndex] = dragItem
+
+        dispatch({
+
+            type: SORT_CONSTRUCTOR_INGREDIENT,
+            ingredients: sortedIngredients
+
+        })
+    }, [constructorIngredients])
+
+    const [{ IngIsHover }, dropIngredient] = useDrop({
         accept: 'ingredients',
-        collect: monitor =>({
+        collect: monitor => ({
             IngIsHover: monitor.isOver()
-          }),
-        drop(itemId) {
-            
-            if (draggedBuns.length !== 0) {
+        }),
+
+        drop(product) {
+            if (constructorBuns.length !== 0) {
+
                 dispatch({
                     type: SET_CONSTRUCTOR_INGREDIENT,
-                    id: itemId.itemId,
-                    ingredients: [itemId]
+                    ingredients: product
                 });
             }
-           
         }
     });
 
-    const bunHovered = BunIsHover ? {borderStyle: 'dashed', borderColor: 'aliceblue'} : null;
-    const ingredientHovered = IngIsHover ? {borderStyle: 'dashed', borderColor: 'aliceblue'} : null;
+
+    const [, sortedDrop] = useDrop({
+        accept: 'sort-ingredients',
+
+    })
+
+    const bunHovered = BunIsHover ? { borderStyle: 'dashed', borderColor: 'aliceblue' } : null;
+    const ingredientHovered = IngIsHover && constructorBuns.length !== 0 ? { borderStyle: 'dashed', borderColor: 'aliceblue' } : null;
+
 
     useEffect(() => {
+        priceCountDispatcher({ price: draggedBunsPrice * 2 + draggedIngredientsPrice });
 
-        priceCountDispatcher({ price: draggedBunsPrice * 2 + draggedIngredientsPrice })
     }, [draggedBunsPrice, draggedIngredientsPrice])
 
     function priceReducer(state, action) {
@@ -91,7 +114,7 @@ function BurgerConstructor() {
                 type: CURRENT_INGREDIENT_DETAILS,
                 product: targetProduct,
                 visible: true
-            })
+            });
         }
 
     };
@@ -101,18 +124,18 @@ function BurgerConstructor() {
             type: CURRENT_INGREDIENT_DETAILS,
             product: null,
             visible: false
-        })
+        });
     };
 
     return (
 
         <section ref={dropBun} id='constructor' className={styles.constructor}>
             <div ref={dropIngredient} >
-                {draggedBuns.length === 0 ?
+                {constructorBuns.length === 0 ?
                     <div style={bunHovered} className={styles.selectTopBun}>
                         Перенесите сюда булку
                     </div>
-                    : draggedBuns.map((bun) =>
+                    : constructorBuns.map((bun) =>
                         <div key={bun._id} id={bun._id} onClick={onOpenModal} className={styles.buns}>
                             <ConstructorElement
 
@@ -126,44 +149,32 @@ function BurgerConstructor() {
                     )
                 }
 
-                <div  className={styles.wrapper}>
-
-                    {draggedIngredients.length === 0 ? <div className={styles.ingredientsContainer}>
-                        <DragIcon />
-                        <div style={ingredientHovered} className={styles.selectMiddleIngredient}>
-                            Перенесите ингредиент
-                        </div> </div> :
-
-                        draggedIngredients.map((ingredient, index) =>
-
-                        (<div key={index} id={ingredient._id} className={styles.ingredientsContainer}>
+                <div className={styles.wrapper}>
+                    {constructorIngredients.length === 0 ?
+                        <div className={styles.ingredientsContainer}>
                             <DragIcon />
-                            <div id={ingredient._id} onClick={onOpenModal} className={styles.main}>
-                                <ConstructorElement
-                                    handleClose={() =>
-                                        dispatch({
-                                            type: DELETE_CONSTRUCTOR_INGREDIENT,
-                                            id: index
-                                        })
-
-                                    }
-                                    type={undefined}
-                                    text={ingredient.name}
-                                    price={ingredient.price}
-                                    thumbnail={ingredient.image}
-                                />
+                            <div style={ingredientHovered} className={styles.selectMiddleIngredient}>
+                                Перенесите ингредиент
                             </div>
                         </div>
-                        ))
+                        : constructorIngredients.map((ingredient, index) =>
+                        (<DraggedIngredientCard
+                            id={ingredient._id}
+                            moveIngredient={moveIngredient}
+
+                            key={index}
+                            onOpenModal={onOpenModal}
+                            ingredient={ingredient}
+                            index={index} />))
                     }
                 </div>
 
-                {draggedBuns.length === 0 ?
+                {constructorBuns.length === 0 ?
                     <div style={bunHovered} className={styles.selectBotBun}>
                         Перенесите сюда булку
                     </div>
                     :
-                    draggedBuns.map(bun =>
+                    constructorBuns.map(bun =>
                         <div key={bun._id} id={bun._id} onClick={onOpenModal} className={styles.buns}>
                             <ConstructorElement
 
@@ -174,26 +185,26 @@ function BurgerConstructor() {
                                 thumbnail={bun.image_large}
                             />
                         </div>)}
-
-                <div className={styles.order}>
-                    <div className={styles.price}>
-                        <p className="text text_type_digits-medium">{priceCount.count}</p>
-                        <div className={styles.icon}>
-                            <CurrencyIcon type="primary" />
-                        </div>
-                    </div>
-
-                    <Button onClick={onOpenModal} htmlType="button" type="primary" size="large">
-                        Оформить заказ
-                    </Button>
-
-                </div>
-                {modalVisible && <Modal onCloseModal={onCloseModal}>
-                    {currentIngredient ? <IngredientDetails products={products} onCloseModal={onCloseModal} />
-                        : <OrderDetails onCloseModal={onCloseModal} />
-                    }
-                </Modal>}
             </div>
+            <div className={styles.order}>
+                <div className={styles.price}>
+                    <p className="text text_type_digits-medium">{priceCount.count}</p>
+                    <div className={styles.icon}>
+                        <CurrencyIcon type="primary" />
+                    </div>
+                </div>
+
+                <Button onClick={onOpenModal} htmlType="button" type="primary" size="large">
+                    Оформить заказ
+                </Button>
+
+            </div>
+            {modalVisible && <Modal onCloseModal={onCloseModal}>
+                {currentIngredient ? <IngredientDetails products={products} onCloseModal={onCloseModal} />
+                    : <OrderDetails onCloseModal={onCloseModal} />
+                }
+            </Modal>}
+
         </section>
 
     )

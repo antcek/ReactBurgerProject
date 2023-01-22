@@ -19,6 +19,7 @@ function BurgerIngredients() {
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
 
     const currentTarget = useSelector(store => store.ingredientDetails.current);
+    
 
     const buns = products.filter(ingredient => ingredient.type === 'bun');
     const main = products.filter(ingredient => ingredient.type === 'main');

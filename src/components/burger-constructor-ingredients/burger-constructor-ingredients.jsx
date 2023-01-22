@@ -1,0 +1,60 @@
+import React from 'react';
+import { DELETE_CONSTRUCTOR_INGREDIENT } from '../../services/actions/burger-constructor';
+import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch } from 'react-redux';
+import styles from './burger-constructor-ingredients.module.css';
+import { useDrag, useDrop } from 'react-dnd';
+import { useRef } from 'react';
+
+export default function DraggedIngredientCard({ onOpenModal, ingredient, index, id, moveIngredient }) {
+
+    const [{ isDragging }, sortedDrag] = useDrag({
+        type: 'sort-ingredients',
+        item: { index },
+
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+
+    });
+
+    const [, sortedDrop] = useDrop({
+        accept: 'sort-ingredients',
+        hover: (item,monitor) => {
+
+            const draggedIndex = item.index; 
+            const hoverIndex = index;
+           if (monitor.didDrop()) return;
+            moveIngredient(draggedIndex, hoverIndex);
+            item.index = hoverIndex
+        },
+    });
+
+    const refIng = useRef();
+    const dispatch = useDispatch();
+
+    return (
+        <div ref={sortedDrop} >
+            <div  ref={sortedDrag}  id={ingredient._id} className={styles.ingredientsContainer}>
+                <div  style={{cursor:'pointer'}}   >
+                    <DragIcon />
+                </div>
+                <div ref={refIng} id={ingredient._id} onClick={onOpenModal} className={styles.main}>
+                    <ConstructorElement 
+                        handleClose={() =>
+                            dispatch({
+                                type: DELETE_CONSTRUCTOR_INGREDIENT,
+                                id: index
+                            })
+                        }
+                        type={undefined}
+                        text={ingredient.name}
+                        price={ingredient.price}
+                        thumbnail={ingredient.image}
+                    />
+                </div>
+            </div>
+        </div>
+
+    )
+} 

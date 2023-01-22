@@ -15,13 +15,6 @@
     cursor: pointer;
 }
 
-.main {
-
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    cursor: pointer;
-}
 
 .order {
     display: flex;

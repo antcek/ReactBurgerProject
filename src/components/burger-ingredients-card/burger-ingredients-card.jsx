@@ -8,14 +8,14 @@ import { useSelector } from 'react-redux';
 
 function IngredientCard({ onOpenModal, product }) {
 
-    // const products = useSelector(store => store.getProducts.products);
-    const itemId = product; // объект продукта
+    
+   
     const productType = product.type === 'bun' ? 'bun' : 'ingredients';
-
-    const [{ isDrag }, dragRef, dragPreviewRef] = useDrag({
+    
+    const [{ isDrag }, dragRef] = useDrag({
 
         type: productType,
-        item: { itemId },
+        item: { product },
         collect: monitor => ({
 
             isDrag: monitor.isDragging()
@@ -25,19 +25,19 @@ function IngredientCard({ onOpenModal, product }) {
 
     const draggedBuns = useSelector(store => store.burgerConstructor.buns);
     const draggedIngredients = useSelector(store => store.burgerConstructor.ingredients)
-
+  
     const setBunsCount = () => (draggedBuns.length * 2);
 
     const setIngredientCount = () => (draggedIngredients.filter(item => item.name === product.name).length);
-
+   
 
     return (
 
-        <div onClick={onOpenModal}
+        <div  ref={dragRef} onClick={onOpenModal}
             id={product._id}
             className={styles.card}
             key={product._id}
-            ref={dragRef}
+            
         >
             {draggedBuns.map(item => item.name === product.name ? <Counter key={item._id} count={setBunsCount()} size="default" extraClass="m-1" />
                 : null)
@@ -46,7 +46,7 @@ function IngredientCard({ onOpenModal, product }) {
             {draggedIngredients.map((item, index) => item.name === product.name ? <Counter key={index} count={setIngredientCount()} size="default" extraClass="m-1" />
                 : null)
             }
-            <img ref={dragPreviewRef} src={product.image} alt='картинка' />
+            <img  src={product.image} alt='картинка' />
             <div className={styles.cardBody}>
                 <p className="text text_type_digits-default">{product.price}</p>
                 <CurrencyIcon type="primary" />
@@ -63,7 +63,7 @@ function IngredientCard({ onOpenModal, product }) {
 
 IngredientCard.propTypes = {
     onOpenModal: PropTypes.func.isRequired,
-    // category: PropTypes.arrayOf(PropTypes.shape(ingredientTypes)).isRequired,
+     product: PropTypes.shape(ingredientTypes).isRequired,
 }
 
 export default IngredientCard

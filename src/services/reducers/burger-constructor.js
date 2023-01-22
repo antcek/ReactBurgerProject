@@ -1,4 +1,5 @@
-import { SET_CONSTRUCTOR_INGREDIENT, DELETE_CONSTRUCTOR_INGREDIENT, SET_CONSTRUCTOR_BUN } from "../actions/burger-constructor";
+
+import { SET_CONSTRUCTOR_INGREDIENT, DELETE_CONSTRUCTOR_INGREDIENT, SET_CONSTRUCTOR_BUN, SORT_CONSTRUCTOR_INGREDIENT } from "../actions/burger-constructor";
 
 const initialState = {
 
@@ -17,7 +18,7 @@ export const burgerConstructorReducer = (state = initialState, action) => {
                 ...state,
 
                 ingredients: [...state.ingredients,
-                ...action.ingredients.map(ingredient => ({ ...ingredient.itemId }))]
+                action.ingredients.product]
 
             };
         }
@@ -26,7 +27,7 @@ export const burgerConstructorReducer = (state = initialState, action) => {
             return {
                 ...state,
                 buns: [
-                ...action.buns.map(ingredient => ({ ...ingredient.itemId }))]
+                    action.buns.product]
             }
         }
         case DELETE_CONSTRUCTOR_INGREDIENT: {
@@ -37,8 +38,23 @@ export const burgerConstructorReducer = (state = initialState, action) => {
             }
         }
 
+        case SORT_CONSTRUCTOR_INGREDIENT: {
+
+         
+        
+            return {
+              ...state,
+          
+              ingredients: action.ingredients
+
+
+            }
+        }
+
         default: {
             return state
+
+
         }
     }
 }
