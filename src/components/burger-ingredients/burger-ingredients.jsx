@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -6,7 +6,7 @@ import Modal from '../modal/modal.jsx';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useDispatch, useSelector } from 'react-redux';
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
-import { useDrag } from 'react-dnd';
+
 
 function BurgerIngredients() {
 
@@ -19,7 +19,7 @@ function BurgerIngredients() {
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
 
     const currentTarget = useSelector(store => store.ingredientDetails.current);
-    
+
 
     const buns = products.filter(ingredient => ingredient.type === 'bun');
     const main = products.filter(ingredient => ingredient.type === 'main');
@@ -52,7 +52,7 @@ function BurgerIngredients() {
         ingredientsContainer.scrollBy(0, scrollCategory());
     };
 
-    const scrollNavigation =  () => {
+    const scrollNavigation = () => {
 
         if (Math.abs(scrollBun.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)
             < Math.abs(scrollSauce.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)) {
@@ -97,17 +97,15 @@ function BurgerIngredients() {
                 Соберите бургер
             </h1 >
             <div className={styles.tabs} >
-                <div style={{ display: 'flex' }}>
-                    <Tab value="Булки" active={current === 'Булки'} onClick={categoryChange}>
-                        Булки
-                    </Tab>
-                    <Tab value="Соусы" active={current === 'Соусы'} onClick={categoryChange}>
-                        Соусы
-                    </Tab>
-                    <Tab value="Начинки" active={current === 'Начинки'} onClick={categoryChange}>
-                        Начинки
-                    </Tab>
-                </div>
+                <Tab value="Булки" active={current === 'Булки'} onClick={categoryChange}>
+                    Булки
+                </Tab>
+                <Tab value="Соусы" active={current === 'Соусы'} onClick={categoryChange}>
+                    Соусы
+                </Tab>
+                <Tab value="Начинки" active={current === 'Начинки'} onClick={categoryChange}>
+                    Начинки
+                </Tab>
             </div>
 
             <div onScroll={scrollNavigation} className={styles.container} >
@@ -116,19 +114,19 @@ function BurgerIngredients() {
                 </p>
                 <div className={styles.wrapper}>
 
-                    {buns.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal}  />)}
+                    {buns.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
                 </div>
                 <p id="sauce" className="text text_type_main-medium mt-10">
                     Соусы
                 </p>
                 <div className={styles.wrapper} >
-                {sauce.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal}  />)}
+                    {sauce.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
                 </div>
                 <p id="main" className="text text_type_main-medium mt-10">
                     Начинки
                 </p>
                 <div className={styles.wrapper}>
-                {main.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal}  />)}
+                    {main.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
                 </div>
 
             </div>
@@ -142,8 +140,5 @@ function BurgerIngredients() {
     )
 }
 
-BurgerIngredients.propTypes = {
-
-}
 
 export default BurgerIngredients;

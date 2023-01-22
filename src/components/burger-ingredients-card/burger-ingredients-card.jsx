@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients-card.module.css';
 import PropTypes from 'prop-types';
@@ -8,8 +7,6 @@ import { useSelector } from 'react-redux';
 
 function IngredientCard({ onOpenModal, product }) {
 
-    
-   
     const productType = product.type === 'bun' ? 'bun' : 'ingredients';
     
     const [{ isDrag }, dragRef] = useDrag({

@@ -5,8 +5,10 @@ import { useDispatch } from 'react-redux';
 import styles from './burger-constructor-ingredients.module.css';
 import { useDrag, useDrop } from 'react-dnd';
 import { useRef } from 'react';
+import PropTypes from 'prop-types';
+import ingredientTypes from '../../prop-types/prop-types';
 
-export default function DraggedIngredientCard({ onOpenModal, ingredient, index, id, moveIngredient }) {
+export default function DraggedIngredientCard({ onOpenModal, ingredient, index, moveIngredient }) {
 
     const [{ isDragging }, sortedDrag] = useDrag({
         type: 'sort-ingredients',
@@ -25,6 +27,7 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
             const draggedIndex = item.index; 
             const hoverIndex = index;
            if (monitor.didDrop()) return;
+           
             moveIngredient(draggedIndex, hoverIndex);
             item.index = hoverIndex
         },
@@ -36,7 +39,7 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
     return (
         <div ref={sortedDrop} >
             <div  ref={sortedDrag}  id={ingredient._id} className={styles.ingredientsContainer}>
-                <div  style={{cursor:'pointer'}}   >
+                <div   >
                     <DragIcon />
                 </div>
                 <div ref={refIng} id={ingredient._id} onClick={onOpenModal} className={styles.main}>
@@ -47,7 +50,7 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
                                 id: index
                             })
                         }
-                        type={undefined}
+                       
                         text={ingredient.name}
                         price={ingredient.price}
                         thumbnail={ingredient.image}
@@ -58,3 +61,12 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
 
     )
 } 
+
+DraggedIngredientCard.propTypes = {
+    
+    onOpenModal: PropTypes.func.isRequired,
+    ingredient: PropTypes.shape(ingredientTypes).isRequired,
+    index: PropTypes.number.isRequired,
+    moveIngredient: PropTypes.func.isRequired,
+
+}

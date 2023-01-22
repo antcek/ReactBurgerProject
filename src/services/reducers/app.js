@@ -40,7 +40,7 @@ export const getProductsReducer = (state = initialState, action) => {
       return {
         ...state,
         productsRequest: false,
-        productsFailed: true,
+        productsFailed: true
       };
     }
 

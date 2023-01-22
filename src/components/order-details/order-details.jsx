@@ -6,22 +6,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { sendOrder } from '../../utils/burger-api';
 
 
-
 function OrderDetails({ onCloseModal }) {
 
     const dispatch = useDispatch();
 
     const { orderNumber } = useSelector(store => store.orderNumber);
-    const orderFailed = useSelector(store => store.orderFailed);
+    const orderFailed = useSelector(store => store.orderNumber.orderFailed);
+
+    const constructorElem = document.getElementById('constructor');
+    const idNodeElements = constructorElem.querySelectorAll('[id]');
+    const idConstructor = { ingredients: Array.from(idNodeElements).map(ingredient => ingredient.id) };
 
     useEffect(() => {
 
-        dispatch(sendOrder());
-
+        dispatch(sendOrder(idConstructor));
 
     }, [dispatch])
-
-
 
 
     return (

@@ -19,6 +19,8 @@ const initialPriceCount = { count: 0 };
 
 function BurgerConstructor() {
 
+
+
     const dispatch = useDispatch();
     const products = useSelector(store => store.getProducts.products);
     const [priceCount, priceCountDispatcher] = useReducer(priceReducer, initialPriceCount);
@@ -46,23 +48,24 @@ function BurgerConstructor() {
         }
     });
 
-
     const moveIngredient = useCallback((draggedIndex, hoverIndex) => {
 
-        const dragItem = constructorIngredients[draggedIndex];
-        const hoverItem = constructorIngredients[hoverIndex];
+        if (draggedIndex !== hoverIndex) {
+            const dragItem = constructorIngredients[draggedIndex];
+            const hoverItem = constructorIngredients[hoverIndex];
 
-        const sortedIngredients = [...constructorIngredients];
-        sortedIngredients[draggedIndex] = hoverItem;
-        sortedIngredients[hoverIndex] = dragItem
+            const sortedIngredients = [...constructorIngredients];
+            sortedIngredients[draggedIndex] = hoverItem;
+            sortedIngredients[hoverIndex] = dragItem
 
-        dispatch({
+            dispatch({
 
-            type: SORT_CONSTRUCTOR_INGREDIENT,
-            ingredients: sortedIngredients
+                type: SORT_CONSTRUCTOR_INGREDIENT,
+                ingredients: sortedIngredients
 
-        })
-    }, [constructorIngredients])
+            })
+        }
+    }, [constructorIngredients, dispatch])
 
     const [{ IngIsHover }, dropIngredient] = useDrop({
         accept: 'ingredients',
@@ -75,17 +78,12 @@ function BurgerConstructor() {
 
                 dispatch({
                     type: SET_CONSTRUCTOR_INGREDIENT,
-                    ingredients: product
+                    ingredients: product,
+                    key: Math.random()
                 });
             }
         }
     });
-
-
-    const [, sortedDrop] = useDrop({
-        accept: 'sort-ingredients',
-
-    })
 
     const bunHovered = BunIsHover ? { borderStyle: 'dashed', borderColor: 'aliceblue' } : null;
     const ingredientHovered = IngIsHover && constructorBuns.length !== 0 ? { borderStyle: 'dashed', borderColor: 'aliceblue' } : null;
@@ -103,7 +101,7 @@ function BurgerConstructor() {
 
     function onOpenModal(event) {
 
-        let currentTarget = event.currentTarget;
+        const currentTarget = event.currentTarget;
         const targetProduct = products.find((product) => product._id === currentTarget.getAttribute('id'))
 
         if (event.target.closest('.constructor-element__action'))
@@ -126,6 +124,7 @@ function BurgerConstructor() {
             visible: false
         });
     };
+
 
     return (
 
@@ -158,11 +157,11 @@ function BurgerConstructor() {
                             </div>
                         </div>
                         : constructorIngredients.map((ingredient, index) =>
+
                         (<DraggedIngredientCard
                             id={ingredient._id}
                             moveIngredient={moveIngredient}
-
-                            key={index}
+                            key={ingredient.key}
                             onOpenModal={onOpenModal}
                             ingredient={ingredient}
                             index={index} />))

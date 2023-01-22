@@ -4,8 +4,12 @@ import {
     ALL_INGREDIENTS_FAILED
 } from "../services/actions/app";
 import { ORDER_FAILED, ORDER_SUCCESS, ORDER_REQUEST } from "../services/actions/order-details";
+import { BURGER_API_URL, NORMA_API } from "./api";
 
+const checkResponse = (res) => {
 
+    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err))
+}
 
 export function getIngredients() {
 
@@ -15,37 +19,26 @@ export function getIngredients() {
             type: ALL_INGREDIENTS_REQUEST
         });
 
-        const apiIngredients = 'https://norma.nomoreparties.space/api/ingredients';
 
         try {
-            const response = await fetch(apiIngredients);
+            const response = await fetch(`${BURGER_API_URL}/ingredients`);
 
-            if (response && response.ok) {
-                const ingredients = await response.json();
-
-                dispatch({
-                    type: ALL_INGREDIENTS_SUCCESS,
-                    products: ingredients.data
-                })
-
-            }
-            else dispatch({
-                type: ALL_INGREDIENTS_FAILED
-            })
+            checkResponse(response).then(ingredients => dispatch({
+                type: ALL_INGREDIENTS_SUCCESS,
+                products: ingredients.data
+            }));
 
         } catch (err) {
-
             dispatch({
-                type: ALL_INGREDIENTS_FAILED
-            })
+                type: ALL_INGREDIENTS_FAILED,
+            });
 
-        }
+        };
     }
 
 };
 
-
-export function sendOrder() {
+export function sendOrder(idConstructor) {
 
     return async function (dispatch) {
 
@@ -53,13 +46,8 @@ export function sendOrder() {
             type: ORDER_REQUEST
         });
 
-        const constructorElem = document.getElementById('constructor');
-        const idNodeElements = constructorElem.querySelectorAll('[id]');
-        const idConstructor = { ingredients: Array.from(idNodeElements).map(ingredient => ingredient.id) };
-
         try {
-
-            const response = await fetch('https://norma.nomoreparties.space/api/orders',
+            const response = await fetch(`${NORMA_API}/orders`,
                 {
                     method: 'POST',
                     headers: {
@@ -68,21 +56,11 @@ export function sendOrder() {
                     body: JSON.stringify(idConstructor),
                 });
 
-            if (response && response.ok) {
+            checkResponse(response).then(result => dispatch({
+                type: ORDER_SUCCESS,
+                orderNumber: result.order.number
+            }))
 
-                const result = await response.json();
-
-                dispatch({
-                    type: ORDER_SUCCESS,
-                    orderNumber: result.order.number
-                });
-
-            }
-            else {
-                dispatch({
-                    type: ORDER_FAILED
-                })
-            }
         } catch (err) {
 
             dispatch({

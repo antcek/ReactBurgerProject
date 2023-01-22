@@ -18,7 +18,7 @@ export const burgerConstructorReducer = (state = initialState, action) => {
                 ...state,
 
                 ingredients: [...state.ingredients,
-                action.ingredients.product]
+               { ...action.ingredients.product, key: action.key}]
 
             };
         }
