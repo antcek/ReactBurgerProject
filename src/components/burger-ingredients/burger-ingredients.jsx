@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useRef, useEffect} from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -25,45 +25,48 @@ function BurgerIngredients() {
     const main = products.filter(ingredient => ingredient.type === 'main');
     const sauce = products.filter(ingredient => ingredient.type === 'sauce');
 
-    const ingredientsContainer = document.querySelector(`.${styles.container}`);
-    const scrollBun = document.getElementById('bun');
-    const scrollMain = document.getElementById('main');
-    const scrollSauce = document.getElementById('sauce');
-
-
-    const categoryChange = (value) => {
-
+    const containerRef = useRef(null);
+    const bunRef =useRef(null)
+    const sauceRef = useRef(null)
+    const mainRef = useRef(null)
+   
+    useEffect(() => {
+        
+    }, [])
+    
+    const categoryChange = useCallback( (value) => {
+        
         setCurrent(value);
 
         const scrollCategory = () => {
 
             if (value === 'Булки') {
-                return (scrollBun.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)
+                return (bunRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)
             }
 
             else if (value === 'Соусы') {
-                return (scrollSauce.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)
+                return (sauceRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)
             }
 
             else if (value === 'Начинки') {
-                return (scrollMain.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)
+                return (mainRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)
             }
         };
-        ingredientsContainer.scrollBy(0, scrollCategory());
-       
-    };
+         containerRef.current.scrollBy(0, scrollCategory());
+         
+    },[bunRef,sauceRef,mainRef,containerRef] );
 
     const scrollNavigation = () => {
 
-        if (Math.abs(scrollBun.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)
-            < Math.abs(scrollSauce.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)) {
+        if (Math.abs(bunRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)
+            < Math.abs(sauceRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)) {
             setCurrent('Булки');
         }
 
         else setCurrent('Соусы');
 
-        if (Math.abs(scrollMain.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)
-            < Math.abs(scrollSauce.getBoundingClientRect().top - ingredientsContainer.getBoundingClientRect().top)) {
+        if (Math.abs(mainRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)
+            < Math.abs(sauceRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)) {
             setCurrent('Начинки');
         };
 
@@ -109,21 +112,21 @@ function BurgerIngredients() {
                 </Tab>
             </div>
 
-            <div onScroll={scrollNavigation} className={styles.container} >
-                <p id="bun" className="text text_type_main-medium ">
+            <div ref={containerRef} onScroll={scrollNavigation} className={styles.container} >
+                <p ref={bunRef} className="text text_type_main-medium ">
                     Булки
                 </p>
                 <div className={styles.wrapper}>
 
                     {buns.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
                 </div>
-                <p id="sauce" className="text text_type_main-medium mt-10">
+                <p ref={sauceRef} className="text text_type_main-medium mt-10">
                     Соусы
                 </p>
                 <div className={styles.wrapper} >
                     {sauce.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
                 </div>
-                <p id="main" className="text text_type_main-medium mt-10">
+                <p ref={mainRef}  className="text text_type_main-medium mt-10">
                     Начинки
                 </p>
                 <div className={styles.wrapper}>

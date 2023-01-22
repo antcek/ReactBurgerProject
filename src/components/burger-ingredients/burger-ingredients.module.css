@@ -8,7 +8,7 @@
 .tabs {
     margin-top: 20px;
     margin-bottom: 40px;
-    display:flex;
+    display: flex;
 }
 
 .wrapper {
@@ -21,7 +21,7 @@
 }
 
 .container {
-
+    
     overflow-y: auto;
     overflow-x: hidden;
 }
