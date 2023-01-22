@@ -1,11 +1,11 @@
 import styles from './ingredient-details.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
-import ingredientTypes from '../../prop-types/prop-types.jsx';
+
 import { useSelector } from 'react-redux';
 
 
-function IngredientDetails({ onCloseModal,  }) {
+function IngredientDetails({ onCloseModal  }) {
 
     const { name, calories, proteins, fat, carbohydrates, image_large, _id } = useSelector((store) => (store.ingredientDetails.current));
 
@@ -68,8 +68,7 @@ function IngredientDetails({ onCloseModal,  }) {
 }
 
 IngredientDetails.propTypes = {
-    currentTarget: PropTypes.object,
-    products: PropTypes.arrayOf(PropTypes.shape(ingredientTypes)).isRequired,
+    
     onCloseModal: PropTypes.func.isRequired,
 
 }

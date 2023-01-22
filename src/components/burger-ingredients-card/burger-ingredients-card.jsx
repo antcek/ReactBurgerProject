@@ -9,7 +9,7 @@ function IngredientCard({ onOpenModal, product }) {
 
     const productType = product.type === 'bun' ? 'bun' : 'ingredients';
     
-    const [{ isDrag }, dragRef] = useDrag({
+    const [, dragRef] = useDrag({
 
         type: productType,
         item: { product },

@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useEffect} from 'react';
+import React, {useCallback,useState, useRef} from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -13,13 +13,12 @@ function BurgerIngredients() {
     const dispatch = useDispatch();
 
     const products = useSelector((store) => store.getProducts.products);
-
-    const [current, setCurrent] = React.useState('Булки');
+    
+     const [current, setCurrent] = useState('Булки');
 
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
 
     const currentTarget = useSelector(store => store.ingredientDetails.current);
-
 
     const buns = products.filter(ingredient => ingredient.type === 'bun');
     const main = products.filter(ingredient => ingredient.type === 'main');
@@ -29,45 +28,38 @@ function BurgerIngredients() {
     const bunRef =useRef(null)
     const sauceRef = useRef(null)
     const mainRef = useRef(null)
-   
-    useEffect(() => {
-        
-    }, [])
+
     
     const categoryChange = useCallback( (value) => {
         
-        setCurrent(value);
+          setCurrent(value);
 
-        const scrollCategory = () => {
-
-            if (value === 'Булки') {
-                return (bunRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)
-            }
-
-            else if (value === 'Соусы') {
-                return (sauceRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)
-            }
-
-            else if (value === 'Начинки') {
-                return (mainRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)
-            }
-        };
-         containerRef.current.scrollBy(0, scrollCategory());
+        if (value === 'Булки') {
+            bunRef.current.scrollIntoView({ behavior: 'smooth' });
+            
+        } else if (value === 'Соусы') {
+            sauceRef.current.scrollIntoView({ behavior: 'smooth' });
+        } else if (value === 'Начинки') {
+            mainRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+        
          
-    },[bunRef,sauceRef,mainRef,containerRef] );
-
+        
+         
+    },[bunRef,sauceRef,mainRef,setCurrent] );
+   
     const scrollNavigation = () => {
 
         if (Math.abs(bunRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)
             < Math.abs(sauceRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)) {
-            setCurrent('Булки');
+             setCurrent('Булки');
         }
 
-        else setCurrent('Соусы');
+         else setCurrent('Соусы');
 
         if (Math.abs(mainRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)
             < Math.abs(sauceRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)) {
-            setCurrent('Начинки');
+             setCurrent('Начинки');
         };
 
     }

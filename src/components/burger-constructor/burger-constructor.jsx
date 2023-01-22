@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useCallback,useMemo } from 'react';
+import React, { useCallback,useMemo } from 'react';
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import IngredientDetails from '../ingredient-details/ingredient-details';
@@ -40,7 +40,7 @@ function BurgerConstructor() {
     },[draggedBunsPrice,draggedIngredientsPrice])
     
    
-    const [{ BunIsHover }, dropBun] = useDrop({
+    const [, dropBun] = useDrop({
         accept: 'bun',
         collect: monitor => ({
             BunIsHover: monitor.isOver()
@@ -73,7 +73,7 @@ function BurgerConstructor() {
         }
     }, [constructorIngredients, dispatch])
 
-    const [{ IngIsHover }, dropIngredient] = useDrop({
+    const [, dropIngredient] = useDrop({
         accept: 'ingredients',
         collect: monitor => ({
             IngIsHover: monitor.isOver()
@@ -91,8 +91,8 @@ function BurgerConstructor() {
         }
     });
 
-    const bunHovered = BunIsHover ? { borderStyle: 'dashed', borderColor: 'aliceblue' } : null;
-    const ingredientHovered = IngIsHover && constructorBuns.length !== 0 ? { borderStyle: 'dashed', borderColor: 'aliceblue' } : null;
+    // const bunHovered = BunIsHover ? { borderStyle: 'dashed', borderColor: 'aliceblue' } : null;
+    // const ingredientHovered = IngIsHover && constructorBuns.length !== 0 ? { borderStyle: 'dashed', borderColor: 'aliceblue' } : null;
 
 
     function onOpenModal(event) {
@@ -128,7 +128,7 @@ function BurgerConstructor() {
         <section ref={dropBun} id='constructor' className={styles.constructor}>
             <div ref={dropIngredient} >
                 {constructorBuns.length === 0 ?
-                    <div style={bunHovered} className={styles.selectTopBun}>
+                    <div className={styles.selectTopBun}>
                         Перенесите сюда булку
                     </div>
                     : constructorBuns.map((bun) =>

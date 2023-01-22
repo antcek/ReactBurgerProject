@@ -10,7 +10,7 @@ import ingredientTypes from '../../prop-types/prop-types';
 
 export default function DraggedIngredientCard({ onOpenModal, ingredient, index, moveIngredient }) {
 
-    const [{ isDragging }, sortedDrag] = useDrag({
+    const [, sortedDrag] = useDrag({
         type: 'sort-ingredients',
         item: { index },
 
