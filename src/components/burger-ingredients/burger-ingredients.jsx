@@ -50,6 +50,7 @@ function BurgerIngredients() {
             }
         };
         ingredientsContainer.scrollBy(0, scrollCategory());
+       
     };
 
     const scrollNavigation = () => {

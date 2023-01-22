@@ -4,24 +4,25 @@ import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendOrder } from '../../services/thunk-actions/thunk-actions';
-import { useState } from 'react';
+import {  useMemo } from 'react';
+import ingredientTypes from '../../prop-types/prop-types'
 
-function OrderDetails({ onCloseModal, burgerForOrder }) {
-
-
+function OrderDetails({ onCloseModal, burgerForOrder, }) {
 
     const dispatch = useDispatch();
 
     const { orderNumber } = useSelector(store => store.orderNumber);
     const orderFailed = useSelector(store => store.orderNumber.orderFailed);
 
-    const burgerAllId = { ingredients: burgerForOrder.map(ingredient => ingredient._id) };
+    const burgerAllId = useMemo(() => {
+        return { ingredients: burgerForOrder.map(ingredient => ingredient._id) }
+    },[burgerForOrder]
+    )
    
     useEffect(() => {
-
         dispatch(sendOrder(burgerAllId));
 
-    }, [])
+    }, [dispatch,burgerAllId ])
 
 
     return (
@@ -70,7 +71,7 @@ function OrderDetails({ onCloseModal, burgerForOrder }) {
 
 OrderDetails.propTypes = {
     onCloseModal: PropTypes.func.isRequired,
-
+    burgerForOrder: PropTypes.arrayOf(PropTypes.shape(ingredientTypes)).isRequired
 }
 
 export default OrderDetails

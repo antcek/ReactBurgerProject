@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useCallback } from 'react';
+import React, { useReducer, useEffect, useCallback,useMemo } from 'react';
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import IngredientDetails from '../ingredient-details/ingredient-details';
@@ -12,18 +12,17 @@ import {
     SET_CONSTRUCTOR_INGREDIENT,
     SORT_CONSTRUCTOR_INGREDIENT
 } from '../../services/actions/burger-constructor';
-import { useState } from 'react';
+
 import DraggedIngredientCard from '../burger-constructor-ingredients/burger-constructor-ingredients';
 
-const initialPriceCount = { count: 0 };
+
 
 function BurgerConstructor() {
 
 
     const dispatch = useDispatch();
     const products = useSelector(store => store.getProducts.products);
-    const [priceCount, priceCountDispatcher] = useReducer(priceReducer, initialPriceCount);
-
+    
     const currentIngredient = useSelector(store => store.ingredientDetails.current);
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
 
@@ -36,9 +35,11 @@ function BurgerConstructor() {
     const bunsForOrder = constructorBuns.slice().concat(constructorBuns);
     const burgerForOrder = bunsForOrder.concat(constructorIngredients)
     
+    const totalPrice = useMemo(() => {
+        return draggedBunsPrice*2 + draggedIngredientsPrice
+    },[draggedBunsPrice,draggedIngredientsPrice])
+    
    
-
-
     const [{ BunIsHover }, dropBun] = useDrop({
         accept: 'bun',
         collect: monitor => ({
@@ -94,17 +95,8 @@ function BurgerConstructor() {
     const ingredientHovered = IngIsHover && constructorBuns.length !== 0 ? { borderStyle: 'dashed', borderColor: 'aliceblue' } : null;
 
 
-    useEffect(() => {
-        priceCountDispatcher({ price: draggedBunsPrice * 2 + draggedIngredientsPrice });
-
-    }, [draggedBunsPrice, draggedIngredientsPrice])
-
-    function priceReducer(state, action) {
-
-        return { count: action.price }
-    };
-
     function onOpenModal(event) {
+         
 
         const currentTarget = event.currentTarget;
         const targetProduct = products.find((product) => product._id === currentTarget.getAttribute('id'))
@@ -119,7 +111,7 @@ function BurgerConstructor() {
                 visible: true
             });
         }
-
+   
     };
 
     function onCloseModal() {
@@ -192,7 +184,7 @@ function BurgerConstructor() {
             </div>
             <div className={styles.order}>
                 <div className={styles.price}>
-                    <p className="text text_type_digits-medium">{priceCount.count}</p>
+                    <p className="text text_type_digits-medium">{totalPrice}</p>
                     <div className={styles.icon}>
                         <CurrencyIcon type="primary" />
                     </div>
@@ -205,7 +197,7 @@ function BurgerConstructor() {
             </div>
             {modalVisible && <Modal onCloseModal={onCloseModal}>
                 {currentIngredient ? <IngredientDetails products={products} onCloseModal={onCloseModal} />
-                    : <OrderDetails burgerForOrder={burgerForOrder}  onCloseModal={onCloseModal} />
+                    : <OrderDetails  burgerForOrder={burgerForOrder}  onCloseModal={onCloseModal} />
                 }
             </Modal>}
 
@@ -214,11 +206,6 @@ function BurgerConstructor() {
     )
 }
 
-BurgerConstructor.propTypes = {
-    // products: PropTypes.arrayOf(PropTypes.shape(ingredientTypes)).isRequired,
-
-
-}
 
 
 export default BurgerConstructor
