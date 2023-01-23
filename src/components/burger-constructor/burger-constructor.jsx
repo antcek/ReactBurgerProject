@@ -27,7 +27,7 @@ function BurgerConstructor() {
 
     const constructorIngredients = useSelector(store => store.burgerConstructor.ingredients);
     const constructorBuns = useSelector(store => store.burgerConstructor.buns);
-    console.log(constructorBuns)
+
     const draggedBunsPrice = constructorBuns.reduce((accum, curr) => accum + curr.price, 0);
     const draggedIngredientsPrice = constructorIngredients.reduce((accum, curr) => accum + curr.price, 0);
 
