@@ -23,7 +23,7 @@ function Modal({ onCloseModal, children }) {
     }, [onCloseModal]);
 
     return ReactDOM.createPortal(
-        <div >
+        <>
             <div className={styles.modal}>
 
                 {children}
@@ -31,7 +31,7 @@ function Modal({ onCloseModal, children }) {
             </div>
 
             <ModalOverlay onCloseModal={onCloseModal} />
-        </div>,
+        </>,
         document.getElementById("react-modals")
     )
 }
