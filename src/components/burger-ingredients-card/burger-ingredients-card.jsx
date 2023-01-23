@@ -26,13 +26,14 @@ function IngredientCard({ onOpenModal, product }) {
     const setBunsCount = () => (draggedBuns.length * 2);
 
     const setIngredientCount = () => (draggedIngredients.filter(item => item.name === product.name).length);
-
+    
+    const cardClasses = `${styles.card} ${isDrag ?  styles.dragging : ''}`
 
     return (
 
         <div  onClick={onOpenModal}
             id={product._id}
-            className={styles.card}
+            className={`${cardClasses}`}
             key={product._id}>
 
             {draggedBuns.map(item => item.name === product.name ? <Counter key={item._id} count={setBunsCount()} size="default" extraClass="m-1" />
