@@ -2,7 +2,7 @@
     padding: 40px 0;
     display: flex;
     flex-direction: column;
-  
+
 }
 
 .tabs {
@@ -18,11 +18,11 @@
     gap: 32px 24px;
     justify-content: center;
     margin-top: 24px;
-  
+
 }
 
 .container {
-   
+
     overflow-y: auto;
 
 }
@@ -30,12 +30,13 @@
 .container::-webkit-scrollbar {
     background: #2F2F37;
     width: 8px;
+    border-radius: 3px;
 
 }
 
 .container::-webkit-scrollbar-thumb {
     background: #8585AD;
     border: 3px solid #8585AD;
-
+    border-radius: 3px;
 
 }
