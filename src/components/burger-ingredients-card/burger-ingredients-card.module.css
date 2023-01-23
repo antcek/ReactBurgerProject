@@ -6,8 +6,10 @@
     align-items: start;
     text-align: center;
     justify-content: center;
-    cursor: pointer;
+    cursor:pointer;
+
 }
+
 
 .cardBody {
     width: 100%;
@@ -16,7 +18,15 @@
     justify-content: center;
 }
 
-.dragging {
 
-    transition: all 400ms ease-in-out;
+
+.previewImage:hover{
+  
+    transform: scale(1.2);
+    
+}
+
+.previewImage {
+    cursor: grab;
+    transition: transform 200ms ease-in
 }

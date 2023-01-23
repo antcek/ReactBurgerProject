@@ -8,13 +8,13 @@ import { useSelector } from 'react-redux';
 function IngredientCard({ onOpenModal, product }) {
 
     const productType = product.type === 'bun' ? 'bun' : 'ingredients';
-    
-    const [, dragRef] = useDrag({
+
+    const [{isDrag}, dragRef, previewRef] = useDrag({
 
         type: productType,
         item: { product },
         collect: monitor => ({
-
+           
             isDrag: monitor.isDragging()
         })
 
@@ -22,28 +22,26 @@ function IngredientCard({ onOpenModal, product }) {
 
     const draggedBuns = useSelector(store => store.burgerConstructor.buns);
     const draggedIngredients = useSelector(store => store.burgerConstructor.ingredients)
-  
+
     const setBunsCount = () => (draggedBuns.length * 2);
 
     const setIngredientCount = () => (draggedIngredients.filter(item => item.name === product.name).length);
-   
+
 
     return (
 
-        <div  ref={dragRef} onClick={onOpenModal}
+        <div  onClick={onOpenModal}
             id={product._id}
             className={styles.card}
-            key={product._id}
-            
-        >
+            key={product._id}>
+
             {draggedBuns.map(item => item.name === product.name ? <Counter key={item._id} count={setBunsCount()} size="default" extraClass="m-1" />
-                : null)
-            }
+                : null)}
 
             {draggedIngredients.map((item, index) => item.name === product.name ? <Counter key={index} count={setIngredientCount()} size="default" extraClass="m-1" />
-                : null)
-            }
-            <img  src={product.image} alt='картинка' />
+                : null)}
+
+            <img ref={dragRef} className={styles.previewImage} src={product.image} alt='картинка' />
             <div className={styles.cardBody}>
                 <p className="text text_type_digits-default">{product.price}</p>
                 <CurrencyIcon type="primary" />
@@ -53,14 +51,12 @@ function IngredientCard({ onOpenModal, product }) {
             </p>
         </div>
 
-
-
     );
 }
 
 IngredientCard.propTypes = {
     onOpenModal: PropTypes.func.isRequired,
-     product: PropTypes.shape(ingredientTypes).isRequired,
+    product: PropTypes.shape(ingredientTypes).isRequired,
 }
 
 export default IngredientCard
