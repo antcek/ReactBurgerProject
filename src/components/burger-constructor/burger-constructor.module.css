@@ -86,6 +86,16 @@
     margin-left: 32px;
 }
 
+.bunHovered {
+    
+    box-shadow: 0px 0px 14px #12c2c4;
+
+}
+
+.ingredientHovered {
+    box-shadow:  0px 0px 14px #1df0ff
+}
+
 .selectMiddleIngredient {
     box-sizing: border-box;
     display: flex;
@@ -106,8 +116,8 @@
     max-width: 536px;
     margin: 0;
     white-space: nowrap;
-    
-   
+
+
 }
 
 .wrapper {
@@ -124,12 +134,12 @@
 .wrapper::-webkit-scrollbar {
     background: #2F2F37;
     width: 8px;
-    border-radius:3px;
+    border-radius: 3px;
 }
 
 .wrapper::-webkit-scrollbar-thumb {
     background: #8585AD;
     border: 3px solid #8585AD;
-    border-radius:3px;
+    border-radius: 3px;
 
 }

@@ -40,7 +40,7 @@ function BurgerConstructor() {
     },[draggedBunsPrice,draggedIngredientsPrice])
     
    
-    const [, dropBun] = useDrop({
+    const [{BunIsHover}, dropBun] = useDrop({
         accept: 'bun',
         collect: monitor => ({
             BunIsHover: monitor.isOver()
@@ -73,7 +73,7 @@ function BurgerConstructor() {
         }
     }, [constructorIngredients, dispatch])
 
-    const [, dropIngredient] = useDrop({
+    const [{IngIsHover}, dropIngredient] = useDrop({
         accept: 'ingredients',
         collect: monitor => ({
             IngIsHover: monitor.isOver()
@@ -91,10 +91,11 @@ function BurgerConstructor() {
         }
     });
 
-    // const bunHovered = BunIsHover ? { borderStyle: 'dashed', borderColor: 'aliceblue' } : null;
-    // const ingredientHovered = IngIsHover && constructorBuns.length !== 0 ? { borderStyle: 'dashed', borderColor: 'aliceblue' } : null;
+     const bunHovered = `${styles.selectTopBun} ${BunIsHover ? styles.bunHovered : ''}`;
+     const botBunHovered = `${styles.selectBotBun} ${BunIsHover ? styles.bunHovered : ''}`
+     const ingredientHovered = `${styles.selectMiddleIngredient} ${IngIsHover ? styles.ingredientHovered : ''}`
 
-
+   
     function onOpenModal(event) {
          
 
@@ -128,7 +129,7 @@ function BurgerConstructor() {
         <section ref={dropBun} id='constructor' className={styles.constructor}>
             <div ref={dropIngredient} >
                 {constructorBuns.length === 0 ?
-                    <div className={styles.selectTopBun}>
+                    <div className={bunHovered}>
                         Перенесите сюда булку
                     </div>
                     : constructorBuns.map((bun) =>
@@ -149,7 +150,7 @@ function BurgerConstructor() {
                     {constructorIngredients.length === 0 ?
                         <div className={styles.ingredientsContainer}>
                             <DragIcon />
-                            <div  className={styles.selectMiddleIngredient}>
+                            <div  className={ingredientHovered}>
                                 Перенесите ингредиент
                             </div>
                         </div>
@@ -166,7 +167,7 @@ function BurgerConstructor() {
                 </div>
 
                 {constructorBuns.length === 0 ?
-                    <div className={styles.selectBotBun}>
+                    <div className={botBunHovered}>
                         Перенесите сюда булку
                     </div>
                     :
