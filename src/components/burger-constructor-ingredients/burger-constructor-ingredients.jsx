@@ -21,14 +21,11 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
     });
 
 
-    const [ {dropped} , sortedDrop] = useDrop({
+    const [, sortedDrop] = useDrop({
         accept: 'sort-ingredients',
-        collect: monitor => ({
-            
-            dropped: monitor.getItem()
-        }),
+      
         hover: (item, monitor) => {
-
+     
             const draggedIndex = item.index;
             const hoverIndex = index;
             if (monitor.didDrop()) return;
@@ -36,17 +33,20 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
             moveIngredient(draggedIndex, hoverIndex);
             item.index = hoverIndex;
         },
+      
     });
-  
+
+
     const refIng = useRef(null);
     const dispatch = useDispatch();
 
-    const ingredientIsDrag = `${styles.main} ${isDragging ? styles.dragging : ''} ${dropped   ? styles.dropped:''}`
-     
+    const ingredientIsDrag = `${styles.main} ${isDragging ? styles.dragging : ''} `
+    
+
     return (
         <div ref={sortedDrop} >
             <div ref={sortedDrag} className={styles.ingredientsContainer}>
-                <div   >
+                <div>
                     <DragIcon />
                 </div>
                 <div ref={refIng} id={ingredient._id} onClick={onOpenModal} className={ingredientIsDrag}>
@@ -57,7 +57,6 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
                                 id: index
                             })
                         }
-
                         text={ingredient.name}
                         price={ingredient.price}
                         thumbnail={ingredient.image}

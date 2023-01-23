@@ -19,7 +19,6 @@ import DraggedIngredientCard from '../burger-constructor-ingredients/burger-cons
 
 function BurgerConstructor() {
 
-
     const dispatch = useDispatch();
     const products = useSelector(store => store.getProducts.products);
 
@@ -28,7 +27,7 @@ function BurgerConstructor() {
 
     const constructorIngredients = useSelector(store => store.burgerConstructor.ingredients);
     const constructorBuns = useSelector(store => store.burgerConstructor.buns);
-
+    console.log(constructorBuns)
     const draggedBunsPrice = constructorBuns.reduce((accum, curr) => accum + curr.price, 0);
     const draggedIngredientsPrice = constructorIngredients.reduce((accum, curr) => accum + curr.price, 0);
 
@@ -40,10 +39,12 @@ function BurgerConstructor() {
     }, [draggedBunsPrice, draggedIngredientsPrice])
 
 
-    const [{ BunIsHover }, dropBun] = useDrop({
+    const [{ canDrop }, dropBun] = useDrop({
         accept: 'bun',
         collect: monitor => ({
-            BunIsHover: monitor.isOver()
+
+            canDrop: monitor.canDrop(),
+
         }),
         drop(product) {
 
@@ -73,10 +74,11 @@ function BurgerConstructor() {
         }
     }, [constructorIngredients, dispatch])
 
-    const [{ IngIsHover }, dropIngredient] = useDrop({
+    const [{ canDropIng }, dropIngredient] = useDrop({
         accept: 'ingredients',
         collect: monitor => ({
-            IngIsHover: monitor.isOver()
+            canDropIng: monitor.canDrop(),
+
         }),
 
         drop(product) {
@@ -91,12 +93,16 @@ function BurgerConstructor() {
         }
     });
 
-    const bunHovered = `${styles.selectTopBun} ${BunIsHover ? styles.bunHovered : ''}`;
-    const botBunHovered = `${styles.selectBotBun} ${BunIsHover ? styles.bunHovered : ''}`
-    const ingredientHovered = `${styles.selectMiddleIngredient} ${IngIsHover ? styles.ingredientHovered : ''}`
+    const bunHovered = `${styles.selectTopBun} ${canDrop ? styles.bunHovered : ''}`;
+    const botBunHovered = `${styles.selectBotBun} ${canDrop ? styles.bunHovered : ''}`;
+    const ingredientHovered = `${styles.selectMiddleIngredient} 
+         ${canDropIng && constructorBuns.length !== 0 ?
+            styles.ingredientHovered : ''}`;
+    const throwArea = `${styles.throwAreaEmpty} ${constructorIngredients.length !== 0 &&
+        constructorBuns.length !== 0 && (canDropIng || canDrop)
+        ? styles.throwAreaFilled : ''}`;
 
     function onOpenModal(event) {
-
 
         const currentTarget = event.currentTarget;
         const targetProduct = products.find((product) => product._id === currentTarget.getAttribute('id'))
@@ -125,8 +131,9 @@ function BurgerConstructor() {
 
     return (
 
-        <section ref={dropBun} id='constructor' className={styles.constructor}>
-            <div ref={dropIngredient} >
+        <section  id='constructor' className={styles.constructor}>
+            <div ref={dropIngredient}  className={throwArea}  >
+             <div ref={dropBun}>
                 {constructorBuns.length === 0 ?
                     <div className={bunHovered}>
                         Перенесите сюда булку
@@ -145,7 +152,7 @@ function BurgerConstructor() {
                     )
                 }
 
-                <div >
+                <div  >
                     {constructorIngredients.length === 0 ?
                         <div className={styles.ingredientsContainer}>
                             <DragIcon />
@@ -185,6 +192,7 @@ function BurgerConstructor() {
                                 thumbnail={bun.image_large}
                             />
                         </div>)}
+                        </div>
             </div>
             <div className={styles.order}>
                 <div className={styles.price}>

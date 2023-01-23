@@ -1,7 +1,6 @@
 .constructor {
     box-sizing: border-box;
-    padding-top: 84px;
-    padding-left: 24px;
+    margin-top: 84px;
     height: 100%;
     width: 100%;
     display: grid;
@@ -14,7 +13,7 @@
     justify-content: flex-start;
     padding-left: 32px;
     cursor: pointer;
-   
+
 }
 
 
@@ -23,10 +22,21 @@
     justify-content: flex-end;
     align-items: center;
     padding-right: 16px;
-    margin-top: 40px;
+    margin-top: 16px;
     gap: 40px;
 }
 
+.throwAreaEmpty {
+    border-radius: 10px;
+    padding-right: 8px;
+    padding-left: 16px;
+    padding-top: 24px;
+    padding-bottom: 24px
+}
+
+.throwAreaFilled {
+    box-shadow: 0px 0px 14px #12c2c4;
+}
 
 .price {
     display: flex;
@@ -126,8 +136,8 @@
     max-height: 464px;
     overflow-y: scroll;
     padding-right: 8px;
-    padding-top:16px;
-    padding-bottom:16px;
+    padding-top: 16px;
+    padding-bottom: 16px;
 }
 
 .wrapper::-webkit-scrollbar {
