@@ -14,3 +14,9 @@
     grid-template-columns: max-content auto;
     
 }
+
+.dragging {
+    border-style:dotted;
+    border-color: #1df0ff;
+    box-shadow: 0px 0px 14px #12c2c4;
+}

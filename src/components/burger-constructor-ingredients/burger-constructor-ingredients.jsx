@@ -10,7 +10,7 @@ import ingredientTypes from '../../prop-types/prop-types';
 
 export default function DraggedIngredientCard({ onOpenModal, ingredient, index, moveIngredient }) {
 
-    const [, sortedDrag] = useDrag({
+    const [{ isDragging }, sortedDrag] = useDrag({
         type: 'sort-ingredients',
         item: { index },
 
@@ -20,8 +20,11 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
 
     });
 
-    const [, sortedDrop] = useDrop({
+    const [{ dropped }, sortedDrop] = useDrop({
         accept: 'sort-ingredients',
+        collect: monitor => ({
+            dropped: monitor.didDrop()
+        }),
         hover: (item, monitor) => {
 
             const draggedIndex = item.index;
@@ -29,12 +32,14 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
             if (monitor.didDrop()) return;
 
             moveIngredient(draggedIndex, hoverIndex);
-            item.index = hoverIndex
+            item.index = hoverIndex;
         },
     });
 
-    const refIng = useRef();
+    const refIng = useRef(null);
     const dispatch = useDispatch();
+
+    const ingredientIsDrag = `${styles.main} ${isDragging ? styles.dragging : ''}`
 
     return (
         <div ref={sortedDrop} >
@@ -42,7 +47,7 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
                 <div   >
                     <DragIcon />
                 </div>
-                <div ref={refIng} id={ingredient._id} onClick={onOpenModal} className={styles.main}>
+                <div ref={refIng} id={ingredient._id} onClick={onOpenModal} className={ingredientIsDrag}>
                     <ConstructorElement
                         handleClose={() =>
                             dispatch({

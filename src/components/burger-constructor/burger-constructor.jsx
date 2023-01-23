@@ -1,4 +1,4 @@
-import React, { useCallback,useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import IngredientDetails from '../ingredient-details/ingredient-details';
@@ -22,7 +22,7 @@ function BurgerConstructor() {
 
     const dispatch = useDispatch();
     const products = useSelector(store => store.getProducts.products);
-    
+
     const currentIngredient = useSelector(store => store.ingredientDetails.current);
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
 
@@ -31,16 +31,16 @@ function BurgerConstructor() {
 
     const draggedBunsPrice = constructorBuns.reduce((accum, curr) => accum + curr.price, 0);
     const draggedIngredientsPrice = constructorIngredients.reduce((accum, curr) => accum + curr.price, 0);
-    
+
     const bunsForOrder = constructorBuns.slice().concat(constructorBuns);
     const burgerForOrder = bunsForOrder.concat(constructorIngredients)
-    
+
     const totalPrice = useMemo(() => {
-        return draggedBunsPrice*2 + draggedIngredientsPrice
-    },[draggedBunsPrice,draggedIngredientsPrice])
-    
-   
-    const [{BunIsHover}, dropBun] = useDrop({
+        return draggedBunsPrice * 2 + draggedIngredientsPrice
+    }, [draggedBunsPrice, draggedIngredientsPrice])
+
+
+    const [{ BunIsHover }, dropBun] = useDrop({
         accept: 'bun',
         collect: monitor => ({
             BunIsHover: monitor.isOver()
@@ -73,7 +73,7 @@ function BurgerConstructor() {
         }
     }, [constructorIngredients, dispatch])
 
-    const [{IngIsHover}, dropIngredient] = useDrop({
+    const [{ IngIsHover }, dropIngredient] = useDrop({
         accept: 'ingredients',
         collect: monitor => ({
             IngIsHover: monitor.isOver()
@@ -91,13 +91,12 @@ function BurgerConstructor() {
         }
     });
 
-     const bunHovered = `${styles.selectTopBun} ${BunIsHover ? styles.bunHovered : ''}`;
-     const botBunHovered = `${styles.selectBotBun} ${BunIsHover ? styles.bunHovered : ''}`
-     const ingredientHovered = `${styles.selectMiddleIngredient} ${IngIsHover ? styles.ingredientHovered : ''}`
+    const bunHovered = `${styles.selectTopBun} ${BunIsHover ? styles.bunHovered : ''}`;
+    const botBunHovered = `${styles.selectBotBun} ${BunIsHover ? styles.bunHovered : ''}`
+    const ingredientHovered = `${styles.selectMiddleIngredient} ${IngIsHover ? styles.ingredientHovered : ''}`
 
-   
     function onOpenModal(event) {
-         
+
 
         const currentTarget = event.currentTarget;
         const targetProduct = products.find((product) => product._id === currentTarget.getAttribute('id'))
@@ -112,7 +111,7 @@ function BurgerConstructor() {
                 visible: true
             });
         }
-   
+
     };
 
     function onCloseModal() {
@@ -146,23 +145,27 @@ function BurgerConstructor() {
                     )
                 }
 
-                <div className={styles.wrapper}>
+                <div >
                     {constructorIngredients.length === 0 ?
                         <div className={styles.ingredientsContainer}>
                             <DragIcon />
-                            <div  className={ingredientHovered}>
+                            <div className={ingredientHovered}>
                                 Перенесите ингредиент
                             </div>
                         </div>
-                        : constructorIngredients.map((ingredient, index) =>
-
-                        (<DraggedIngredientCard
+                        : 
+                         <div className={styles.wrapper}>
+                        {constructorIngredients.map((ingredient, index) =>
+               
+                       
+                        <DraggedIngredientCard
                             id={ingredient._id}
                             moveIngredient={moveIngredient}
                             key={ingredient.key}
                             onOpenModal={onOpenModal}
                             ingredient={ingredient}
-                            index={index} />))
+                            index={index} />)}
+                            </div>
                     }
                 </div>
 
@@ -198,7 +201,7 @@ function BurgerConstructor() {
             </div>
             {modalVisible && <Modal onCloseModal={onCloseModal}>
                 {currentIngredient ? <IngredientDetails products={products} onCloseModal={onCloseModal} />
-                    : <OrderDetails  burgerForOrder={burgerForOrder}  onCloseModal={onCloseModal} />
+                    : <OrderDetails burgerForOrder={burgerForOrder} onCloseModal={onCloseModal} />
                 }
             </Modal>}
 
