@@ -153,19 +153,19 @@ function BurgerConstructor() {
                                 Перенесите ингредиент
                             </div>
                         </div>
-                        : 
-                         <div className={styles.wrapper}>
-                        {constructorIngredients.map((ingredient, index) =>
-               
-                       
-                        <DraggedIngredientCard
-                            id={ingredient._id}
-                            moveIngredient={moveIngredient}
-                            key={ingredient.key}
-                            onOpenModal={onOpenModal}
-                            ingredient={ingredient}
-                            index={index} />)}
-                            </div>
+                        :
+                        <div className={styles.wrapper}>
+                            {constructorIngredients.map((ingredient, index) =>
+
+
+                                <DraggedIngredientCard
+                                    id={ingredient._id}
+                                    moveIngredient={moveIngredient}
+                                    key={ingredient.key}
+                                    onOpenModal={onOpenModal}
+                                    ingredient={ingredient}
+                                    index={index} />)}
+                        </div>
                     }
                 </div>
 
@@ -194,9 +194,13 @@ function BurgerConstructor() {
                     </div>
                 </div>
 
-                <Button onClick={onOpenModal} htmlType="button" type="primary" size="large">
-                    Оформить заказ
-                </Button>
+                {burgerForOrder.length === 0 ?
+                    <Button disabled onClick={onOpenModal} htmlType="button" type="primary" size="large">
+                        Оформить заказ
+                    </Button>
+                    : <Button onClick={onOpenModal} htmlType="button" type="primary" size="large">
+                        Оформить заказ
+                    </Button>}
 
             </div>
             {modalVisible && <Modal onCloseModal={onCloseModal}>
