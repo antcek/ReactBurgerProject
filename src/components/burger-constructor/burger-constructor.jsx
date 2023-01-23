@@ -98,9 +98,9 @@ function BurgerConstructor() {
     const ingredientHovered = `${styles.selectMiddleIngredient} 
          ${canDropIng && constructorBuns.length !== 0 ?
             styles.ingredientHovered : ''}`;
-    const throwArea = `${styles.throwAreaEmpty} ${constructorIngredients.length !== 0 &&
-        constructorBuns.length !== 0 && (canDropIng || canDrop)
-        ? styles.throwAreaFilled : ''}`;
+    const throwArea = `${styles.throwAreaEmpty} ${constructorBuns.length !== 0 &&
+        (canDropIng || canDrop) ?
+        styles.throwAreaFilled : ''}`;
 
     function onOpenModal(event) {
 
@@ -131,68 +131,68 @@ function BurgerConstructor() {
 
     return (
 
-        <section  id='constructor' className={styles.constructor}>
-            <div ref={dropIngredient}  className={throwArea}  >
-             <div ref={dropBun}>
-                {constructorBuns.length === 0 ?
-                    <div className={bunHovered}>
-                        Перенесите сюда булку
-                    </div>
-                    : constructorBuns.map((bun) =>
-                        <div key={bun._id} id={bun._id} onClick={onOpenModal} className={styles.buns}>
-                            <ConstructorElement
-
-                                type="top"
-                                isLocked={true}
-                                text={`${bun.name} (верх)`}
-                                price={bun.price}
-                                thumbnail={bun.image_large}
-                            />
+        <section id='constructor' className={styles.constructor}>
+            <div ref={dropIngredient} className={throwArea}  >
+                <div ref={dropBun}>
+                    {constructorBuns.length === 0 ?
+                        <div className={bunHovered}>
+                            Перенесите сюда булку
                         </div>
-                    )
-                }
+                        : constructorBuns.map((bun) =>
+                            <div key={bun._id} id={bun._id} onClick={onOpenModal} className={styles.buns}>
+                                <ConstructorElement
 
-                <div  >
-                    {constructorIngredients.length === 0 ?
-                        <div className={styles.ingredientsContainer}>
-                            <DragIcon />
-                            <div className={ingredientHovered}>
-                                Перенесите ингредиент
+                                    type="top"
+                                    isLocked={true}
+                                    text={`${bun.name} (верх)`}
+                                    price={bun.price}
+                                    thumbnail={bun.image_large}
+                                />
                             </div>
+                        )
+                    }
+
+                    <div  >
+                        {constructorIngredients.length === 0 ?
+                            <div className={styles.ingredientsContainer}>
+                                <DragIcon />
+                                <div className={ingredientHovered}>
+                                    Перенесите ингредиент
+                                </div>
+                            </div>
+                            :
+                            <div className={styles.wrapper}>
+                                {constructorIngredients.map((ingredient, index) =>
+
+
+                                    <DraggedIngredientCard
+                                        id={ingredient._id}
+                                        moveIngredient={moveIngredient}
+                                        key={ingredient.key}
+                                        onOpenModal={onOpenModal}
+                                        ingredient={ingredient}
+                                        index={index} />)}
+                            </div>
+                        }
+                    </div>
+
+                    {constructorBuns.length === 0 ?
+                        <div className={botBunHovered}>
+                            Перенесите сюда булку
                         </div>
                         :
-                        <div className={styles.wrapper}>
-                            {constructorIngredients.map((ingredient, index) =>
+                        constructorBuns.map(bun =>
+                            <div key={bun._id} id={bun._id} onClick={onOpenModal} className={styles.buns}>
+                                <ConstructorElement
 
-
-                                <DraggedIngredientCard
-                                    id={ingredient._id}
-                                    moveIngredient={moveIngredient}
-                                    key={ingredient.key}
-                                    onOpenModal={onOpenModal}
-                                    ingredient={ingredient}
-                                    index={index} />)}
-                        </div>
-                    }
+                                    type="bottom"
+                                    isLocked={true}
+                                    text={`${bun.name} (низ)`}
+                                    price={bun.price}
+                                    thumbnail={bun.image_large}
+                                />
+                            </div>)}
                 </div>
-
-                {constructorBuns.length === 0 ?
-                    <div className={botBunHovered}>
-                        Перенесите сюда булку
-                    </div>
-                    :
-                    constructorBuns.map(bun =>
-                        <div key={bun._id} id={bun._id} onClick={onOpenModal} className={styles.buns}>
-                            <ConstructorElement
-
-                                type="bottom"
-                                isLocked={true}
-                                text={`${bun.name} (низ)`}
-                                price={bun.price}
-                                thumbnail={bun.image_large}
-                            />
-                        </div>)}
-                        </div>
             </div>
             <div className={styles.order}>
                 <div className={styles.price}>
