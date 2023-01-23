@@ -1,22 +1,26 @@
 .main {
 
     display: flex;
-    gap: 8px;
+    flex-grow:1;
+    gap: 13px;
     align-items: center;
     cursor: pointer;
    border-radius:40px;
 }
 
 .ingredientsContainer {
-    display: grid;
+    display: flex;
     align-items: center;
     gap: 8px;
-    grid-template-columns: max-content auto;
+    
     
 }
 
+.dropped {
+    box-shadow: 0px 0px 14px #d60c0c;
+}
+
 .dragging {
-    border-style:dotted;
-    border-color: #1df0ff;
+  
     box-shadow: 0px 0px 14px #12c2c4;
 }
