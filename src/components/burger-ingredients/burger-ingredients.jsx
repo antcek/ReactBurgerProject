@@ -1,4 +1,4 @@
-import React, {useCallback,useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -6,15 +6,15 @@ import Modal from '../modal/modal.jsx';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useDispatch, useSelector } from 'react-redux';
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
-
+import { Link } from 'react-scroll';
 
 function BurgerIngredients() {
 
     const dispatch = useDispatch();
 
     const products = useSelector((store) => store.getProducts.products);
-    
-     const [current, setCurrent] = useState('Булки');
+
+    const [current, setCurrent] = useState('Булки');
 
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
 
@@ -24,42 +24,23 @@ function BurgerIngredients() {
     const main = products.filter(ingredient => ingredient.type === 'main');
     const sauce = products.filter(ingredient => ingredient.type === 'sauce');
 
-    const containerRef = useRef(null);
-    const bunRef =useRef(null)
+    const containerRef = document.getElementById('ingredients-container');
+    const bunRef = useRef(null)
     const sauceRef = useRef(null)
     const mainRef = useRef(null)
 
-    
-    const categoryChange = useCallback( (value) => {
-        
-          setCurrent(value);
-
-        if (value === 'Булки') {
-            bunRef.current.scrollIntoView({ behavior: 'smooth' });
-            
-        } else if (value === 'Соусы') {
-            sauceRef.current.scrollIntoView({ behavior: 'smooth' });
-        } else if (value === 'Начинки') {
-            mainRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-         
-        
-         
-    },[bunRef,sauceRef,mainRef,setCurrent] );
-   
     const scrollNavigation = () => {
 
-        if (Math.abs(bunRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)
-            < Math.abs(sauceRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)) {
-             setCurrent('Булки');
+        if (Math.abs(bunRef.current.getBoundingClientRect().top - containerRef.getBoundingClientRect().top)
+            < Math.abs(sauceRef.current.getBoundingClientRect().top - containerRef.getBoundingClientRect().top)) {
+            setCurrent('Булки');
         }
 
-         else setCurrent('Соусы');
+        else setCurrent('Соусы');
 
-        if (Math.abs(mainRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)
-            < Math.abs(sauceRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)) {
-             setCurrent('Начинки');
+        if (Math.abs(mainRef.current.getBoundingClientRect().top - containerRef.getBoundingClientRect().top)
+            < Math.abs(sauceRef.current.getBoundingClientRect().top - containerRef.getBoundingClientRect().top)) {
+            setCurrent('Начинки');
         };
 
     }
@@ -86,39 +67,65 @@ function BurgerIngredients() {
         });
     };
 
-
     return (
         <section className={styles.ingredients} >
             <h1 className="text text_type_main-large">
                 Соберите бургер
             </h1 >
             <div className={styles.tabs} >
-                <Tab value="Булки" active={current === 'Булки'} onClick={categoryChange}>
-                    Булки
-                </Tab>
-                <Tab value="Соусы" active={current === 'Соусы'} onClick={categoryChange}>
+                <Link
+                to='ingredients-buns'
+                spy={true}
+                smooth={true}
+                duration={400}
+                containerId='ingredients-container'
+                onSetActive={() => setCurrent('Булки')}
+                >
+                    <Tab value="Булки" active={current === 'Булки'} >
+                        Булки
+                    </Tab>
+               </Link>
+               <Link
+                to='ingredients-sauces'
+                spy={true}
+                smooth={true}
+                duration={400}
+                containerId='ingredients-container'
+                onSetActive={() => setCurrent('Соусы')}
+                >
+                <Tab value="Соусы" active={current === 'Соусы'}>
                     Соусы
                 </Tab>
-                <Tab value="Начинки" active={current === 'Начинки'} onClick={categoryChange}>
+                </Link>
+                <Link 
+                to='ingredients-main'
+                spy={true}
+                smooth={true}
+                duration={400}
+                containerId='ingredients-container'
+                onSetActive={() => setCurrent('Начинки')}
+                >
+                <Tab value="Начинки" active={current === 'Начинки'} >
                     Начинки
                 </Tab>
+                </Link>
             </div>
-
-            <div ref={containerRef} onScroll={scrollNavigation} className={styles.container} >
-                <p ref={bunRef} className="text text_type_main-medium ">
+          
+            <div id='ingredients-container'  onScroll={scrollNavigation} className={styles.container} >
+                <p id='ingredients-buns' ref={bunRef} className="text text_type_main-medium ">
                     Булки
                 </p>
                 <div className={styles.wrapper}>
 
                     {buns.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
                 </div>
-                <p ref={sauceRef} className="text text_type_main-medium mt-10">
+                <p id='ingredients-sauces' ref={sauceRef} className="text text_type_main-medium mt-10">
                     Соусы
                 </p>
                 <div className={styles.wrapper} >
                     {sauce.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
                 </div>
-                <p ref={mainRef}  className="text text_type_main-medium mt-10">
+                <p id='ingredients-main' ref={mainRef} className="text text_type_main-medium mt-10">
                     Начинки
                 </p>
                 <div className={styles.wrapper}>
