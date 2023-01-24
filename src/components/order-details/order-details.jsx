@@ -1,28 +1,13 @@
 import styles from './order-details.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { sendOrder } from '../../services/thunk-actions/thunk-actions';
-import {  useMemo } from 'react';
-import ingredientTypes from '../../prop-types/prop-types'
+import { useSelector } from 'react-redux';
 
-function OrderDetails({ onCloseModal, burgerForOrder, }) {
 
-    const dispatch = useDispatch();
+function OrderDetails({ onCloseModal, }) {
 
     const { orderNumber } = useSelector(store => store.orderNumber);
     const orderFailed = useSelector(store => store.orderNumber.orderFailed);
-
-    const burgerAllId = useMemo(() => {
-        return { ingredients: burgerForOrder.map(ingredient => ingredient._id) }
-    },[burgerForOrder]
-    )
-   
-    useEffect(() => {
-        dispatch(sendOrder(burgerAllId));
-
-    }, [dispatch,burgerAllId ])
 
 
     return (
@@ -36,7 +21,7 @@ function OrderDetails({ onCloseModal, burgerForOrder, }) {
                 <div onClick={onCloseModal} className={styles.close}>
                     <CloseIcon type="primary" />
                 </div>
-                <p className="text text_type_digits-large pt-30">{orderNumber === null ? null : orderNumber}</p>
+                <p className="text text_type_digits-large pt-30">{orderNumber}</p>
                 <p className="text text_type_main-medium pt-8">идентификатор заказа</p>
                 <div className={styles.gif}>
                     <svg width="107" height="102" viewBox="0 0 107 102" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -71,7 +56,6 @@ function OrderDetails({ onCloseModal, burgerForOrder, }) {
 
 OrderDetails.propTypes = {
     onCloseModal: PropTypes.func.isRequired,
-    burgerForOrder: PropTypes.arrayOf(PropTypes.shape(ingredientTypes)).isRequired
 }
 
 export default OrderDetails

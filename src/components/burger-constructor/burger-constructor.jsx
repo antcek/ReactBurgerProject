@@ -14,7 +14,7 @@ import {
 } from '../../services/actions/burger-constructor';
 
 import DraggedIngredientCard from '../burger-constructor-ingredients/burger-constructor-ingredients';
-
+import { sendOrder } from '../../services/thunk-actions/thunk-actions';
 
 
 function BurgerConstructor() {
@@ -32,7 +32,11 @@ function BurgerConstructor() {
     const draggedIngredientsPrice = constructorIngredients.reduce((accum, curr) => accum + curr.price, 0);
 
     const bunsForOrder = constructorBuns.slice().concat(constructorBuns);
-    const burgerForOrder = bunsForOrder.concat(constructorIngredients)
+    const burgerForOrder = bunsForOrder.concat(constructorIngredients);
+    const burgerAllId = useMemo(() => {
+        return { ingredients: burgerForOrder.map(ingredient => ingredient._id) }
+    }, [burgerForOrder]
+    )
 
     const totalPrice = useMemo(() => {
         return draggedBunsPrice * 2 + draggedIngredientsPrice
@@ -102,6 +106,7 @@ function BurgerConstructor() {
         (canDropIng || canDrop) ?
         styles.throwAreaFilled : ''}`;
 
+
     function onOpenModal(event) {
 
         const currentTarget = event.currentTarget;
@@ -127,7 +132,6 @@ function BurgerConstructor() {
             visible: false
         });
     };
-
 
     return (
 
@@ -203,18 +207,20 @@ function BurgerConstructor() {
                 </div>
 
                 {burgerForOrder.length === 0 ?
-                    <Button disabled onClick={onOpenModal} htmlType="button" type="primary" size="large">
+                    <Button disabled htmlType="button" type="primary" size="large">
                         Оформить заказ
                     </Button>
-                    : <Button onClick={onOpenModal} htmlType="button" type="primary" size="large">
-                        Оформить заказ
-                    </Button>}
+
+                    : <div onClick={() => dispatch(sendOrder(burgerAllId))}>
+                        <Button onClick={onOpenModal} htmlType="button" type="primary" size="large">
+                            Оформить заказ
+                        </Button>
+                    </div>}
 
             </div>
             {modalVisible && <Modal onCloseModal={onCloseModal}>
                 {currentIngredient ? <IngredientDetails products={products} onCloseModal={onCloseModal} />
-                    : <OrderDetails burgerForOrder={burgerForOrder} onCloseModal={onCloseModal} />
-                }
+                    : <OrderDetails burgerForOrder={burgerForOrder} onCloseModal={onCloseModal} />}
             </Modal>}
 
         </section>
