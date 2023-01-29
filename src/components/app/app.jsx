@@ -7,6 +7,10 @@ import { getIngredients } from '../../services/thunk-actions/thunk-actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { LoginPage } from '../../pages/login/login';
+import { RegisterPage } from '../../pages/register/register';
+import { Error404Page } from '../../pages/not-found/not-found';
 
 function App() {
 
@@ -26,17 +30,24 @@ function App() {
                     Произошла ошибка при загрузке товаров, попробуйте обновить страницу
                 </div> :
                 <div className={styles.container}>
-                    <AppHeader />
-                    <main>
-                        <div className={styles.sections}>
-                            <DndProvider backend={HTML5Backend}>
-                                <BurgerIngredients />
-                                <BurgerConstructor />
-                            </DndProvider>
-                        </div>
-                    </main>
+                    <Router>
+                        <Routes>
+                            <Route path="/login" element={<LoginPage />} />
+                            <Route path="/register" element={<RegisterPage />} />
+                            <Route path="/" element={<> <AppHeader />
+                                <main>
+                                    <div className={styles.sections}>
+                                        <DndProvider backend={HTML5Backend}>
+                                            <BurgerIngredients />
+                                            <BurgerConstructor />
+                                        </DndProvider>
+                                    </div>
+                                </main>
+                            </>} />
+                            <Route path='*' element={<Error404Page />} />
+                        </Routes>
+                    </Router>
                 </div>
-
             }
         </>
     )
