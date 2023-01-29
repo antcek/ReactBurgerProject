@@ -1,0 +1,36 @@
+.wrapper {
+  background-image: url("../../images/error.svg");
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: bottom;
+}
+
+
+.container {
+  box-sizing: border-box;
+  position: absolute;
+  left: 50%;
+  top: 63%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(-50%);
+  width:100%;
+  
+}
+
+.content {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.link {
+  color: antiquewhite;
+
+  padding-left: 8px;
+}

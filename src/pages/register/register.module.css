@@ -1,0 +1,19 @@
+.registerContainer {
+  padding-top:180px;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap:24px;
+
+}
+
+.registerHelp {
+  display:flex;
+  gap: 8px;
+  margin-top:80px;
+}
+
+.button {
+  padding: 0;
+}
