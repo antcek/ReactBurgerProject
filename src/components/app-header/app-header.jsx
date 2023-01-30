@@ -36,12 +36,13 @@ function AppHeader() {
                             isActive: true
                         })}
                     >
-                        <BurgerIcon type={isConstructorActive ? 'primary' : "secondary"} />
+                        <BurgerIcon type={(isConstructorActive) 
+                            ? 'primary' : "secondary"} />
                         <p className="text text_type_main-default  ">
                             Конструктор</p>
                     </NavLink>
                     <NavLink
-                        to='/'
+                        to='*'
                         style={({ isActive }) => ({
                             color: isActive ? 'white' : ''
                         })}

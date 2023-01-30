@@ -12,12 +12,13 @@ import {
     API_REGISTER,
     API_LOGOUT,
     API_REFRESH_TOKEN,
-    API_LOGIN
+    API_LOGIN,
 } from "../../utils/api";
 import { RECOVER_FAILED, RECOVER_SUCCESS, RECOVER_REQUEST } from "../actions/forgot-password";
 import { RESET_FAILED, RESET_SUCCESS, RESET_REQUEST } from "../actions/reset-password";
 import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILED } from "../actions/register";
-import { Action } from "@remix-run/router";
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILED } from "../actions/login";
+import Cookies from 'js-cookie';
 
 
 const checkResponse = (res) => {
@@ -154,7 +155,7 @@ export function resetPassword(passwordValue) {
     }
 }
 
-export function registerUser(nameValue,loginValue,passwordValue) {
+export function registerUser(nameValue, loginValue, passwordValue) {
 
     return async function (dispatch) {
         dispatch({
@@ -164,36 +165,87 @@ export function registerUser(nameValue,loginValue,passwordValue) {
 
         try {
             const response = await fetch(`${API_REGISTER}/auth/register`,
-            {
-                method:'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    'email': loginValue, 
-                    'password': passwordValue, 
-                    'name': nameValue,
-                }),
-                
-            });
-          
-            checkResponse(response).then(result =>
-             
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'email': loginValue,
+                        'password': passwordValue,
+                        'name': nameValue,
+                    }),
+
+                });
+
+            checkResponse(response).then(result => {
+
                 dispatch({
                     type: REGISTER_SUCCESS,
                     user: result.user,
-
-                })
-                )
-
+                });
+            })
         } catch (err) {
             dispatch({
                 type: REGISTER_FAILED
             })
         }
+    }
+}
+
+export function loginUser(loginValue, passwordValue) {
+
+    return async function (dispatch) {
+        dispatch({
+            type: LOGIN_REQUEST,
+        })
+
+        try {
+            const response = await fetch(`${API_LOGIN}/auth/login`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+
+                    },
+                    body: JSON.stringify({
+
+                        email: loginValue,
+                        password: passwordValue
+                    }),
+
+                });
+
+            checkResponse(response).then(result => {
+
+                let authToken;
+
+                if (result.accessToken.indexOf('Bearer') === 0) {
+                    authToken = result.accessToken.split('Bearer')[1].trim();
+                };
+
+                if (authToken) {
+                    Cookies.set('accessToken', authToken)
+                };
+
+                console.log(Cookies.get('accessToken'))
+                dispatch({
+                    type: LOGIN_SUCCESS,
+                    user: result.user
+
+                })
+            }
+            )
+
+        } catch (err) {
+            dispatch({
+                type: LOGIN_FAILED
+            })
+        }
 
     }
 }
+
 
 // вешать функции регистрации и авторизации на кнопки на страницах
 // заголовок 'authorization' есть такой же как и 'content-type'

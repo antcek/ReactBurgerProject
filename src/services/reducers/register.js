@@ -13,7 +13,7 @@ export const registerUserReducer = (state = initialState, action) => {
 
     case REGISTER_REQUEST: {
       return {
-        ...state,
+        ...state, 
         registerRequest: true
       }
     }
