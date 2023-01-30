@@ -182,7 +182,8 @@ export function registerUser(nameValue, loginValue, passwordValue) {
 
                 dispatch({
                     type: REGISTER_SUCCESS,
-                    user: result.user,
+                    user: true
+                    
                 });
             })
         } catch (err) {
@@ -218,17 +219,19 @@ export function loginUser(loginValue, passwordValue) {
 
             checkResponse(response).then(result => {
 
-                let authToken;
+                let accessToken;
 
                 if (result.accessToken.indexOf('Bearer') === 0) {
-                    authToken = result.accessToken.split('Bearer')[1].trim();
+                    accessToken = result.accessToken.split('Bearer')[1].trim();
                 };
 
-                if (authToken) {
-                    Cookies.set('accessToken', authToken)
+                if (accessToken) {
+                    Cookies.set('accessToken', accessToken)
                 };
 
-                console.log(Cookies.get('accessToken'))
+                Cookies.set('refreshToken', result.refreshToken)
+
+            
                 dispatch({
                     type: LOGIN_SUCCESS,
                     user: result.user
@@ -246,6 +249,45 @@ export function loginUser(loginValue, passwordValue) {
     }
 }
 
+export function updateToken() {
+
+    return async function (dispatch) {
+        dispatch({
+            type: LOGIN_REQUEST,
+        })
+
+        try {
+            const response = await fetch(`${API_REFRESH_TOKEN}/auth/token`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+
+                    },
+                    body: JSON.stringify({
+                        token: Cookies.get('refreshToken')
+                    }),
+
+                });
+
+            checkResponse(response).then(result => {
+
+                Cookies.set('refreshToken', result.refreshToken)
+
+                dispatch({
+
+                })
+            }
+            )
+
+        } catch (err) {
+            dispatch({
+
+            })
+        }
+
+    }
+}
 
 // вешать функции регистрации и авторизации на кнопки на страницах
 // заголовок 'authorization' есть такой же как и 'content-type'

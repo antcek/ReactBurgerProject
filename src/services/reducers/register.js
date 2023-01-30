@@ -3,8 +3,9 @@ import { REGISTER_FAILED, REGISTER_SUCCESS, REGISTER_REQUEST } from "../actions/
 const initialState = {
   registerRequest: false,
   registerFailed: false,
-  users: []
-
+  registerNewUser: false,
+ 
+   
 }
 
 export const registerUserReducer = (state = initialState, action) => {
@@ -14,7 +15,8 @@ export const registerUserReducer = (state = initialState, action) => {
     case REGISTER_REQUEST: {
       return {
         ...state, 
-        registerRequest: true
+        registerRequest: true,
+       
       }
     }
 
@@ -23,17 +25,18 @@ export const registerUserReducer = (state = initialState, action) => {
       return {
         ...state,
         registerRequest: false,
-        users: [...state.users, action.user],
+        registerNewUser: action.user,
+      
 
       }
     }
-
 
     case REGISTER_FAILED: {
       return {
         ...state,
         registerFailed: true,
-        registerRequest: false
+        registerRequest: false,
+        registerNewUser: false,
       }
     }
 

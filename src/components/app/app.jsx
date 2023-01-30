@@ -15,6 +15,7 @@ import { ForgotPasswordPage } from '../../pages/forgot-password/forgot-password'
 import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
 import { ProfilPage } from '../../pages/profile/profile';
 
+
 function App() {
 
     const dispatch = useDispatch();
@@ -26,6 +27,8 @@ function App() {
 
     }, [dispatch]);
 
+    
+
     return (
         <>
             {productsFailed ?
@@ -36,7 +39,8 @@ function App() {
                     <Router>
                         <Routes>
                             <Route path="/login" element={<LoginPage />} />
-                            <Route path="/register" element={<RegisterPage />} />
+                            <Route path="/register" element={ <RegisterPage />} />
+                           
                             <Route path='/forgot-password' element={<ForgotPasswordPage />} />
                             <Route path='/reset-password' element={<ResetPasswordPage />} />
                             <Route path='/profile' element={<ProfilPage />} />

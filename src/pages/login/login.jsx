@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './login.module.css';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../services/thunk-actions/thunk-actions';
-
+import { REGISTER_REQUEST, REGISTER_SUCCESS } from '../../services/actions/register';
 
 export function LoginPage() {
 
   const dispatch = useDispatch();
   const isLogin = useSelector(store => store.loginUser.user)
-  
+
   const [loginValue, setLoginValue] = useState('')
   const onLoginChange = e => {
     setLoginValue(e.target.value)
@@ -23,9 +23,13 @@ export function LoginPage() {
   }
 
   const isLogged = () => {
-   return isLogin.length !== 0 ? `/` : '' 
+    return isLogin.length !== 0 ? `/` : ''
   }
-console.log(isLogin)
+
+  if (isLogin.length !== 0) {
+    return <Navigate to="/" />
+  }
+
   return (
     <>
       <AppHeader />
@@ -42,13 +46,12 @@ console.log(isLogin)
           value={passwordValue}
           name={'password'}
         />
-        <NavLink
-        to={isLogged}>
-        <Button onClick={() => dispatch(loginUser(loginValue,passwordValue))} htmlType="button" type="primary" size="large">
-         
+
+
+        <Button onClick={() => dispatch(loginUser(loginValue, passwordValue))} htmlType="button" type="primary" size="large">
           Войти
         </Button>
-        </NavLink>
+
       </div>
       <div className={styles.hints}>
         <div className={styles.loginHelp}>
@@ -56,9 +59,12 @@ console.log(isLogin)
             Вы — новый пользователь?
           </p>
           <Link to='/register'>
-          <Button htmlType="button" type="secondary" size="medium" extraClass={styles.buttons}>
-            Зарегистрироваться
-          </Button>
+            <Button onClick={() => dispatch({
+              type: REGISTER_SUCCESS,
+              user: false
+            })} htmlType="button" type="secondary" size="medium" extraClass={styles.buttons}>
+              Зарегистрироваться
+            </Button>
           </Link>
         </div>
         <div className={styles.loginHelp}>
@@ -66,7 +72,7 @@ console.log(isLogin)
             Забыли пароль?
           </p>
           <Link to='/forgot-password'>
-            <Button  htmlType="button" type="secondary" size="medium" extraClass={styles.buttons}>
+            <Button htmlType="button" type="secondary" size="medium" extraClass={styles.buttons}>
               Восстановить пароль
             </Button>
           </Link>
