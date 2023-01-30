@@ -10,12 +10,12 @@ export function RegisterPage() {
   const inputRef = useRef(null);
 
   const [loginValue, setLoginValue] = useState('')
-  const onLoginChange = e => {
+  const onLoginRegister = e => {
     setLoginValue(e.target.value)
   };
 
   const [passwordValue, setPasswordValue] = useState('');
-  const onPasswordChange = e => {
+  const onPasswordRegister = e => {
     setPasswordValue(e.target.value)
   };
 
@@ -40,12 +40,12 @@ export function RegisterPage() {
           errorText={'Ошибка'}
           size={'default'}
         />
-        <EmailInput onChange={onLoginChange}
+        <EmailInput onChange={onLoginRegister}
           value={loginValue}
           name={'email'}
           isIcon={false} />
         <PasswordInput
-          onChange={onPasswordChange}
+          onChange={onPasswordRegister}
           value={passwordValue}
           name={'password'}
         />

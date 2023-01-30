@@ -11,6 +11,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LoginPage } from '../../pages/login/login';
 import { RegisterPage } from '../../pages/register/register';
 import { Error404Page } from '../../pages/not-found/not-found';
+import { ForgotPasswordPage } from '../../pages/forgot-password/forgot-password';
+import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
 
 function App() {
 
@@ -34,6 +36,8 @@ function App() {
                         <Routes>
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/register" element={<RegisterPage />} />
+                            <Route path='/forgot-password' element={<ForgotPasswordPage />} />
+                            <Route path='/reset-password' element={<ResetPasswordPage />} />
                             <Route path="/" element={<> <AppHeader />
                                 <main>
                                     <div className={styles.sections}>

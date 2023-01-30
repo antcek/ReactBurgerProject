@@ -1,5 +1,10 @@
 
-import { SET_CONSTRUCTOR_INGREDIENT, DELETE_CONSTRUCTOR_INGREDIENT, SET_CONSTRUCTOR_BUN, SORT_CONSTRUCTOR_INGREDIENT } from "../actions/burger-constructor";
+import {
+    SET_CONSTRUCTOR_INGREDIENT,
+    DELETE_CONSTRUCTOR_INGREDIENT,
+    SET_CONSTRUCTOR_BUN,
+    SORT_CONSTRUCTOR_INGREDIENT
+} from "../actions/burger-constructor";
 
 const initialState = {
 
@@ -18,7 +23,7 @@ export const burgerConstructorReducer = (state = initialState, action) => {
                 ...state,
 
                 ingredients: [...state.ingredients,
-               { ...action.ingredients.product, key: action.key}]
+                { ...action.ingredients.product, key: action.key }]
 
             };
         }
@@ -26,7 +31,7 @@ export const burgerConstructorReducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                buns: [ action.buns.product]
+                buns: [action.buns.product]
             }
         }
         case DELETE_CONSTRUCTOR_INGREDIENT: {
@@ -39,12 +44,12 @@ export const burgerConstructorReducer = (state = initialState, action) => {
 
         case SORT_CONSTRUCTOR_INGREDIENT: {
 
-         
-        
+
+
             return {
-              ...state,
-          
-              ingredients: action.ingredients
+                ...state,
+
+                ingredients: action.ingredients
 
 
             }
