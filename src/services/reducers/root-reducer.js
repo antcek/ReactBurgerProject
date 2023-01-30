@@ -13,5 +13,5 @@ export const rootReducer = combineReducers({
     ingredientDetails: ingredientDetailsReducer,
     burgerConstructor: burgerConstructorReducer,
     recoverPassword: recoverPasswordReducer,
-    resetPassword: resetPasswordReducer
+    resetPassword: resetPasswordReducer,
 })

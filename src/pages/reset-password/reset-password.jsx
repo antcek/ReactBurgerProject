@@ -1,9 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef,useEffect } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './reset-password.module.css';
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { resetPassword } from '../../services/thunk-actions/thunk-actions';
+
 
 
 export function ResetPasswordPage() {
@@ -17,6 +19,31 @@ export function ResetPasswordPage() {
   const onPasswordChange = e => {
     setPasswordValue(e.target.value)
   };
+  
+  const sendResetRequest = async () => {
+    dispatch(resetPassword(passwordValue));
+    const fakeUser = async () => {
+
+      const response = await fetch(`https://norma.nomoreparties.space/api/auth/register`,
+              {
+                  method:'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: {
+                      "email": "test-data@yandex.ru",
+                      "password": "fasfafa",
+                      "name": "Username"
+                  },
+                  
+              });
+  
+              console.log(response)
+    }
+  }
+
+ 
+  
 
   return (
     <>
@@ -42,7 +69,7 @@ export function ResetPasswordPage() {
           errorText={'Ошибка'}
           size={'default'}
         />
-        <Button htmlType="button" type="primary" size="large">
+        <Button onClick={sendResetRequest} htmlType="button" type="primary" size="large">
           Сохранить
         </Button>
       </div>

@@ -6,6 +6,7 @@ import {
 import { ORDER_FAILED, ORDER_SUCCESS, ORDER_REQUEST } from "../actions/order-details";
 import { BURGER_API_URL, NORMA_API, API_PASSWORD_FORGOT, API_PASSWORD_RESET } from "../../utils/api";
 import { RECOVER_FAILED, RECOVER_SUCCESS, RECOVER_REQUEST } from "../actions/forgot-password";
+import { RESET_FAILED, RESET_SUCCESS, RESET_REQUEST } from "../actions/reset-password";
 
 
 const checkResponse = (res) => {
@@ -66,39 +67,39 @@ export function sendOrder(idConstructor) {
     }
 }
 
-export function recoverPassword(loginValue)  {
+export function recoverPassword(loginValue) {
 
-    return async function(dispatch) {
-        
+    return async function (dispatch) {
+
         dispatch({
             type: RECOVER_REQUEST,
 
         });
-      
+
         try {
-           
+
             const response = await fetch(`${API_PASSWORD_FORGOT}/password-reset`,
-            {
-                method:'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    'email': loginValue
-                }),
-                
-            });
-            
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'email': loginValue
+                    }),
+
+                });
+
             checkResponse(response).then(result =>
-                
+
                 dispatch({
-                type: RECOVER_SUCCESS,
-                
-            }))
+                    type: RECOVER_SUCCESS,
+
+                }))
 
 
-        } catch(err) {
- 
+        } catch (err) {
+
             dispatch({
                 type: RECOVER_FAILED
             })
@@ -108,42 +109,42 @@ export function recoverPassword(loginValue)  {
     }
 }
 
-export function resetPassword()  {
+export function resetPassword(passwordValue) {
 
-    return async function(dispatch) {
-        
+    return async function (dispatch) {
+
         dispatch({
             type: RESET_REQUEST,
 
         });
-      
+
         try {
-           
             const response = await fetch(`${API_PASSWORD_RESET}/password-reset/reset`,
-            {
-                method:'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(),
-                
-            });
-            
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "password": passwordValue,
+                        token: ''
+                    }),
+                });
+
             checkResponse(response).then(result =>
-                
+
                 dispatch({
-                type: RESET_SUCCESS,
-                
-            }))
+                    type: RESET_SUCCESS,
+                }))
 
+        } catch (err) {
 
-        } catch(err) {
- 
             dispatch({
                 type: RESET_FAILED
             })
         }
-
-
     }
 }
+
+// вешать функции регистрации и авторизации на кнопки на страницах
+// заголовок 'authorization' есть такой же как и 'content-type'
