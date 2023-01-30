@@ -1,4 +1,4 @@
-import { LOGIN_FAILED, LOGIN_SUCCESS, LOGIN_REQUEST } from "../actions/login";
+import { LOGIN_FAILED, LOGIN_SUCCESS, LOGIN_REQUEST,LOGIN_EXIT } from "../actions/login";
 
 const initialState = {
   loginRequest: false,
@@ -34,6 +34,13 @@ export const loginUserReducer = (state = initialState, action) => {
         ...state,
         loginFailed: true,
         loginRequest: false
+      }
+    }
+
+    case LOGIN_EXIT: {
+      return {
+        ...state,
+        user: action.user
       }
     }
 

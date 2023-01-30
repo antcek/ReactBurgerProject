@@ -4,8 +4,12 @@ import styles from './profile.module.css';
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, NavLink } from 'react-router-dom';
 import classNames from 'classnames';
+import { logout } from '../../services/thunk-actions/thunk-actions';
+import { useSelector,useDispatch } from 'react-redux';
 
 export function ProfilPage() {
+
+  const dispatch = useDispatch();
 
   const [nameValue, setNameValue] = useState('');
   const inputRef = useRef(null);
@@ -19,6 +23,8 @@ export function ProfilPage() {
   const onPasswordChange = e => {
     setPasswordValue(e.target.value)
   };
+
+  console.log(useSelector(store => store.loginUser))
 
   return (
     <>
@@ -43,10 +49,13 @@ export function ProfilPage() {
             <p className="text text_type_main-medium text_color_inactive">
               История заказов
             </p>
-            <p className="text text_type_main-medium text_color_inactive">
-              Выход
-            </p>
-
+            <NavLink 
+            to='/login'
+            onClick={() => dispatch(logout())}>
+              <p className="text text_type_main-medium text_color_inactive">
+                Выход
+              </p>
+            </NavLink>
           </div>
           <p className="text text_type_main-default text_color_inactive ">
             В этом разделе вы можете

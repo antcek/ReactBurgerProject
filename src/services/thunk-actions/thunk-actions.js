@@ -17,7 +17,7 @@ import {
 import { RECOVER_FAILED, RECOVER_SUCCESS, RECOVER_REQUEST } from "../actions/forgot-password";
 import { RESET_FAILED, RESET_SUCCESS, RESET_REQUEST } from "../actions/reset-password";
 import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILED } from "../actions/register";
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILED } from "../actions/login";
+import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILED, LOGIN_EXIT } from "../actions/login";
 import Cookies from 'js-cookie';
 
 
@@ -183,7 +183,7 @@ export function registerUser(nameValue, loginValue, passwordValue) {
                 dispatch({
                     type: REGISTER_SUCCESS,
                     user: true
-                    
+
                 });
             })
         } catch (err) {
@@ -231,7 +231,6 @@ export function loginUser(loginValue, passwordValue) {
 
                 Cookies.set('refreshToken', result.refreshToken)
 
-            
                 dispatch({
                     type: LOGIN_SUCCESS,
                     user: result.user
@@ -262,32 +261,61 @@ export function updateToken() {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-
                     },
                     body: JSON.stringify({
                         token: Cookies.get('refreshToken')
                     }),
-
                 });
 
             checkResponse(response).then(result => {
 
-                Cookies.set('refreshToken', result.refreshToken)
+                Cookies.set('refreshToken', result.refreshToken);
 
-                dispatch({
-
-                })
             }
             )
 
         } catch (err) {
-            dispatch({
-
-            })
+            alert('Произошла ошибка! Попробуйте перезагрузить страницу')
         }
 
     }
 }
 
+export function logout() {
+
+    return async function (dispatch) {
+
+        try {
+            const response = await fetch(`${API_LOGOUT}/auth/logout`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        token: Cookies.get('refreshToken')
+                    }),
+                });
+
+            checkResponse(response).then(result => {
+               console.log(result)
+                Cookies.set('refreshToken', '', { expires: -1 });
+                Cookies.set('accessToken', '', { expires: -1 });
+
+                dispatch({
+                    type: LOGIN_EXIT,
+                    user: null
+                })
+
+            }
+            )
+
+        } catch (err) {
+            alert('Произошла ошибка! Попробуйте перезагрузить страницу')
+        }
+
+
+    }
+}
 // вешать функции регистрации и авторизации на кнопки на страницах
 // заголовок 'authorization' есть такой же как и 'content-type'

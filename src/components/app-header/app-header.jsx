@@ -15,7 +15,7 @@ function AppHeader() {
 
     const { isConstructorActive, isFeedActive, isProfileActive } = useSelector(store => store.setActive);
     const dispatch = useDispatch();
-
+    console.log(useSelector(store => store.loginUser))
 
     return (
         <header className={styles.header}>
