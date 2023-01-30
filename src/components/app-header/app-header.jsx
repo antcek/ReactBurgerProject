@@ -41,7 +41,7 @@ function AppHeader() {
                             Конструктор</p>
                     </NavLink>
                     <NavLink
-                        to='/register'
+                        to='/'
                         style={({ isActive }) => ({
                             color: isActive ? 'white' : ''
                         })}

@@ -13,6 +13,7 @@ export const orderNumberReducer = (state = initialState, action) => {
 
         case ORDER_REQUEST: {
             return {
+                ...state,
                 orderRequest: true
             }
         }

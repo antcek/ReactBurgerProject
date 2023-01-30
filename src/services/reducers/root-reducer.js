@@ -6,6 +6,7 @@ import { burgerConstructorReducer } from './burger-constructor';
 import {recoverPasswordReducer} from './forgot-password';
 import {resetPasswordReducer} from './reset-password';
 import {setActiveReducer} from './app-header';
+import { registerUserReducer } from './register';
 
 export const rootReducer = combineReducers({
 
@@ -16,4 +17,5 @@ export const rootReducer = combineReducers({
     recoverPassword: recoverPasswordReducer,
     resetPassword: resetPasswordReducer,
     setActive: setActiveReducer,
+    registerUser: registerUserReducer,
 })

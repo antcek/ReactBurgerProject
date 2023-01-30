@@ -3,9 +3,15 @@ import AppHeader from '../../components/app-header/app-header';
 import styles from './register.module.css';
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link } from 'react-router-dom';
+import { registerUser } from '../../services/thunk-actions/thunk-actions';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 export function RegisterPage() {
 
+  const dispatch = useDispatch();
+
+  console.log(useSelector(store => store.registerUser.users))
   const [nameValue, setNameValue] = useState('');
   const inputRef = useRef(null);
 
@@ -21,7 +27,7 @@ export function RegisterPage() {
 
   return (
     <>
-    
+
       <AppHeader />
 
       <div className={styles.registerContainer}>
@@ -49,18 +55,18 @@ export function RegisterPage() {
           value={passwordValue}
           name={'password'}
         />
-        <Button htmlType="button" type="primary" size="large">
+        <Button onClick={() => dispatch(registerUser(nameValue, loginValue, passwordValue))} htmlType="button" type="primary" size="large">
           Зарегистрироваться
         </Button>
       </div>
       <div className={styles.registerHelp}>
         <p className="text text_type_main-default  text_color_inactive">
-        Уже зарегистрированы?
+          Уже зарегистрированы?
         </p>
         <Link to='/login'>
-        <Button htmlType="button" type="secondary" size="medium" extraClass={styles.button}>
-          Войти
-        </Button>
+          <Button htmlType="button" type="secondary" size="medium" extraClass={styles.button}>
+            Войти
+          </Button>
         </Link>
       </div>
 

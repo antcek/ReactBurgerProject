@@ -22,24 +22,7 @@ export function ResetPasswordPage() {
   
   const sendResetRequest = async () => {
     dispatch(resetPassword(passwordValue));
-    const fakeUser = async () => {
-
-      const response = await fetch(`https://norma.nomoreparties.space/api/auth/register`,
-              {
-                  method:'POST',
-                  headers: {
-                      'Content-Type': 'application/json'
-                  },
-                  body: {
-                      "email": "test-data@yandex.ru",
-                      "password": "fasfafa",
-                      "name": "Username"
-                  },
-                  
-              });
-  
-              console.log(response)
-    }
+   
   }
 
  

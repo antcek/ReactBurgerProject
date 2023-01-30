@@ -4,9 +4,20 @@ import {
     ALL_INGREDIENTS_FAILED
 } from "../actions/app";
 import { ORDER_FAILED, ORDER_SUCCESS, ORDER_REQUEST } from "../actions/order-details";
-import { BURGER_API_URL, NORMA_API, API_PASSWORD_FORGOT, API_PASSWORD_RESET } from "../../utils/api";
+import {
+    BURGER_API_URL,
+    NORMA_API,
+    API_PASSWORD_FORGOT,
+    API_PASSWORD_RESET,
+    API_REGISTER,
+    API_LOGOUT,
+    API_REFRESH_TOKEN,
+    API_LOGIN
+} from "../../utils/api";
 import { RECOVER_FAILED, RECOVER_SUCCESS, RECOVER_REQUEST } from "../actions/forgot-password";
 import { RESET_FAILED, RESET_SUCCESS, RESET_REQUEST } from "../actions/reset-password";
+import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILED } from "../actions/register";
+import { Action } from "@remix-run/router";
 
 
 const checkResponse = (res) => {
@@ -73,7 +84,6 @@ export function recoverPassword(loginValue) {
 
         dispatch({
             type: RECOVER_REQUEST,
-
         });
 
         try {
@@ -104,8 +114,6 @@ export function recoverPassword(loginValue) {
                 type: RECOVER_FAILED
             })
         }
-
-
     }
 }
 
@@ -143,6 +151,47 @@ export function resetPassword(passwordValue) {
                 type: RESET_FAILED
             })
         }
+    }
+}
+
+export function registerUser(nameValue,loginValue,passwordValue) {
+
+    return async function (dispatch) {
+        dispatch({
+            type: REGISTER_REQUEST,
+        })
+
+
+        try {
+            const response = await fetch(`${API_REGISTER}/auth/register`,
+            {
+                method:'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'email': loginValue, 
+                    'password': passwordValue, 
+                    'name': nameValue,
+                }),
+                
+            });
+          
+            checkResponse(response).then(result =>
+             
+                dispatch({
+                    type: REGISTER_SUCCESS,
+                    user: result.user,
+
+                })
+                )
+
+        } catch (err) {
+            dispatch({
+                type: REGISTER_FAILED
+            })
+        }
+
     }
 }
 
