@@ -12,6 +12,7 @@
   display:flex;
   gap: 8px;
   margin-top:80px;
+  justify-content: center;
 }
 
 .button {

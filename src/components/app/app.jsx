@@ -13,6 +13,7 @@ import { RegisterPage } from '../../pages/register/register';
 import { Error404Page } from '../../pages/not-found/not-found';
 import { ForgotPasswordPage } from '../../pages/forgot-password/forgot-password';
 import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
+import { ProfilPage } from '../../pages/profile/profile';
 
 function App() {
 
@@ -31,13 +32,14 @@ function App() {
                 <div className={styles.error}>
                     Произошла ошибка при загрузке товаров, попробуйте обновить страницу
                 </div> :
-                <div className={styles.container}>
+               
                     <Router>
                         <Routes>
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/register" element={<RegisterPage />} />
                             <Route path='/forgot-password' element={<ForgotPasswordPage />} />
                             <Route path='/reset-password' element={<ResetPasswordPage />} />
+                            <Route path='/profile' element={<ProfilPage />} />
                             <Route path="/" element={<> <AppHeader />
                                 <main>
                                     <div className={styles.sections}>
@@ -51,7 +53,7 @@ function App() {
                             <Route path='*' element={<Error404Page />} />
                         </Routes>
                     </Router>
-                </div>
+                
             }
         </>
     )
