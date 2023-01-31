@@ -28,7 +28,6 @@ export function ProfilPage() {
   };
 
   const isUserLogged = useSelector(store => store.loginUser.user);
-  // const refreshToken = localStorage.getItem('refreshToken');
 
 console.log(isUserLogged)
 
@@ -38,8 +37,8 @@ console.log(isUserLogged)
     }
   }, [isUserLogged,navigate]);
 
- console.log(Cookies.get('accessToken'))
- console.log(localStorage.getItem('refreshToken'))
+
+
  
   return (
     <>

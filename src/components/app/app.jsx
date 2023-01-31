@@ -29,29 +29,29 @@ function App() {
 
         dispatch(getIngredients());
 
-
-
-
     }, [dispatch]);
 
-    if (refreshToken) {
+    useEffect(() => {
+        if (refreshToken && accessToken === undefined) {
 
-        updateToken().then(result => {
-                
+            updateToken().then(result => {
 
-                    if (result.accessToken.indexOf('Bearer') === 0) {
-                        accessToken = result.accessToken.split('Bearer')[1].trim();
-                    };
+                if (result.accessToken.indexOf('Bearer') === 0) {
+                    accessToken = result.accessToken.split('Bearer')[1].trim();
+                };
 
-                    if (accessToken) {
-                        Cookies.set('accessToken', accessToken)
-                    };
+                if (accessToken) {
+                    Cookies.set('accessToken', accessToken)
+                };
 
-                    localStorage.setItem('refreshToken', result.refreshToken) })
-    }
+                localStorage.setItem('refreshToken', result.refreshToken)
+            })
+        }
+    }, [refreshToken,accessToken])
 
-console.log(Cookies.get('accessToken'))
-    
+
+ 
+
     return (
         <>
             {productsFailed ?

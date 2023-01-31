@@ -280,6 +280,10 @@ export async function fetchWithRefresh(url, options) {
 
             const { refreshToken, accessToken } = await updateToken();
 
+            if (accessToken.indexOf('Bearer') === 0) {
+                accessToken = accessToken.split('Bearer')[1].trim();
+            };
+
             Cookies.set('accessToken', accessToken);
             localStorage.setItem('refreshToken', refreshToken);
 
