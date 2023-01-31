@@ -6,7 +6,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../services/thunk-actions/thunk-actions';
 import { REGISTER_SUCCESS } from '../../services/actions/register';
-import Cookies from 'js-cookie';
+
 
 export function LoginPage() {
 
@@ -25,7 +25,7 @@ export function LoginPage() {
     setPasswordValue(e.target.value)
   }
 
-  if (loggedUser !== null) {
+  if (loggedUser !== (null)) {
     return <Navigate to="/" />
   }
 

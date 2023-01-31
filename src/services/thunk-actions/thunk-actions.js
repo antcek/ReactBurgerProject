@@ -210,12 +210,11 @@ export function loginUser(loginValue, passwordValue) {
         })
 
         try {
-            const response = await fetch(`${API_LOGIN}/auth/login`,
+            await fetchWithRefresh(`${API_LOGIN}/auth/login`,
                 {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-
                     },
                     body: JSON.stringify({
 
@@ -223,30 +222,29 @@ export function loginUser(loginValue, passwordValue) {
                         password: passwordValue
                     }),
 
-                });
-
-            checkResponse(response).then(result => {
-
-                localStorage.setItem('user', JSON.stringify(result.user));
-                let accessToken;
-
-                if (result.accessToken.indexOf('Bearer') === 0) {
-                    accessToken = result.accessToken.split('Bearer')[1].trim();
-                };
-
-                if (accessToken) {
-                    Cookies.set('accessToken', accessToken)
-                };
-
-                Cookies.set('refreshToken', result.refreshToken)
-
-                dispatch({
-                    type: LOGIN_SUCCESS,
-                    user: result.user
-
                 })
-            }
-            )
+                .then(result => {
+
+                    localStorage.setItem('user', JSON.stringify(result.user));
+                    let accessToken;
+
+                    if (result.accessToken.indexOf('Bearer') === 0) {
+                        accessToken = result.accessToken.split('Bearer')[1].trim();
+                    };
+
+                    if (accessToken) {
+                        Cookies.set('accessToken', accessToken)
+                    };
+
+                    localStorage.setItem('refreshToken', result.refreshToken)
+
+                    dispatch({
+                        type: LOGIN_SUCCESS,
+                        user: result.user
+
+                    })
+                }
+                )
 
         } catch (err) {
             dispatch({
@@ -257,36 +255,42 @@ export function loginUser(loginValue, passwordValue) {
     }
 }
 
-export function updateToken() {
+export async function updateToken() {
 
-    return async function (dispatch) {
-        dispatch({
-            type: LOGIN_REQUEST,
-        })
+    return fetch(`${API_REFRESH_TOKEN}/auth/token`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'token': localStorage.getItem('refreshToken')
+            }),
+        }).then(checkResponse)
+        
 
-        try {
-            const response = await fetch(`${API_REFRESH_TOKEN}/auth/token`,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        token: Cookies.get('refreshToken')
-                    }),
-                });
+}
 
-            checkResponse(response).then(result => {
+export async function fetchWithRefresh(url, options) {
+    try {
+        const response = await fetch(url, options);
+        return await checkResponse(response);
+    } catch (err) {
+        if (err.message === 'jwt expired') {
 
-                Cookies.set('refreshToken', result.refreshToken);
+            const { refreshToken, accessToken } = await updateToken();
 
-            }
-            )
+            Cookies.set('accessToken', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
 
-        } catch (err) {
-            alert('Произошла ошибка! Попробуйте перезагрузить страницу')
+            options.headers.authorization = accessToken;
+
+            const response = await fetch(url, options);
+
+            return await checkResponse(response);
+        } else {
+            return Promise.reject(err);
         }
-
     }
 }
 
@@ -297,8 +301,9 @@ export function logout() {
         dispatch({
             type: LOGIN_EXIT_REQUEST
         })
-
+        console.log(Cookies.get('accessToken'))
         try {
+
             const response = await fetch(`${API_LOGOUT}/auth/logout`,
                 {
                     method: 'POST',
@@ -306,21 +311,21 @@ export function logout() {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        token: Cookies.get('refreshToken')
+                        token: localStorage.getItem('refreshToken')
                     }),
                 });
 
             checkResponse(response).then(result => {
-                localStorage.removeItem('user');
 
-                Cookies.set('refreshToken', '', { expires: -1 });
+
+                localStorage.removeItem('refreshToken');
                 Cookies.set('accessToken', '', { expires: -1 });
 
                 dispatch({
                     type: LOGIN_EXIT,
                     user: null
                 })
-
+                localStorage.removeItem('user');
             }
             )
 

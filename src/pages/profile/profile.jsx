@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import { logout } from '../../services/thunk-actions/thunk-actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 export function ProfilPage() {
   
@@ -27,14 +28,19 @@ export function ProfilPage() {
   };
 
   const isUserLogged = useSelector(store => store.loginUser.user);
+  // const refreshToken = localStorage.getItem('refreshToken');
+
 console.log(isUserLogged)
+
   useEffect(() => {
-    if (isUserLogged === null) {
+    if (isUserLogged === null ) {
       navigate('/login', { replace: true })
     }
-  }, [isUserLogged]);
+  }, [isUserLogged,navigate]);
 
-
+ console.log(Cookies.get('accessToken'))
+ console.log(localStorage.getItem('refreshToken'))
+ 
   return (
     <>
       <AppHeader />
