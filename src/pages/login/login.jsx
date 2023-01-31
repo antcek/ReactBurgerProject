@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './login.module.css';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../services/thunk-actions/thunk-actions';
-import { REGISTER_REQUEST, REGISTER_SUCCESS } from '../../services/actions/register';
+import { REGISTER_SUCCESS } from '../../services/actions/register';
+import Cookies from 'js-cookie';
 
 export function LoginPage() {
 
+
+
   const dispatch = useDispatch();
-  const isLogin = useSelector(store => store.loginUser.user)
+  const loggedUser = useSelector(store => store.loginUser.user);
 
   const [loginValue, setLoginValue] = useState('')
   const onLoginChange = e => {
@@ -22,11 +25,7 @@ export function LoginPage() {
     setPasswordValue(e.target.value)
   }
 
-  const isLogged = () => {
-    return isLogin.length !== 0 ? `/` : ''
-  }
-
-  if (isLogin.length !== 0) {
+  if (loggedUser !== null) {
     return <Navigate to="/" />
   }
 

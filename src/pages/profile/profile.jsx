@@ -1,15 +1,17 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './profile.module.css';
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import { logout } from '../../services/thunk-actions/thunk-actions';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export function ProfilPage() {
-
+  
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [nameValue, setNameValue] = useState('');
   const inputRef = useRef(null);
@@ -24,7 +26,14 @@ export function ProfilPage() {
     setPasswordValue(e.target.value)
   };
 
-  console.log(useSelector(store => store.loginUser))
+  const isUserLogged = useSelector(store => store.loginUser.user);
+console.log(isUserLogged)
+  useEffect(() => {
+    if (isUserLogged === null) {
+      navigate('/login', { replace: true })
+    }
+  }, [isUserLogged]);
+
 
   return (
     <>
@@ -49,13 +58,13 @@ export function ProfilPage() {
             <p className="text text_type_main-medium text_color_inactive">
               История заказов
             </p>
-            <NavLink 
-            to='/login'
-            onClick={() => dispatch(logout())}>
-              <p className="text text_type_main-medium text_color_inactive">
+            <div onClick={ () => {
+              
+              dispatch(logout())}}>
+              <p className={`text text_type_main-medium text_color_inactive ${styles.logout}`}>
                 Выход
               </p>
-            </NavLink>
+            </div>
           </div>
           <p className="text text_type_main-default text_color_inactive ">
             В этом разделе вы можете

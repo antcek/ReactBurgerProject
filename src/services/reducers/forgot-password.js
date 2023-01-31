@@ -3,7 +3,7 @@ import { RECOVER_FAILED, RECOVER_SUCCESS, RECOVER_REQUEST } from "../actions/for
 const initialState = {
   recoverRequest: false,
   recoverFailed: false,
-  
+  recoverSuccess: false,
 }
 
 export const recoverPasswordReducer = (state = initialState, action) => {
@@ -22,7 +22,7 @@ export const recoverPasswordReducer = (state = initialState, action) => {
             return {
                 ...state,
                 recoverRequest: false,
-           
+                recoverSuccess: action.success
             }
         }
 

@@ -17,7 +17,14 @@ import {
 import { RECOVER_FAILED, RECOVER_SUCCESS, RECOVER_REQUEST } from "../actions/forgot-password";
 import { RESET_FAILED, RESET_SUCCESS, RESET_REQUEST } from "../actions/reset-password";
 import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILED } from "../actions/register";
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILED, LOGIN_EXIT } from "../actions/login";
+import {
+    LOGIN_REQUEST,
+    LOGIN_SUCCESS,
+    LOGIN_FAILED,
+    LOGIN_EXIT,
+    LOGIN_EXIT_REQUEST,
+    LOGIN_EXIT_FAILED
+} from "../actions/login";
 import Cookies from 'js-cookie';
 
 
@@ -101,12 +108,13 @@ export function recoverPassword(loginValue) {
 
                 });
 
-            checkResponse(response).then(result =>
-
+            checkResponse(response).then(result => {
+                console.log(result)
                 dispatch({
                     type: RECOVER_SUCCESS,
-
-                }))
+                    success: result.success
+                })
+            })
 
 
         } catch (err) {
@@ -219,6 +227,7 @@ export function loginUser(loginValue, passwordValue) {
 
             checkResponse(response).then(result => {
 
+                localStorage.setItem('user', JSON.stringify(result.user));
                 let accessToken;
 
                 if (result.accessToken.indexOf('Bearer') === 0) {
@@ -285,6 +294,10 @@ export function logout() {
 
     return async function (dispatch) {
 
+        dispatch({
+            type: LOGIN_EXIT_REQUEST
+        })
+
         try {
             const response = await fetch(`${API_LOGOUT}/auth/logout`,
                 {
@@ -298,7 +311,8 @@ export function logout() {
                 });
 
             checkResponse(response).then(result => {
-               console.log(result)
+                localStorage.removeItem('user');
+
                 Cookies.set('refreshToken', '', { expires: -1 });
                 Cookies.set('accessToken', '', { expires: -1 });
 
@@ -311,7 +325,9 @@ export function logout() {
             )
 
         } catch (err) {
-            alert('Произошла ошибка! Попробуйте перезагрузить страницу')
+            dispatch({
+                type: LOGIN_EXIT_FAILED
+            })
         }
 
 

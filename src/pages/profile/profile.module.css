@@ -15,7 +15,7 @@
   flex-direction: column;
   gap: 34px;
   text-decoration: none;
-  
+
 
 }
 
@@ -26,9 +26,19 @@
 }
 
 .wrapper {
-  display:flex;
+  display: flex;
   flex-direction: column;
   max-width: 320px;
-  gap:80px;
+  gap: 80px;
   white-space: break-spaces;
+}
+
+.logout:hover {
+
+  cursor: pointer;
+
+}
+
+.logout:active {
+  color:white
 }

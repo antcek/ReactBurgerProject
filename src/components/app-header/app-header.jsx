@@ -6,16 +6,18 @@ import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './app-header.module.css';
 import { Link, NavLink } from 'react-router-dom';
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { HEADER_CONSTRUCTOR_ACTIVE, HEADER_FEED_ACTIVE, HEADER_PROFILE_ACTIVE } from '../../services/actions/app-header';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+
+
 
 function AppHeader() {
 
     const { isConstructorActive, isFeedActive, isProfileActive } = useSelector(store => store.setActive);
     const dispatch = useDispatch();
-    console.log(useSelector(store => store.loginUser))
+
 
     return (
         <header className={styles.header}>
@@ -59,9 +61,14 @@ function AppHeader() {
                     </NavLink>
                 </div>
 
-                <a href='/' className={styles.logo}>
+                <NavLink to='/' 
+                onClick={() => dispatch({
+                    type: HEADER_CONSTRUCTOR_ACTIVE,
+                    isActive: true
+                })}
+                className={styles.logo}>
                     <Logo />
-                </a>
+                </NavLink>
 
                 <NavLink
                     to='/profile'

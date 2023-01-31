@@ -1,23 +1,32 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './forgot-password.module.css';
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link } from 'react-router-dom';
-import {recoverPassword} from '../../services/thunk-actions/thunk-actions';
-import { useDispatch } from 'react-redux';
+import { recoverPassword } from '../../services/thunk-actions/thunk-actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
 
 export function ForgotPasswordPage() {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const passwordRecovered = useSelector(store => store.recoverPassword.recoverSuccess)
 
   const [loginValue, setLoginValue] = useState('')
   const onLoginForgot = e => {
     setLoginValue(e.target.value)
   };
 
-  const sendRecoverRequest = () => {
-    dispatch(recoverPassword(loginValue))
-  }
+  useEffect(() => {
+    if (passwordRecovered) {
+      navigate('/reset-password', { replace: true })
+    }
+  }, [passwordRecovered])
+
+
 
   return (
     <>
@@ -32,7 +41,7 @@ export function ForgotPasswordPage() {
           isIcon={false}
           placeholder="Укажите e-mail" />
 
-        <Button onClick={sendRecoverRequest} htmlType="button" type="primary" size="large">
+        <Button onClick={() => dispatch(recoverPassword(loginValue))} htmlType="button" type="primary" size="large">
           Восстановить
         </Button>
 

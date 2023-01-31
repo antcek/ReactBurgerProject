@@ -1,10 +1,17 @@
-import { LOGIN_FAILED, LOGIN_SUCCESS, LOGIN_REQUEST,LOGIN_EXIT } from "../actions/login";
+import { LOGIN_FAILED, 
+  LOGIN_SUCCESS,
+   LOGIN_REQUEST,
+   LOGIN_EXIT, 
+   LOGIN_EXIT_REQUEST,
+  LOGIN_EXIT_FAILED } from "../actions/login";
 
 const initialState = {
   loginRequest: false,
   loginFailed: false,
-  user: []
-
+  user: JSON.parse(localStorage.getItem('user')),
+  logoutRequest: false,
+  logoutFailed: false,
+  
 }
 
 export const loginUserReducer = (state = initialState, action) => {
@@ -23,8 +30,8 @@ export const loginUserReducer = (state = initialState, action) => {
       return {
         ...state,
         loginRequest: false,
-        user: [action.user]
-
+        user: action.user,
+       
       }
     }
 
@@ -33,14 +40,32 @@ export const loginUserReducer = (state = initialState, action) => {
       return {
         ...state,
         loginFailed: true,
-        loginRequest: false
+        loginRequest: false,
+       
       }
     }
-
+    
+    case LOGIN_EXIT_REQUEST: {
+      return {
+        ...state,
+        logoutRequest: true,
+        
+      }
+    }
     case LOGIN_EXIT: {
       return {
         ...state,
-        user: action.user
+        user: action.user,
+        logoutRequest: false,
+      }
+    }
+
+    case LOGIN_EXIT_FAILED: {
+      return {
+        ...state,
+        logoutRequest: false,
+        logoutFailed: true,
+
       }
     }
 
