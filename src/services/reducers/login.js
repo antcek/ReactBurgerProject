@@ -3,14 +3,18 @@ import { LOGIN_FAILED,
    LOGIN_REQUEST,
    LOGIN_EXIT, 
    LOGIN_EXIT_REQUEST,
-  LOGIN_EXIT_FAILED } from "../actions/login";
+  LOGIN_EXIT_FAILED, 
+  LOGIN_GET_DATA,
+  LOGIN_GET_DATA_REQUEST,
+  LOGIN_GET_DATA_FAILED} from "../actions/login";
 
 const initialState = {
   loginRequest: false,
   loginFailed: false,
-  user: JSON.parse(localStorage.getItem('user')),
+  userAuthorizied: JSON.parse(localStorage.getItem('userAuthorizied')),
   logoutRequest: false,
   logoutFailed: false,
+  user: JSON.parse(localStorage.getItem('user')) || null,
   
 }
 
@@ -30,7 +34,7 @@ export const loginUserReducer = (state = initialState, action) => {
       return {
         ...state,
         loginRequest: false,
-        user: action.user,
+        userAuthorizied: action.user,
        
       }
     }
@@ -55,7 +59,7 @@ export const loginUserReducer = (state = initialState, action) => {
     case LOGIN_EXIT: {
       return {
         ...state,
-        user: action.user,
+        userAuthorizied: action.user,
         logoutRequest: false,
       }
     }
@@ -66,6 +70,29 @@ export const loginUserReducer = (state = initialState, action) => {
         logoutRequest: false,
         logoutFailed: true,
 
+      }
+    }
+    
+    case LOGIN_GET_DATA_REQUEST: {
+      return {
+        ...state,
+        dataRequest: true
+      }
+    }
+     
+    case LOGIN_GET_DATA: {
+      return {
+        ...state,
+        dataRequest: false,
+        user: action.user
+      }
+    }
+
+    case LOGIN_GET_DATA_FAILED: {
+      return {
+        ...state,
+        dataRequest: false,
+        dataFailed: true
       }
     }
 

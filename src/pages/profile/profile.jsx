@@ -27,19 +27,16 @@ export function ProfilPage() {
     setPasswordValue(e.target.value)
   };
 
-  const isUserLogged = useSelector(store => store.loginUser.user);
-
-console.log(isUserLogged)
+  const isUserLogged = useSelector(store => store.loginUser.userAuthorizied);
+  const userData = useSelector(store => store.loginUser.user)
 
   useEffect(() => {
-    if (isUserLogged === null ) {
+    if (!isUserLogged ) {
       navigate('/login', { replace: true })
     }
   }, [isUserLogged,navigate]);
 
-
-
- 
+  console.log(userData)
   return (
     <>
       <AppHeader />

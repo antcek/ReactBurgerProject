@@ -13,6 +13,7 @@ import {
     API_LOGOUT,
     API_REFRESH_TOKEN,
     API_LOGIN,
+    API_GET_USER_INFO,
 } from "../../utils/api";
 import { RECOVER_FAILED, RECOVER_SUCCESS, RECOVER_REQUEST } from "../actions/forgot-password";
 import { RESET_FAILED, RESET_SUCCESS, RESET_REQUEST } from "../actions/reset-password";
@@ -23,7 +24,10 @@ import {
     LOGIN_FAILED,
     LOGIN_EXIT,
     LOGIN_EXIT_REQUEST,
-    LOGIN_EXIT_FAILED
+    LOGIN_EXIT_FAILED,
+    LOGIN_GET_DATA_REQUEST,
+    LOGIN_GET_DATA_FAILED,
+    LOGIN_GET_DATA
 } from "../actions/login";
 import Cookies from 'js-cookie';
 
@@ -109,7 +113,7 @@ export function recoverPassword(loginValue) {
                 });
 
             checkResponse(response).then(result => {
-                console.log(result)
+                
                 dispatch({
                     type: RECOVER_SUCCESS,
                     success: result.success
@@ -225,7 +229,7 @@ export function loginUser(loginValue, passwordValue) {
                 })
                 .then(result => {
 
-                    localStorage.setItem('user', JSON.stringify(result.user));
+                    localStorage.setItem('userAuthorizied', JSON.stringify(result.success));
                     let accessToken;
 
                     if (result.accessToken.indexOf('Bearer') === 0) {
@@ -240,7 +244,7 @@ export function loginUser(loginValue, passwordValue) {
 
                     dispatch({
                         type: LOGIN_SUCCESS,
-                        user: result.user
+                        user: result.success
 
                     })
                 }
@@ -262,20 +266,23 @@ export async function updateToken() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + Cookies.get('accessToken')
+                
             },
             body: JSON.stringify({
                 'token': localStorage.getItem('refreshToken')
             }),
         }).then(checkResponse)
-        
+
 
 }
-
+console.log(updateToken() )
 export async function fetchWithRefresh(url, options) {
     try {
         const response = await fetch(url, options);
         return await checkResponse(response);
     } catch (err) {
+        console.log(err.message === 'jwt expired')
         if (err.message === 'jwt expired') {
 
             const { refreshToken, accessToken } = await updateToken();
@@ -293,10 +300,13 @@ export async function fetchWithRefresh(url, options) {
 
             return await checkResponse(response);
         } else {
+            console.log('ошибка : ', err)
             return Promise.reject(err);
         }
     }
 }
+
+
 
 export function logout() {
 
@@ -305,7 +315,7 @@ export function logout() {
         dispatch({
             type: LOGIN_EXIT_REQUEST
         })
-        console.log(Cookies.get('accessToken'))
+
         try {
 
             const response = await fetch(`${API_LOGOUT}/auth/logout`,
@@ -321,15 +331,14 @@ export function logout() {
 
             checkResponse(response).then(result => {
 
-
                 localStorage.removeItem('refreshToken');
                 Cookies.set('accessToken', '', { expires: -1 });
 
                 dispatch({
                     type: LOGIN_EXIT,
-                    user: null
+                    user: false
                 })
-                localStorage.removeItem('user');
+                localStorage.removeItem('userAuthorizied');
             }
             )
 
@@ -342,6 +351,47 @@ export function logout() {
 
     }
 }
+
+export function userGetData() {
+
+    return async function(dispatch) {
+ 
+        dispatch({
+            type: LOGIN_GET_DATA_REQUEST
+        })
+ 
+        try {
+            let accessToken = Cookies.get('accessToken');
+         
+             await fetchWithRefresh(`${API_GET_USER_INFO}/auth/user`,
+                {
+                    method: 'GET',
+                    headers: {
+                        "Authorization": "Bearer " + accessToken
+                    },
+                   
+                }).then(result => {
+                    console.log(Cookies.get('accessToken'))
+                localStorage.setItem('user', JSON.stringify(result.user))
+          
+                dispatch({
+                    type: LOGIN_GET_DATA,
+                    user: result.user
+                })
+              
+            }
+            )
+
+        } catch (err) {
+           
+            dispatch({
+                type: LOGIN_GET_DATA_FAILED
+            })
+        }
+    }
+}
+
+
 // GET ../user - при переходе на profile (отправляем accessToken)
 // Patch ../user  - при нажатии 'сохранить' информацию
 // возможно добавить токен при регистрации в куки

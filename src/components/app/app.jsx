@@ -33,6 +33,7 @@ function App() {
 
     useEffect(() => { // эта функция написана для того, что б при перезапуске браузера
         // авторизованный пользователь получал новый accessToken(старый слетает)
+      
         if (refreshToken && accessToken === undefined) {
 
             updateToken().then(result => {

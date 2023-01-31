@@ -13,7 +13,7 @@ export function LoginPage() {
 
 
   const dispatch = useDispatch();
-  const loggedUser = useSelector(store => store.loginUser.user);
+  const loggedUser = useSelector(store => store.loginUser.userAuthorizied);
 
   const [loginValue, setLoginValue] = useState('')
   const onLoginChange = e => {
@@ -25,9 +25,10 @@ export function LoginPage() {
     setPasswordValue(e.target.value)
   }
 
-  if (loggedUser !== (null)) {
+  if (loggedUser) {
     return <Navigate to="/" />
   }
+  console.log(loggedUser)
 
   return (
     <>
