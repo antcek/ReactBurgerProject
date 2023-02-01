@@ -14,6 +14,7 @@ import {
     API_REFRESH_TOKEN,
     API_LOGIN,
     API_GET_USER_INFO,
+    API_UPDATE_USER_INFO
 } from "../../utils/api";
 import { RECOVER_FAILED, RECOVER_SUCCESS, RECOVER_REQUEST } from "../actions/forgot-password";
 import { RESET_FAILED, RESET_SUCCESS, RESET_REQUEST } from "../actions/reset-password";
@@ -27,8 +28,11 @@ import {
     LOGIN_EXIT_FAILED,
     LOGIN_GET_DATA_REQUEST,
     LOGIN_GET_DATA_FAILED,
-    LOGIN_GET_DATA
-} from "../actions/login";
+    LOGIN_GET_DATA,
+    USER_UPDATE_INFO,
+    USER_UPDATE_INFO_FAILED,
+    USER_UPDATE_INFO_REQUEST,
+} from "../actions/user";
 import Cookies from 'js-cookie';
 
 
@@ -269,7 +273,6 @@ export function loginUser(loginValue, passwordValue) {
 export const updateToken = () => {
 
 
-
     return fetch(`${API_REFRESH_TOKEN}/auth/token`,
         {
             method: 'POST',
@@ -307,26 +310,24 @@ export const updateToken = () => {
 export const fetchWithRefresh = async (url, options) => {
     try {
 
-       
         const response = await fetch(url, options);
         return await checkResponse(response);
 
     }
     catch (err) {
-
-        if (err.message === 'jwt expired') {
-            console.log('jwt expired')
+       console.log(err.message)
+        if (err.message === 'jwt expired' || err.message === "invalid token") {
 
             const { refreshToken, accessToken } = await updateToken();
 
             saveTokens(refreshToken, accessToken)
 
             options.headers.authorization = 'Bearer ' + accessToken;
-            
-                const response = await fetch(url, options);
-                console.log(response)
-                return await checkResponse(response);
-            
+
+            const response = await fetch(url, options);
+            console.log(response)
+            return await checkResponse(response);
+
         } else {
             console.log('ошибка не jwt expired')
             return Promise.reject(err);
@@ -364,7 +365,7 @@ export function logout() {
 
                 dispatch({
                     type: LOGIN_EXIT,
-                    userAuthorizied: false,
+                    userAuthorizied: !result.success,
                     user: null
                 })
 
@@ -420,7 +421,50 @@ export function userGetData() {
     }
 }
 
+export function updateUserInfo(nameValue,loginValue,passwordValue) {
 
-// GET ../user - при переходе на profile (отправляем accessToken)
+    return async function (dispatch) {
+
+        dispatch({
+            type: USER_UPDATE_INFO_REQUEST
+        });
+        try {
+          
+           await fetchWithRefresh(`${API_UPDATE_USER_INFO}/auth/user`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + Cookies.get('accessToken')
+                    },
+                    body: JSON.stringify({
+                        name: nameValue,
+                        email: loginValue,
+                        password: passwordValue
+                    })
+
+                }).then(result => {
+                    console.log(result)
+
+                    dispatch({
+                        type: USER_UPDATE_INFO,
+                        user: result.user,
+                    
+                    })
+   
+                }
+                )
+        
+        } catch (err) {
+           
+            dispatch({
+                type: USER_UPDATE_INFO_FAILED
+            })
+        }
+
+    }
+}
+
+
 // Patch ../user  - при нажатии 'сохранить' информацию
 //проверить updateToken несколько раз

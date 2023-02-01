@@ -2,12 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './profile.module.css';
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
-import { logout } from '../../services/thunk-actions/thunk-actions';
+import { logout, updateUserInfo } from '../../services/thunk-actions/thunk-actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+
 
 
 export function ProfilPage() {
@@ -15,18 +16,11 @@ export function ProfilPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const loginRef = useRef();
   const nameRef = useRef();
-  const passwordRef = useRef();
 
   const [nameValue, setNameValue] = useState('');
+  const [loginValue, setLoginValue] = useState('');
 
-  const [loginValue, setLoginValue] = useState('')
-  const onLoginChange = e => {
-
-    setLoginValue(e.target.value);
-
-  };
 
   const [passwordValue, setPasswordValue] = useState('');
   const onPasswordChange = e => {
@@ -36,32 +30,32 @@ export function ProfilPage() {
 
   const isUserLogged = useSelector(store => store.loginUser.userAuthorizied);
   const userData = useSelector(store => store.loginUser.user);
-  const refreshToken = localStorage.getItem('refreshToken')
+  const accessToken = Cookies.get('accessToken')
 
   const isChanging = () => {
-     if (userData && (loginValue !== userData.email ||
-                      nameValue !== userData.name ||
-                      passwordValue !== '') )
-    return true
+    if (userData && (loginValue !== userData.email ||
+      nameValue !== userData.name ||
+      passwordValue !== ''))
+      return true
 
     else return false
   }
 
   useEffect(() => {
-    if (!isUserLogged && !refreshToken) {
+    if (!isUserLogged && !accessToken) {
       navigate('/login', { replace: true })
     };
 
     if (userData) {
       setLoginValue(userData?.email);
       setNameValue(userData?.name);
-
     }
-  }, [isUserLogged, navigate, userData, refreshToken,]);
+  }, [isUserLogged, navigate, userData]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('сабмит нажали')
+    dispatch(updateUserInfo(nameValue, loginValue, passwordValue));
+    setPasswordValue('')
   }
 
   return (
@@ -135,11 +129,13 @@ export function ProfilPage() {
             />
 
             {isChanging() ? <div className={styles.formButtons}>
-
-              <Button htmlType="submit" type="primary" size="medium">
+              <Button  htmlType="submit" type="primary" size="medium">
                 Отмена
               </Button>
-              <Button htmlType="submit" type="primary" size="medium">
+              <Button
+                htmlType="submit"
+                type="primary"
+                size="medium">
                 Изменить
               </Button>
             </div> : null}

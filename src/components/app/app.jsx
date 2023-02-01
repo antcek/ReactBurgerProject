@@ -15,7 +15,6 @@ import { ForgotPasswordPage } from '../../pages/forgot-password/forgot-password'
 import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
 import { ProfilPage } from '../../pages/profile/profile';
 import Cookies from 'js-cookie';
-import { updateToken } from '../../services/thunk-actions/thunk-actions';
 import { userGetData } from '../../services/thunk-actions/thunk-actions';
 
 function App() {
@@ -30,9 +29,9 @@ function App() {
 
         dispatch(getIngredients());
 
-     
+     if (accessToken) {
        dispatch(userGetData());
-       
+     }
        
     }, [refreshToken,accessToken,dispatch]);
 

@@ -11,6 +11,7 @@ import { HEADER_CONSTRUCTOR_ACTIVE, HEADER_FEED_ACTIVE, HEADER_PROFILE_ACTIVE } 
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { userGetData } from '../../services/thunk-actions/thunk-actions';
+import Cookies from 'js-cookie';
 
 
 
@@ -18,6 +19,7 @@ function AppHeader() {
 
     const { isConstructorActive, isFeedActive, isProfileActive } = useSelector(store => store.setActive);
     const dispatch = useDispatch();
+    const accessToken = Cookies.get('accessToken')
     
     
 
@@ -86,9 +88,9 @@ function AppHeader() {
                             type: HEADER_PROFILE_ACTIVE,
                             isActive: true
                         });
-                     
+                          if (accessToken) {
                              dispatch(userGetData());
-                        
+                          }
                     }
                     }
                 >

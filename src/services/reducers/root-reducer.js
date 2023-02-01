@@ -7,7 +7,7 @@ import {recoverPasswordReducer} from './forgot-password';
 import {resetPasswordReducer} from './reset-password';
 import {setActiveReducer} from './app-header';
 import { registerUserReducer } from './register';
-import { loginUserReducer } from './login';
+import { loginUserReducer } from './user';
 
 export const rootReducer = combineReducers({
 
