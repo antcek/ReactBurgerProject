@@ -11,10 +11,10 @@ import { LOGIN_FAILED,
 const initialState = {
   loginRequest: false,
   loginFailed: false,
-  userAuthorizied: JSON.parse(localStorage.getItem('userAuthorizied')),
+  userAuthorizied: false,
   logoutRequest: false,
   logoutFailed: false,
-  user: JSON.parse(localStorage.getItem('user')) || null,
+  user: null
   
 }
 
@@ -84,7 +84,8 @@ export const loginUserReducer = (state = initialState, action) => {
       return {
         ...state,
         dataRequest: false,
-        user: action.user
+        user: action.user,
+        userAuthorizied: action.userAuthorizied
       }
     }
 

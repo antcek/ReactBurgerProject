@@ -16,41 +16,26 @@ import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
 import { ProfilPage } from '../../pages/profile/profile';
 import Cookies from 'js-cookie';
 import { updateToken } from '../../services/thunk-actions/thunk-actions';
-
+import { userGetData } from '../../services/thunk-actions/thunk-actions';
 
 function App() {
 
     const dispatch = useDispatch();
     const productsFailed = useSelector((store) => store.getProducts.productsFailed);
     let refreshToken = localStorage.getItem('refreshToken');
-    let accessToken = Cookies.get('accessToken')
+
+    const loggedUser = useSelector(store => store.loginUser.userAuthorizied);
 
     useEffect(() => {
 
         dispatch(getIngredients());
 
-    }, [dispatch]);
-
-    useEffect(() => { // эта функция написана для того, что б при перезапуске браузера
-        // авторизованный пользователь получал новый accessToken(старый слетает)
-      
-        if (refreshToken && accessToken === undefined) {
-
-            updateToken().then(result => {
-
-                if (result.accessToken.indexOf('Bearer') === 0) {
-                    accessToken = result.accessToken.split('Bearer')[1].trim();
-                };
-
-                if (accessToken) {
-                    Cookies.set('accessToken', accessToken)
-                };
-
-                localStorage.setItem('refreshToken', result.refreshToken)
-            })
-        }
-    }, [refreshToken, accessToken])
-
+       if ( refreshToken) {
+       dispatch(userGetData());
+       }
+       console.log(loggedUser)
+    }, [dispatch,refreshToken]);
+ 
 
     return (
         <>

@@ -15,10 +15,12 @@ import {
 
 import DraggedIngredientCard from '../burger-constructor-ingredients/burger-constructor-ingredients';
 import { sendOrder } from '../../services/thunk-actions/thunk-actions';
+import { Navigate, useNavigate } from 'react-router';
 
 
 function BurgerConstructor() {
 
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const products = useSelector(store => store.getProducts.products);
 
@@ -38,6 +40,8 @@ function BurgerConstructor() {
     }, [burgerForOrder]
     )
 
+    const isUserLogged = useSelector(store => store.loginUser.userAuthorizied);
+    
     const totalPrice = useMemo(() => {
         return draggedBunsPrice * 2 + draggedIngredientsPrice
     }, [draggedBunsPrice, draggedIngredientsPrice])
@@ -211,8 +215,12 @@ function BurgerConstructor() {
                         Оформить заказ
                     </Button>
 
-                    : <div onClick={() => dispatch(sendOrder(burgerAllId))}>
-                        <Button onClick={onOpenModal} htmlType="button" type="primary" size="large">
+                    : <div onClick={() => {
+                        isUserLogged ? dispatch(sendOrder(burgerAllId))
+                            : navigate('/login', { replace: true })
+                    }
+                    }>
+                        <Button onClick={isUserLogged ? onOpenModal : null} htmlType="button" type="primary" size="large">
                             Оформить заказ
                         </Button>
                     </div>}

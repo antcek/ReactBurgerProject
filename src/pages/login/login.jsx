@@ -6,10 +6,10 @@ import { Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../services/thunk-actions/thunk-actions';
 import { REGISTER_SUCCESS } from '../../services/actions/register';
+import Cookies from 'js-cookie';
 
 
 export function LoginPage() {
-
 
 
   const dispatch = useDispatch();
@@ -25,10 +25,9 @@ export function LoginPage() {
     setPasswordValue(e.target.value)
   }
 
-  if (loggedUser) {
+  if (loggedUser ) {
     return <Navigate to="/" />
   }
-  console.log(loggedUser)
 
   return (
     <>
@@ -37,7 +36,8 @@ export function LoginPage() {
         <p className="text text_type_main-large">
           Вход
         </p>
-        <EmailInput onChange={onLoginChange}
+        <EmailInput 
+          onChange={onLoginChange}
           value={loginValue}
           name={'email'}
           isIcon={false} />

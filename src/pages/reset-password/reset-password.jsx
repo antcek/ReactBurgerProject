@@ -12,7 +12,7 @@ export function ResetPasswordPage() {
 
   const dispatch = useDispatch();
 
-  const [nameValue, setNameValue] = useState('');
+  const [tokenValue, setTokenValue] = useState('');
   const inputRef = useRef(null);
 
   const [passwordValue, setPasswordValue] = useState('');
@@ -21,7 +21,7 @@ export function ResetPasswordPage() {
   };
   
   const sendResetRequest = async () => {
-    dispatch(resetPassword(passwordValue));
+    dispatch(resetPassword(passwordValue,tokenValue));
    
   }
 
@@ -44,8 +44,8 @@ export function ResetPasswordPage() {
         <Input
           type={'text'}
           placeholder={'Введите код из письма'}
-          onChange={e => setNameValue(e.target.value)}
-          value={nameValue}
+          onChange={e => setTokenValue(e.target.value)}
+          value={tokenValue}
           name={'name'}
           error={false}
           ref={inputRef}

@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 export function ProfilPage() {
-  
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -30,13 +30,15 @@ export function ProfilPage() {
   const isUserLogged = useSelector(store => store.loginUser.userAuthorizied);
   const userData = useSelector(store => store.loginUser.user)
 
+  
   useEffect(() => {
-    if (!isUserLogged ) {
+    if (!isUserLogged) {
       navigate('/login', { replace: true })
     }
-  }, [isUserLogged,navigate]);
+    
+  }, [isUserLogged, navigate]);
 
-  console.log(userData)
+
   return (
     <>
       <AppHeader />
@@ -60,9 +62,9 @@ export function ProfilPage() {
             <p className="text text_type_main-medium text_color_inactive">
               История заказов
             </p>
-            <div onClick={ () => {
-              
-              dispatch(logout())}}>
+            <div
+              onClick={() => { dispatch(logout()) }}
+            >
               <p className={`text text_type_main-medium text_color_inactive ${styles.logout}`}>
                 Выход
               </p>
