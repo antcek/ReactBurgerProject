@@ -219,7 +219,7 @@ export function loginUser(loginValue, passwordValue) {
         })
 
         try {
-            await fetchWithRefresh(`${API_LOGIN}/auth/login`,
+            await fetch(`${API_LOGIN}/auth/login`,
                 {
                     method: 'POST',
                     headers: {
@@ -273,13 +273,14 @@ export const updateToken = () => {
 
             },
             body: JSON.stringify({
-                'token': localStorage.getItem('refreshToken')
-            }),
-        }).then(checkResponse)
+                token: localStorage.getItem('refreshToken')
+            })
+        })
+        .then(checkResponse)
 
 
 }
-console.log(updateToken())
+
 export const fetchWithRefresh = async (url, options) => {
     try {
         const response = await fetch(url, options);
