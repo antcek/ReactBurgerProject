@@ -129,7 +129,12 @@ export function ProfilPage() {
             />
 
             {isChanging() ? <div className={styles.formButtons}>
-              <Button  htmlType="submit" type="primary" size="medium">
+              <Button onClick={() => {
+                if (userData) {
+                  setLoginValue(userData?.email);
+                  setNameValue(userData?.name);
+                }
+              }}  htmlType="submit" type="primary" size="medium">
                 Отмена
               </Button>
               <Button
