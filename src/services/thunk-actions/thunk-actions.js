@@ -45,7 +45,6 @@ const saveTokens = (refreshToken, accessToken) => {
     localStorage.setItem('refreshToken', refreshToken);
 }
 
-let isRefreshTokenBeingCalled = false;
 
 export function getIngredients() {
 
@@ -79,19 +78,18 @@ export function sendOrder(idConstructor) {
         });
 
         try {
-            const response = await fetch(`${NORMA_API}/orders`,
+             await fetchWithRefresh(`${NORMA_API}/orders`,
                 {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(idConstructor),
-                });
-
-            checkResponse(response).then(result => dispatch({
-                type: ORDER_SUCCESS,
-                orderNumber: result.order.number
-            }))
+                })
+                .then(result => dispatch({
+                    type: ORDER_SUCCESS,
+                    orderNumber: result.order.number
+                }))
 
         } catch (err) {
 
@@ -315,8 +313,8 @@ export const fetchWithRefresh = async (url, options) => {
 
     }
     catch (err) {
-       console.log(err.message)
-        if (err.message === 'jwt expired' || err.message === "invalid token") {
+
+        if (err.message === 'jwt expired') {
 
             const { refreshToken, accessToken } = await updateToken();
 
@@ -413,7 +411,6 @@ export function userGetData() {
                 )
 
         } catch (err) {
-            console.log()
             dispatch({
                 type: LOGIN_GET_DATA_FAILED
             })
@@ -421,7 +418,7 @@ export function userGetData() {
     }
 }
 
-export function updateUserInfo(nameValue,loginValue,passwordValue) {
+export function updateUserInfo(nameValue, loginValue, passwordValue) {
 
     return async function (dispatch) {
 
@@ -429,8 +426,8 @@ export function updateUserInfo(nameValue,loginValue,passwordValue) {
             type: USER_UPDATE_INFO_REQUEST
         });
         try {
-          
-           await fetchWithRefresh(`${API_UPDATE_USER_INFO}/auth/user`,
+
+            await fetchWithRefresh(`${API_UPDATE_USER_INFO}/auth/user`,
                 {
                     method: 'PATCH',
                     headers: {
@@ -444,19 +441,18 @@ export function updateUserInfo(nameValue,loginValue,passwordValue) {
                     })
 
                 }).then(result => {
-                    console.log(result)
 
                     dispatch({
                         type: USER_UPDATE_INFO,
                         user: result.user,
-                    
+
                     })
-   
+
                 }
                 )
-        
+
         } catch (err) {
-           
+
             dispatch({
                 type: USER_UPDATE_INFO_FAILED
             })

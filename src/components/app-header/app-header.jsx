@@ -4,23 +4,20 @@ import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ListIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app-header.module.css';
-import { Link, NavLink } from 'react-router-dom';
+import {  NavLink } from 'react-router-dom';
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
-import { HEADER_CONSTRUCTOR_ACTIVE, HEADER_FEED_ACTIVE, HEADER_PROFILE_ACTIVE } from '../../services/actions/app-header';
-import { useSelector } from 'react-redux';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { userGetData } from '../../services/thunk-actions/thunk-actions';
 import Cookies from 'js-cookie';
-
+import {  useLocation } from 'react-router-dom';
 
 
 function AppHeader() {
 
-    const { isConstructorActive, isFeedActive, isProfileActive } = useSelector(store => store.setActive);
     const dispatch = useDispatch();
-    const accessToken = Cookies.get('accessToken')
-    
+    const accessToken = Cookies.get('accessToken');
+    const currentPath = useLocation().pathname
     
 
     return (
@@ -38,14 +35,11 @@ function AppHeader() {
                             isActive ? classNames(styles.element) : classNames(styles.element, 'text_color_inactive',)
                         }
                         onClick={() => {
-                            dispatch({
-                                type: HEADER_CONSTRUCTOR_ACTIVE,
-                                isActive: true
-                            })
+                         
                         }
                         }
                     >
-                        <BurgerIcon type={(isConstructorActive)
+                        <BurgerIcon type={(currentPath === '/')
                             ? 'primary' : "secondary"} />
                         <p className="text text_type_main-default  ">
                             Конструктор</p>
@@ -59,17 +53,14 @@ function AppHeader() {
                             isActive ? classNames(styles.element) : classNames(styles.element, 'text_color_inactive',)
                         }
                     >
-                        <ListIcon type={isFeedActive ? 'primary' : "secondary"} />
+                        <ListIcon type={currentPath === '/orders' ? 'primary' : "secondary"} />
                         <p className="text text_type_main-default  ">
                             Лента заказов</p>
                     </NavLink>
                 </div>
 
                 <NavLink to='/'
-                    onClick={() => dispatch({
-                        type: HEADER_CONSTRUCTOR_ACTIVE,
-                        isActive: true
-                    })}
+                  
                     className={styles.logo}>
                     <Logo />
                 </NavLink>
@@ -84,17 +75,14 @@ function AppHeader() {
                         isActive ? classNames(styles.element) : classNames(styles.element, 'text_color_inactive',)
                     }
                     onClick={() => {
-                        dispatch({
-                            type: HEADER_PROFILE_ACTIVE,
-                            isActive: true
-                        });
+                      
                           if (accessToken) {
                              dispatch(userGetData());
                           }
                     }
                     }
                 >
-                    <ProfileIcon type={isProfileActive ? 'primary' : "secondary"} />
+                    <ProfileIcon type={currentPath === '/profile' ? 'primary' : "secondary"} />
                     <p className="text text_type_main-default  " >
                         Личный кабинет</p>
 

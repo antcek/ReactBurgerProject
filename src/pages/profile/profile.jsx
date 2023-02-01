@@ -40,7 +40,7 @@ export function ProfilPage() {
 
     else return false
   }
-
+    
   useEffect(() => {
     if (!isUserLogged && !accessToken) {
       navigate('/login', { replace: true })
@@ -50,7 +50,7 @@ export function ProfilPage() {
       setLoginValue(userData?.email);
       setNameValue(userData?.name);
     }
-  }, [isUserLogged, navigate, userData]);
+  }, [isUserLogged, navigate, userData,accessToken]);
 
   const handleSubmit = (event) => {
     event.preventDefault();

@@ -17,13 +17,14 @@ import { ProfilPage } from '../../pages/profile/profile';
 import Cookies from 'js-cookie';
 import { userGetData } from '../../services/thunk-actions/thunk-actions';
 
+
 function App() {
 
     const dispatch = useDispatch();
     const productsFailed = useSelector((store) => store.getProducts.productsFailed);
     let refreshToken = localStorage.getItem('refreshToken');
     let accessToken = Cookies.get('accessToken');
-    
+    console.log(accessToken)
 
     useEffect(() => {
 
