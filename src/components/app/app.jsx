@@ -23,19 +23,20 @@ function App() {
     const dispatch = useDispatch();
     const productsFailed = useSelector((store) => store.getProducts.productsFailed);
     let refreshToken = localStorage.getItem('refreshToken');
-
-    const loggedUser = useSelector(store => store.loginUser.userAuthorizied);
+    let accessToken = Cookies.get('accessToken');
+    
 
     useEffect(() => {
 
         dispatch(getIngredients());
 
-       if ( refreshToken) {
+     
        dispatch(userGetData());
-       }
-       console.log(loggedUser)
-    }, [dispatch,refreshToken]);
- 
+       
+       
+    }, [refreshToken,accessToken,dispatch]);
+
+    
 
     return (
         <>

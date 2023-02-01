@@ -13,10 +13,23 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 34px;
+  gap: 40px;
   text-decoration: none;
+ 
 
+}
 
+.form {
+  display:flex;
+  flex-direction: column;
+  gap:24px;
+ 
+}
+
+.formButtons {
+  display:flex;
+  gap: 24px;
+  flex-direction: row-reverse;
 }
 
 .info {
@@ -26,11 +39,13 @@
 }
 
 .wrapper {
-  display: flex;
-  flex-direction: column;
+  
   max-width: 320px;
-  gap: 80px;
+  display:flex;
+  flex-direction:column;
   white-space: break-spaces;
+  gap:104px;
+  
 }
 
 .logout:hover {

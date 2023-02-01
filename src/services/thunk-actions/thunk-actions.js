@@ -41,6 +41,8 @@ const saveTokens = (refreshToken, accessToken) => {
     localStorage.setItem('refreshToken', refreshToken);
 }
 
+let isRefreshTokenBeingCalled = false;
+
 export function getIngredients() {
 
     return async function (dispatch) {
@@ -64,6 +66,7 @@ export function getIngredients() {
     }
 
 };
+
 
 export function sendOrder(idConstructor) {
     return async function (dispatch) {
@@ -219,7 +222,7 @@ export function loginUser(loginValue, passwordValue) {
         })
 
         try {
-            await fetch(`${API_LOGIN}/auth/login`,
+            const response = await fetch(`${API_LOGIN}/auth/login`,
                 {
                     method: 'POST',
                     headers: {
@@ -232,27 +235,27 @@ export function loginUser(loginValue, passwordValue) {
                     }),
 
                 })
-                .then(result => {
+            checkResponse(response).then(result => {
 
-                    let accessToken;
+                let accessToken;
 
-                    if (result.accessToken.indexOf('Bearer') === 0) {
-                        accessToken = result.accessToken.split('Bearer')[1].trim();
-                    };
+                if (result.accessToken.indexOf('Bearer') === 0) {
+                    accessToken = result.accessToken.split('Bearer')[1].trim();
+                };
 
-                    if (accessToken) {
-                        Cookies.set('accessToken', accessToken)
-                    };
+                if (accessToken) {
+                    Cookies.set('accessToken', accessToken)
+                };
 
-                    localStorage.setItem('refreshToken', result.refreshToken)
+                localStorage.setItem('refreshToken', result.refreshToken)
 
-                    dispatch({
-                        type: LOGIN_SUCCESS,
-                        user: result.success
+                dispatch({
+                    type: LOGIN_SUCCESS,
+                    userAuthorizied: result.success
 
-                    })
-                }
-                )
+                })
+            }
+            )
 
         } catch (err) {
             dispatch({
@@ -265,6 +268,8 @@ export function loginUser(loginValue, passwordValue) {
 
 export const updateToken = () => {
 
+
+
     return fetch(`${API_REFRESH_TOKEN}/auth/token`,
         {
             method: 'POST',
@@ -276,33 +281,52 @@ export const updateToken = () => {
                 token: localStorage.getItem('refreshToken')
             })
         })
-        .then(checkResponse)
+        .then((res) => {
+
+            if (res.ok) {
+                return res.json()
+            }
+
+        }).then(res => {
+
+            let accessToken = res.accessToken;
+            let refreshToken = res.refreshToken;
+            if (accessToken.indexOf('Bearer') === 0) {
+                accessToken = accessToken.split('Bearer')[1].trim();
+
+            };
+
+            saveTokens(refreshToken, accessToken);
+
+            return { refreshToken, accessToken }
+        })
 
 
 }
 
 export const fetchWithRefresh = async (url, options) => {
     try {
+
+       
         const response = await fetch(url, options);
         return await checkResponse(response);
+
     }
     catch (err) {
 
         if (err.message === 'jwt expired') {
+            console.log('jwt expired')
 
-            let { refreshToken, accessToken } = await updateToken();
-
-            if (accessToken.indexOf('Bearer') === 0) {
-                accessToken = accessToken.split('Bearer')[1].trim();
-            };
+            const { refreshToken, accessToken } = await updateToken();
 
             saveTokens(refreshToken, accessToken)
 
             options.headers.authorization = 'Bearer ' + accessToken;
-
-            const response = await fetch(url, options);
-
-            return await checkResponse(response);
+            
+                const response = await fetch(url, options);
+                console.log(response)
+                return await checkResponse(response);
+            
         } else {
             console.log('ошибка не jwt expired')
             return Promise.reject(err);
@@ -366,7 +390,7 @@ export function userGetData() {
         })
 
         try {
-            console.log(Cookies.get('accessToken'))
+
             await fetchWithRefresh(`${API_GET_USER_INFO}/auth/user`,
                 {
                     method: 'GET',
@@ -376,8 +400,8 @@ export function userGetData() {
                     },
 
                 }).then(result => {
-
                     console.log(result)
+
                     dispatch({
                         type: LOGIN_GET_DATA,
                         user: result.user,
@@ -388,7 +412,7 @@ export function userGetData() {
                 )
 
         } catch (err) {
-
+            console.log()
             dispatch({
                 type: LOGIN_GET_DATA_FAILED
             })
@@ -399,4 +423,4 @@ export function userGetData() {
 
 // GET ../user - при переходе на profile (отправляем accessToken)
 // Patch ../user  - при нажатии 'сохранить' информацию
-// АПДЕЙТ ТОКЕН РАБОТАЕТ ПЕРВЫЙ РАЗ !! после него надо сохранить токены и потом уже вызывать дальше
+//проверить updateToken несколько раз

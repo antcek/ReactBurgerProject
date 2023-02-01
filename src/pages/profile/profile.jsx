@@ -9,17 +9,23 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
+
 export function ProfilPage() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const loginRef = useRef();
+  const nameRef = useRef();
+  const passwordRef = useRef();
+
   const [nameValue, setNameValue] = useState('');
-  const inputRef = useRef(null);
 
   const [loginValue, setLoginValue] = useState('')
   const onLoginChange = e => {
-    setLoginValue(e.target.value)
+
+    setLoginValue(e.target.value);
+
   };
 
   const [passwordValue, setPasswordValue] = useState('');
@@ -27,17 +33,36 @@ export function ProfilPage() {
     setPasswordValue(e.target.value)
   };
 
+
   const isUserLogged = useSelector(store => store.loginUser.userAuthorizied);
-  const userData = useSelector(store => store.loginUser.user)
+  const userData = useSelector(store => store.loginUser.user);
+  const refreshToken = localStorage.getItem('refreshToken')
 
-  
+  const isChanging = () => {
+     if (userData && (loginValue !== userData.email ||
+                      nameValue !== userData.name ||
+                      passwordValue !== '') )
+    return true
+
+    else return false
+  }
+
   useEffect(() => {
-    if (!isUserLogged) {
+    if (!isUserLogged && !refreshToken) {
       navigate('/login', { replace: true })
-    }
-    
-  }, [isUserLogged, navigate]);
+    };
 
+    if (userData) {
+      setLoginValue(userData?.email);
+      setNameValue(userData?.name);
+
+    }
+  }, [isUserLogged, navigate, userData, refreshToken,]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log('сабмит нажали')
+  }
 
   return (
     <>
@@ -48,12 +73,10 @@ export function ProfilPage() {
             <NavLink
               to='/profile'
               style={({ isActive }) => ({
-                color: isActive ? 'white' : ''
+                color: isActive ? 'white' : '',
+                textDecoration: isActive ? 'none' : ''
               })}
-              className={({ isActive }) =>
 
-                isActive ? classNames(styles.menu) : classNames(styles.menu, 'text_color_inactive',)
-              }
             >
               <p className="text text_type_main-medium">
                 Профиль
@@ -70,39 +93,61 @@ export function ProfilPage() {
               </p>
             </div>
           </div>
-          <p className="text text_type_main-default text_color_inactive ">
+          <p className="text text_type_main-default text_color_inactive  ">
             В этом разделе вы можете
             изменить свои персональные данные
           </p>
         </div>
-        <div className={styles.info}>
-          <Input
-            type={'text'}
-            placeholder={'Имя'}
-            onChange={e => setNameValue(e.target.value)}
-            value={nameValue}
-            name={'name'}
-            error={false}
-            ref={inputRef}
-            icon="EditIcon"
-            errorText={'Ошибка'}
-            size={'default'}
-          />
-          <EmailInput onChange={onLoginChange}
-            value={loginValue}
-            name={'email'}
-            isIcon={false}
-            icon="EditIcon"
-            placeholder={'Логин'} />
+        <div className={styles.form} >
+          <form onSubmit={handleSubmit} className={styles.info} >
+            <Input
 
-          <PasswordInput
-            onChange={onPasswordChange}
-            value={passwordValue}
-            name={'password'}
+              placeholder={'Имя'}
+              onChange={e => {
+                isChanging();
+                setNameValue(e.target.value)
+              }
+              }
+              value={nameValue}
+              name={'name'}
+              error={false}
+              ref={nameRef}
+              icon="EditIcon"
+              errorText={'Ошибка'}
+              size={'default'}
 
-          />
+            />
+            <EmailInput onChange={(e) => {
+              isChanging();
+              setLoginValue(e.target.value);
+            }}
+              value={loginValue}
+              name={'email'}
+              isIcon={false}
+              icon="EditIcon"
+              placeholder={'Логин'} />
+
+            <PasswordInput
+              onChange={onPasswordChange}
+              value={passwordValue}
+              name={'password'}
+
+            />
+
+            {isChanging() ? <div className={styles.formButtons}>
+
+              <Button htmlType="submit" type="primary" size="medium">
+                Отмена
+              </Button>
+              <Button htmlType="submit" type="primary" size="medium">
+                Изменить
+              </Button>
+            </div> : null}
+          </form>
+
         </div>
       </div>
+
     </>
   )
 }

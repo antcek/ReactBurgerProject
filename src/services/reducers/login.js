@@ -34,7 +34,7 @@ export const loginUserReducer = (state = initialState, action) => {
       return {
         ...state,
         loginRequest: false,
-        userAuthorizied: action.user,
+        userAuthorizied: action.userAuthorizied,
        
       }
     }

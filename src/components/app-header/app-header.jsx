@@ -19,6 +19,7 @@ function AppHeader() {
     const { isConstructorActive, isFeedActive, isProfileActive } = useSelector(store => store.setActive);
     const dispatch = useDispatch();
     
+    
 
     return (
         <header className={styles.header}>
@@ -85,7 +86,9 @@ function AppHeader() {
                             type: HEADER_PROFILE_ACTIVE,
                             isActive: true
                         });
-                       dispatch(userGetData())
+                     
+                             dispatch(userGetData());
+                        
                     }
                     }
                 >
