@@ -408,8 +408,8 @@ export function userGetData() {
                     })
                 })
         } catch (err) {
-
-            console.log('ошибка при повторном обновлении фетч');
+            userGetData()(dispatch)
+       
             dispatch({
                 type: LOGIN_GET_DATA_FAILED
             });
@@ -453,7 +453,8 @@ export function updateUserInfo(nameValue, loginValue, passwordValue) {
                 )
 
         } catch (err) {
-
+            updateUserInfo()(dispatch);
+            
             dispatch({
                 type: USER_UPDATE_INFO_FAILED
             })
