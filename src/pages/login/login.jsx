@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './login.module.css';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../services/thunk-actions/thunk-actions';
 import { REGISTER_SUCCESS } from '../../services/actions/register';
-import Cookies from 'js-cookie';
 import { userGetData } from '../../services/thunk-actions/thunk-actions';
 
 
@@ -28,9 +27,9 @@ export function LoginPage() {
 
   useEffect(() => {
     if (loggedUser) {
-      return navigate(-1, {replace:true})
+      return navigate('/', {replace:true})
     }
-  }, [loggedUser])
+  }, [loggedUser,navigate])
 
 
   return (

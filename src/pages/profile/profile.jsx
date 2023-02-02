@@ -3,10 +3,8 @@ import AppHeader from '../../components/app-header/app-header';
 import styles from './profile.module.css';
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { NavLink } from 'react-router-dom';
-import classNames from 'classnames';
 import { logout, updateUserInfo } from '../../services/thunk-actions/thunk-actions';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { userGetData } from '../../services/thunk-actions/thunk-actions';
 
@@ -15,23 +13,18 @@ import { userGetData } from '../../services/thunk-actions/thunk-actions';
 export function ProfilPage() {
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const nameRef = useRef();
 
   const [nameValue, setNameValue] = useState('');
   const [loginValue, setLoginValue] = useState('');
-
-
   const [passwordValue, setPasswordValue] = useState('');
   const onPasswordChange = e => {
     setPasswordValue(e.target.value)
   };
 
-
   const isUserLogged = useSelector(store => store.loginUser.userAuthorizied);
   const userData = useSelector(store => store.loginUser.user);
-  const accessToken = Cookies.get('accessToken')
+  const accessToken = Cookies.get('accessToken');
+
   const isChanging = () => {
     if (userData && (loginValue !== userData.email ||
       nameValue !== userData.name ||
@@ -112,7 +105,6 @@ export function ProfilPage() {
               value={nameValue}
               name={'name'}
               error={false}
-              ref={nameRef}
               icon="EditIcon"
               errorText={'Ошибка'}
               size={'default'}

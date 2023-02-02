@@ -34,8 +34,8 @@ export function RegisterPage() {
   };
 
   useEffect(() => {
-    if (registeredUser) {
-      navigate('/login')
+    if (registeredUser && !loggedUser) {
+      navigate('/login', {replace:true})
     }
 
     if (loggedUser) {
