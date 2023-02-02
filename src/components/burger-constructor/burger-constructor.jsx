@@ -41,8 +41,6 @@ function BurgerConstructor() {
         return { ingredients: burgerForOrder.map(ingredient => ingredient._id) }
     }, [burgerForOrder]
     )
-
-    const isUserLogged = useSelector(store => store.loginUser.userAuthorizied);
     
     const totalPrice = useMemo(() => {
         return draggedBunsPrice * 2 + draggedIngredientsPrice
@@ -105,9 +103,10 @@ function BurgerConstructor() {
 
     const bunHovered = `${styles.selectTopBun} ${canDrop ? styles.bunHovered : ''}`;
     const botBunHovered = `${styles.selectBotBun} ${canDrop ? styles.bunHovered : ''}`;
-    const ingredientHovered = `${styles.selectMiddleIngredient} 
-         ${canDropIng && constructorBuns.length !== 0 ?
+    const ingredientHovered = `${styles.selectMiddleIngredient}
+     ${canDropIng && constructorBuns.length !== 0 ?
             styles.ingredientHovered : ''}`;
+
     const throwArea = `${styles.throwAreaEmpty} ${constructorBuns.length !== 0 &&
         (canDropIng || canDrop) ?
         styles.throwAreaFilled : ''}`;

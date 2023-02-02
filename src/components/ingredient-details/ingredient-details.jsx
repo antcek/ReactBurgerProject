@@ -3,11 +3,13 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 
 
 function IngredientDetails({ onCloseModal  }) {
 
-    const { name, calories, proteins, fat, carbohydrates, image_large, _id } = useSelector((store) => (store.ingredientDetails.current));
+     const { name, calories, proteins, fat, carbohydrates, image_large, _id } = useSelector((store) => (store.ingredientDetails.current));
+   
 
     return (
         <div className={styles.details} >

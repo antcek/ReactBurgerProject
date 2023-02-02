@@ -1,13 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState,  useEffect } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './register.module.css';
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { registerUser } from '../../services/thunk-actions/thunk-actions';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
+
 
 export function RegisterPage() {
 

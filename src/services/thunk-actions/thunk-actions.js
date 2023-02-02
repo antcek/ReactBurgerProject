@@ -92,7 +92,7 @@ export function sendOrder(idConstructor) {
                 }))
 
         } catch (err) {
-            sendOrder(idConstructor)(dispatch)
+            dispatch(sendOrder(idConstructor))
             dispatch({
                 type: ORDER_FAILED
             })
@@ -123,7 +123,7 @@ export function recoverPassword(loginValue) {
                 });
 
             checkResponse(response).then(result => {
-              console.log(result)
+
                 dispatch({
                     type: RECOVER_SUCCESS,
                     success: result.success
@@ -321,7 +321,7 @@ export const fetchWithRefresh = async (url, options) => {
             const { refreshToken, accessToken } = await updateToken();
             saveTokens(refreshToken, accessToken)
 
-             options.headers.authorization = 'Bearer ' + accessToken;
+            options.headers.authorization = 'Bearer ' + accessToken;
 
             const response = await fetch(url, options);
 
@@ -399,7 +399,6 @@ export function userGetData() {
                     },
 
                 }).then(result => {
-                    console.log(result)
 
                     dispatch({
                         type: LOGIN_GET_DATA,
@@ -408,13 +407,13 @@ export function userGetData() {
                     })
                 })
         } catch (err) {
-            userGetData()(dispatch)
-       
+            dispatch(userGetData())
+
             dispatch({
                 type: LOGIN_GET_DATA_FAILED
             });
-            
-            
+
+
         }
     }
 }
@@ -453,12 +452,12 @@ export function updateUserInfo(nameValue, loginValue, passwordValue) {
                 )
 
         } catch (err) {
-            updateUserInfo()(dispatch);
+            dispatch(updateUserInfo());
 
             dispatch({
                 type: USER_UPDATE_INFO_FAILED
             })
-         
+
         }
 
     }

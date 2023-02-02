@@ -28,8 +28,10 @@ export function ProfilPage() {
   const isChanging = () => {
     if (userData && (loginValue !== userData.email ||
       nameValue !== userData.name ||
-      passwordValue !== ''))
+      passwordValue !== '')) {
+
       return true
+    }
 
     else return false
   }
@@ -108,7 +110,6 @@ export function ProfilPage() {
               icon="EditIcon"
               errorText={'Ошибка'}
               size={'default'}
-
             />
             <EmailInput onChange={(e) => {
               isChanging();
