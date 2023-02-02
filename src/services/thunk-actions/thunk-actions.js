@@ -92,7 +92,7 @@ export function sendOrder(idConstructor) {
                 }))
 
         } catch (err) {
-
+            sendOrder(idConstructor)(dispatch)
             dispatch({
                 type: ORDER_FAILED
             })
@@ -454,7 +454,7 @@ export function updateUserInfo(nameValue, loginValue, passwordValue) {
 
         } catch (err) {
             updateUserInfo()(dispatch);
-            
+
             dispatch({
                 type: USER_UPDATE_INFO_FAILED
             })
