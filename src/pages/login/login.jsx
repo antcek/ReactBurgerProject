@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './login.module.css';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../services/thunk-actions/thunk-actions';
 import { REGISTER_SUCCESS } from '../../services/actions/register';
@@ -15,7 +15,7 @@ export function LoginPage() {
 
   const dispatch = useDispatch();
   const loggedUser = useSelector(store => store.loginUser.userAuthorizied);
-
+  const navigate = useNavigate();
   const [loginValue, setLoginValue] = useState('')
   const onLoginChange = e => {
     setLoginValue(e.target.value)
@@ -26,9 +26,12 @@ export function LoginPage() {
     setPasswordValue(e.target.value)
   }
 
-  if (loggedUser) {
-    return <Navigate to="/" />
-  }
+  useEffect(() => {
+    if (loggedUser) {
+      return navigate(-1, {replace:true})
+    }
+  }, [loggedUser])
+
 
   return (
     <>
@@ -50,9 +53,9 @@ export function LoginPage() {
 
 
         <Button onClick={() => {
-
+          if (passwordValue.length > 5) {
           dispatch(loginUser(loginValue, passwordValue))
-         
+          }
         }
 
         } htmlType="button" type="primary" size="large">

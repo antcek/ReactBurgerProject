@@ -8,6 +8,7 @@ import { logout, updateUserInfo } from '../../services/thunk-actions/thunk-actio
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { userGetData } from '../../services/thunk-actions/thunk-actions';
 
 
 
@@ -31,7 +32,6 @@ export function ProfilPage() {
   const isUserLogged = useSelector(store => store.loginUser.userAuthorizied);
   const userData = useSelector(store => store.loginUser.user);
   const accessToken = Cookies.get('accessToken')
-
   const isChanging = () => {
     if (userData && (loginValue !== userData.email ||
       nameValue !== userData.name ||
@@ -40,20 +40,27 @@ export function ProfilPage() {
 
     else return false
   }
-    
+
   useEffect(() => {
-    if (!isUserLogged && !accessToken) {
-      navigate('/login', { replace: true })
-    };
 
     if (userData) {
       setLoginValue(userData?.email);
       setNameValue(userData?.name);
     }
-  }, [isUserLogged, navigate, userData,accessToken]);
+
+  }, [isUserLogged, userData, accessToken,]);
+
+  useEffect(() => {
+
+    if (accessToken) {
+      dispatch(userGetData());
+    };
+
+  }, [dispatch, accessToken])
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     dispatch(updateUserInfo(nameValue, loginValue, passwordValue));
     setPasswordValue('')
   }
@@ -134,7 +141,7 @@ export function ProfilPage() {
                   setLoginValue(userData?.email);
                   setNameValue(userData?.name);
                 }
-              }}  htmlType="submit" type="primary" size="medium">
+              }} htmlType="submit" type="primary" size="medium">
                 Отмена
               </Button>
               <Button

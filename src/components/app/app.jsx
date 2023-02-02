@@ -16,27 +16,26 @@ import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
 import { ProfilPage } from '../../pages/profile/profile';
 import Cookies from 'js-cookie';
 import { userGetData } from '../../services/thunk-actions/thunk-actions';
+import ProtectedRouteElement from '../protected-route/protected-route';
 
 
 function App() {
 
     const dispatch = useDispatch();
     const productsFailed = useSelector((store) => store.getProducts.productsFailed);
-    let refreshToken = localStorage.getItem('refreshToken');
     let accessToken = Cookies.get('accessToken');
-    console.log(accessToken)
 
     useEffect(() => {
 
         dispatch(getIngredients());
 
-     if (accessToken) {
-       dispatch(userGetData());
-     }
-       
-    }, [refreshToken,accessToken,dispatch]);
+        if (accessToken) {
+            dispatch(userGetData());
+        }
 
-    
+    }, [accessToken, dispatch]);
+
+
 
     return (
         <>
@@ -49,10 +48,10 @@ function App() {
                     <Routes>
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
-
                         <Route path='/forgot-password' element={<ForgotPasswordPage />} />
                         <Route path='/reset-password' element={<ResetPasswordPage />} />
-                        <Route path='/profile' element={<ProfilPage />} />
+                        <Route path='/profile' 
+                        element={<ProtectedRouteElement element={<ProfilPage />} />} />
                         <Route path="/" element={<> <AppHeader />
                             <main>
                                 <div className={styles.sections}>

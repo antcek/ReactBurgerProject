@@ -12,7 +12,7 @@ function OrderDetails({ onCloseModal, }) {
 
     return (
         orderFailed ? <>
-            <div className={styles.error}>Произошла ошибка, попробуйте обновить заказ </div>
+            <div className={styles.error}>Произошла ошибка, попробуйте обновить страницу </div>
             <div onClick={onCloseModal} className={styles.close}>
                 <CloseIcon type="primary" />
             </div>

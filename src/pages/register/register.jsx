@@ -7,7 +7,7 @@ import { registerUser } from '../../services/thunk-actions/thunk-actions';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 export function RegisterPage() {
 
@@ -15,10 +15,10 @@ export function RegisterPage() {
   const navigate = useNavigate();
 
   const registeredUser = useSelector(store => store.registerUser.registerNewUser);
+  const loggedUser = useSelector(store => store.loginUser.userAuthorizied);
   const [nameValue, setNameValue] = useState('');
-  const inputRef = useRef(null);
+  const [loginValue, setLoginValue] = useState('');
 
-  const [loginValue, setLoginValue] = useState('')
   const onLoginRegister = e => {
     setLoginValue(e.target.value)
   };
@@ -37,7 +37,13 @@ export function RegisterPage() {
     if (registeredUser) {
       navigate('/login')
     }
-  }, [registeredUser])
+
+    if (loggedUser) {
+      navigate(-1, {replace:true})
+    }
+  }, [registeredUser,loggedUser,navigate]);
+
+  
 
   return (
     <>
@@ -55,7 +61,6 @@ export function RegisterPage() {
           value={nameValue}
           name={'name'}
           error={false}
-          ref={inputRef}
 
           errorText={'Ошибка'}
           size={'default'}

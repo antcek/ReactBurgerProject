@@ -15,7 +15,8 @@ import {
 
 import DraggedIngredientCard from '../burger-constructor-ingredients/burger-constructor-ingredients';
 import { sendOrder } from '../../services/thunk-actions/thunk-actions';
-import { Navigate, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
+import Cookies from 'js-cookie';
 
 
 function BurgerConstructor() {
@@ -23,6 +24,7 @@ function BurgerConstructor() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const products = useSelector(store => store.getProducts.products);
+    const accessToken = Cookies.get('accessToken')
 
     const currentIngredient = useSelector(store => store.ingredientDetails.current);
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
@@ -216,11 +218,11 @@ function BurgerConstructor() {
                     </Button>
 
                     : <div onClick={() => {
-                        isUserLogged ? dispatch(sendOrder(burgerAllId))
+                        accessToken ? dispatch(sendOrder(burgerAllId))
                             : navigate('/login', { replace: true })
                     }
                     }>
-                        <Button onClick={isUserLogged ? onOpenModal : null} htmlType="button" type="primary" size="large">
+                        <Button onClick={accessToken ? onOpenModal : null} htmlType="button" type="primary" size="large">
                             Оформить заказ
                         </Button>
                     </div>}

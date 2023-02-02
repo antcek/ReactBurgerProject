@@ -8,15 +8,12 @@ import {  NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { userGetData } from '../../services/thunk-actions/thunk-actions';
-import Cookies from 'js-cookie';
 import {  useLocation } from 'react-router-dom';
 
 
 function AppHeader() {
 
     const dispatch = useDispatch();
-    const accessToken = Cookies.get('accessToken');
     const currentPath = useLocation().pathname
     
 
@@ -74,13 +71,7 @@ function AppHeader() {
 
                         isActive ? classNames(styles.element) : classNames(styles.element, 'text_color_inactive',)
                     }
-                    onClick={() => {
-                      
-                          if (accessToken) {
-                             dispatch(userGetData());
-                          }
-                    }
-                    }
+                    
                 >
                     <ProfileIcon type={currentPath === '/profile' ? 'primary' : "secondary"} />
                     <p className="text text_type_main-default  " >

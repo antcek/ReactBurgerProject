@@ -78,7 +78,7 @@ export function sendOrder(idConstructor) {
         });
 
         try {
-             await fetchWithRefresh(`${NORMA_API}/orders`,
+            await fetchWithRefresh(`${NORMA_API}/orders`,
                 {
                     method: 'POST',
                     headers: {
@@ -123,7 +123,7 @@ export function recoverPassword(loginValue) {
                 });
 
             checkResponse(response).then(result => {
-
+              console.log(result)
                 dispatch({
                     type: RECOVER_SUCCESS,
                     success: result.success
@@ -166,6 +166,7 @@ export function resetPassword(passwordValue, tokenValue) {
 
                 dispatch({
                     type: RESET_SUCCESS,
+                    reset: result.success
                 }))
 
         } catch (err) {
@@ -306,6 +307,7 @@ export const updateToken = () => {
 }
 
 export const fetchWithRefresh = async (url, options) => {
+
     try {
 
         const response = await fetch(url, options);
@@ -317,17 +319,16 @@ export const fetchWithRefresh = async (url, options) => {
         if (err.message === 'jwt expired') {
 
             const { refreshToken, accessToken } = await updateToken();
-
             saveTokens(refreshToken, accessToken)
 
-            options.headers.authorization = 'Bearer ' + accessToken;
+             options.headers.authorization = 'Bearer ' + accessToken;
 
             const response = await fetch(url, options);
-            console.log(response)
+
             return await checkResponse(response);
 
         } else {
-            console.log('ошибка не jwt expired')
+
             return Promise.reject(err);
         }
     }
@@ -389,7 +390,6 @@ export function userGetData() {
         })
 
         try {
-
             await fetchWithRefresh(`${API_GET_USER_INFO}/auth/user`,
                 {
                     method: 'GET',
@@ -406,14 +406,15 @@ export function userGetData() {
                         user: result.user,
                         userAuthorizied: true,
                     })
-
-                }
-                )
-
+                })
         } catch (err) {
+
+            console.log('ошибка при повторном обновлении фетч');
             dispatch({
                 type: LOGIN_GET_DATA_FAILED
-            })
+            });
+            
+            
         }
     }
 }
@@ -456,6 +457,7 @@ export function updateUserInfo(nameValue, loginValue, passwordValue) {
             dispatch({
                 type: USER_UPDATE_INFO_FAILED
             })
+         
         }
 
     }

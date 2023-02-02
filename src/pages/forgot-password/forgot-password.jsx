@@ -6,14 +6,15 @@ import { Link } from 'react-router-dom';
 import { recoverPassword } from '../../services/thunk-actions/thunk-actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
+import { validateEmail } from '../../utils/constants';
 
 export function ForgotPasswordPage() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const passwordRecovered = useSelector(store => store.recoverPassword.recoverSuccess)
+  
+  const passwordRecovered = useSelector(store => store.recoverPassword.recoverSuccess);
+  const loggedUser = useSelector(store => store.loginUser.userAuthorizied)
 
   const [loginValue, setLoginValue] = useState('')
   const onLoginForgot = e => {
@@ -24,8 +25,10 @@ export function ForgotPasswordPage() {
     if (passwordRecovered) {
       navigate('/reset-password', { replace: true })
     }
-  }, [passwordRecovered])
-
+    if (loggedUser) {
+      navigate(-1, {replace: true})
+    }
+  }, [passwordRecovered,navigate,loggedUser])
 
 
   return (
@@ -39,9 +42,12 @@ export function ForgotPasswordPage() {
           value={loginValue}
           name={'email'}
           isIcon={false}
-          placeholder="Укажите e-mail" />
+          errorText={'Ошибка! Введите валидный e-mail адрес'}
+          placeholder="Укажите e-mail" 
+          />
 
-        <Button onClick={() => dispatch(recoverPassword(loginValue))} htmlType="button" type="primary" size="large">
+        <Button onClick={() => validateEmail(loginValue) ? dispatch(recoverPassword(loginValue)) : null} 
+        htmlType="button" type="primary" size="large">
           Восстановить
         </Button>
 

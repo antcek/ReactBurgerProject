@@ -3,7 +3,7 @@ import { RESET_FAILED, RESET_SUCCESS, RESET_REQUEST } from "../actions/reset-pas
 const initialState = {
   resetRequest: false,
   resetFailed: false,
-  
+  resetSuccess: false,
 }
 
 export const resetPasswordReducer = (state = initialState, action) => {
@@ -22,7 +22,7 @@ export const resetPasswordReducer = (state = initialState, action) => {
             return {
                 ...state,
                 resetRequest: false,
-           
+                resetSuccess: action.reset
             }
         }
 
@@ -32,6 +32,7 @@ export const resetPasswordReducer = (state = initialState, action) => {
                 ...state,
                 resetFailed: true,
                 resetRequest: false,
+                resetSuccess: false
             }
         }
 

@@ -7,4 +7,4 @@ export const API_LOGIN = `https://norma.nomoreparties.space/api`;
 export const API_LOGOUT = `https://norma.nomoreparties.space/api`;
 export const API_REFRESH_TOKEN = `https://norma.nomoreparties.space/api`;
 export const API_GET_USER_INFO = `https://norma.nomoreparties.space/api`;
-export const API_UPDATE_USER_INFO = 'https://norma.nomoreparties.space/api'
+export const API_UPDATE_USER_INFO = 'https://norma.nomoreparties.space/api';
