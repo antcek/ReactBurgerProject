@@ -9,8 +9,7 @@ import styles from './ingredients.module.css'
 import IngredientDetails from "../../components/ingredient-details/ingredient-details";
 
 export function IngredientsPage() {
-  
-  const navigate = useNavigate()
+
   const dispatch = useDispatch();
   const location = useLocation();
   const modalIngredient = JSON.parse(localStorage.getItem('modalData'));
@@ -25,17 +24,15 @@ export function IngredientsPage() {
         visible: false,
       })
     }
-    navigate(`/ingredients/${modalIngredient._id}`)
 
-  }, [locationIngredientId,navigate])
-console.log('ingredientsPage')
+  }, [locationIngredientId])
+
 
   return (
     <>
       <AppHeader />
       <div className={styles.container}>
-            <IngredientDetails id={modalIngredient?._id}/>
-          
+        <IngredientDetails  />
       </div>
     </>
   )
