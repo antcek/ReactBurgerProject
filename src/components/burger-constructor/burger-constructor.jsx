@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useEffect } from 'react';
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import IngredientDetails from '../ingredient-details/ingredient-details';
@@ -15,9 +15,10 @@ import {
 
 import DraggedIngredientCard from '../burger-constructor-ingredients/burger-constructor-ingredients';
 import { sendOrder } from '../../services/thunk-actions/thunk-actions';
-import { useLocation, useNavigate } from 'react-router';
+import { Navigate, useLocation, useNavigate } from 'react-router';
 import Cookies from 'js-cookie';
 import { useModalData } from '../../services/custom-hooks/custom-hooks';
+import { NavLink } from 'react-router-dom';
 
 
 function BurgerConstructor() {
@@ -25,6 +26,8 @@ function BurgerConstructor() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useModalData();
+
+
     const products = useSelector(store => store.getProducts.products);
     const accessToken = Cookies.get('accessToken');
 
@@ -121,7 +124,7 @@ function BurgerConstructor() {
 
         navigate(`/ingredients/${targetProduct?._id}`);
         if (targetProduct) {
-        localStorage.setItem('modalData', JSON.stringify(targetProduct));
+            localStorage.setItem('modalData', JSON.stringify(targetProduct));
         }
         if (event.target.closest('.constructor-element__action'))
             return;
@@ -143,6 +146,7 @@ function BurgerConstructor() {
             product: null,
             visible: false
         });
+
     };
 
     return (
@@ -235,8 +239,9 @@ function BurgerConstructor() {
 
             </div>
             {modalVisible && <Modal onCloseModal={onCloseModal}>
-                {currentIngredient ? <IngredientDetails products={products} onCloseModal={onCloseModal} />
-                    : <OrderDetails burgerForOrder={burgerForOrder} onCloseModal={onCloseModal} />}
+                {currentIngredient ? <IngredientDetails />
+                    :
+                    <OrderDetails  onCloseModal={onCloseModal} />}
             </Modal>}
 
         </section>

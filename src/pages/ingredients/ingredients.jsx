@@ -21,7 +21,7 @@ export function IngredientsPage() {
       dispatch({
         type: CURRENT_INGREDIENT_DETAILS,
         product: modalIngredient,
-        visible: false,
+        visible: true,
       })
     }
 

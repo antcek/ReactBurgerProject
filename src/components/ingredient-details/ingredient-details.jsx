@@ -2,11 +2,19 @@ import styles from './ingredient-details.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 function IngredientDetails() {
 
      const current = useSelector((store) =>  (store.ingredientDetails.current));
+    //  const location = useLocation();
+     
+    //  useEffect(() =>{
+
+    //     if (location.pathname === '/') {
+            
+    //     }
+    //  },[])
      
     return (
       

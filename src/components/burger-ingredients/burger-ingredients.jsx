@@ -63,18 +63,6 @@ function BurgerIngredients() {
 
     };
 
-    function onCloseModal() {
-        localStorage.removeItem('modalData')
-        dispatch({
-            type: CURRENT_INGREDIENT_DETAILS,
-            product: null,
-            visible: false,
-        });
-        navigate('/', { replace: true });
-    };
-
-    const { id } = useParams();
-
     return (
 
         <section className={styles.ingredients} >
@@ -144,16 +132,16 @@ function BurgerIngredients() {
 
             </div>
 
-            {modalVisible && id === currentTarget?._id && (
+            {/* {modalVisible && id === currentTarget?._id && (
 
                 <Modal onCloseModal={onCloseModal}>
-                    {currentTarget ?
+                    {
                         <IngredientDetails products={products} onCloseModal={onCloseModal} />
-                        :
-                        <></>
+                        
+                    
                     }
                 </Modal>
-            )}
+            )} */}
         </section>
 
     )

@@ -21,6 +21,8 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import { IngredientsPage } from '../../pages/ingredients/ingredients';
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
 import Modal from '../modal/modal';
+import OrderDetails from '../order-details/order-details';
+
 
 
 
@@ -30,6 +32,7 @@ function App() {
     const dispatch = useDispatch();
     const products = useSelector((store) => store.getProducts.products);
     const productsFailed = useSelector((store) => store.getProducts.productsFailed);
+
     let accessToken = Cookies.get('accessToken');
 
     function onCloseModal() {
@@ -52,7 +55,7 @@ function App() {
 
 
     const detailsVisible = useSelector(store => store.ingredientDetails.visible);
-
+    const orderNumber = useSelector(store => store.orderNumber.orderNumber)
 
     return (
         <>
@@ -79,21 +82,21 @@ function App() {
                                 </div>
                             </main>
                         </>} >
-                            {detailsVisible && <Route path='/ingredients/:id' element={<Modal onCloseModal={onCloseModal}>
+                            {detailsVisible && <Route path={`/ingredients/:id`}
+                                element={<Modal onCloseModal={onCloseModal}>
                                     <IngredientDetails />
-                                </Modal>} />
-
-                            }
+                                </Modal>} />}
+                            {<Route path={`/order`}
+                                element={<Modal onCloseModal={onCloseModal}>
+                                    <OrderDetails />
+                                </Modal>} />}
                         </Route>
                         <Route path='*' element={<Error404Page />} />
 
-                        { <Route path='/ingredients' element={<IngredientsPage />} >
+                        {<Route path='/ingredients' element={<IngredientsPage />} >
                             <Route path=':id'
                                 element={<IngredientDetails />} />
                         </Route>}
-
-
-
 
                     </Routes>
                 </Router>
