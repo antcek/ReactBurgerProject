@@ -28,16 +28,14 @@ function Modal({ onCloseModal, children }) {
     return ReactDOM.createPortal(
         <>
             <div className={styles.wrapper}>
-                <div onClick={onCloseModal} className={styles.close}>
-                    <CloseIcon type="primary" />
-                </div>
-                <div className={styles.modal}>
-                    <NavLink to='/'>
+                <NavLink to='/'>
+                    <div onClick={onCloseModal} className={styles.close}>
+                        <CloseIcon type="primary" />
+                    </div>
+                </NavLink>
+                {children}
 
-                    </NavLink>
-                    {children}
 
-                </div>
             </div>
             <ModalOverlay onCloseModal={onCloseModal} />
         </>,

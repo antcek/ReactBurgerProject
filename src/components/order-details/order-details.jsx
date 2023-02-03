@@ -1,5 +1,4 @@
 import styles from './order-details.module.css';
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
@@ -13,14 +12,8 @@ function OrderDetails({ onCloseModal, }) {
     return (
         orderFailed ? <>
             <div className={styles.error}>Произошла ошибка, попробуйте обновить страницу </div>
-            <div onClick={onCloseModal} className={styles.close}>
-                <CloseIcon type="primary" />
-            </div>
         </>
             : <div className={styles.order} >
-                <div onClick={onCloseModal} className={styles.close}>
-                    <CloseIcon type="primary" />
-                </div>
                 <p className="text text_type_digits-large pt-30">{orderNumber}</p>
                 <p className="text text_type_main-medium pt-8">идентификатор заказа</p>
                 <div className={styles.gif}>
