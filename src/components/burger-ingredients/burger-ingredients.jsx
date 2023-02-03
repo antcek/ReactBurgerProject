@@ -2,12 +2,10 @@ import React, { useState, useRef } from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from '../modal/modal.jsx';
-import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useDispatch, useSelector } from 'react-redux';
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
 import { Link } from 'react-scroll';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useModalData } from '../../services/custom-hooks/custom-hooks';
 
 function BurgerIngredients() {
@@ -18,10 +16,6 @@ function BurgerIngredients() {
     const products = useSelector((store) => store.getProducts.products);
 
     const [current, setCurrent] = useState('Булки');
-
-    const modalVisible = useSelector(store => store.ingredientDetails.visible);
-
-    const currentTarget = useSelector(store => store.ingredientDetails.current);
 
     const buns = products.filter(ingredient => ingredient.type === 'bun');
     const main = products.filter(ingredient => ingredient.type === 'main');
@@ -131,17 +125,6 @@ function BurgerIngredients() {
                 </div>
 
             </div>
-
-            {/* {modalVisible && id === currentTarget?._id && (
-
-                <Modal onCloseModal={onCloseModal}>
-                    {
-                        <IngredientDetails products={products} onCloseModal={onCloseModal} />
-                        
-                    
-                    }
-                </Modal>
-            )} */}
         </section>
 
     )

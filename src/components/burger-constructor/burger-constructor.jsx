@@ -15,10 +15,10 @@ import {
 
 import DraggedIngredientCard from '../burger-constructor-ingredients/burger-constructor-ingredients';
 import { sendOrder } from '../../services/thunk-actions/thunk-actions';
-import { Navigate, useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import Cookies from 'js-cookie';
 import { useModalData } from '../../services/custom-hooks/custom-hooks';
-import { NavLink } from 'react-router-dom';
+
 
 
 function BurgerConstructor() {
@@ -26,6 +26,14 @@ function BurgerConstructor() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useModalData();
+    const location = useLocation();
+
+    useEffect(() => {
+
+        if (location.pathname === '/order') {
+            navigate('/')
+        }
+    }, [])
 
 
     const products = useSelector(store => store.getProducts.products);
@@ -126,11 +134,9 @@ function BurgerConstructor() {
         if (targetProduct) {
             localStorage.setItem('modalData', JSON.stringify(targetProduct));
         }
-        if (event.target.closest('.constructor-element__action'))
-            return;
+        if (event.target.closest('.constructor-element__action')) { return }
 
         else {
-
             dispatch({
                 type: CURRENT_INGREDIENT_DETAILS,
                 product: targetProduct,
@@ -240,8 +246,7 @@ function BurgerConstructor() {
             </div>
             {modalVisible && <Modal onCloseModal={onCloseModal}>
                 {currentIngredient ? <IngredientDetails />
-                    :
-                    <OrderDetails  onCloseModal={onCloseModal} />}
+                    : <OrderDetails onCloseModal={onCloseModal} />}
             </Modal>}
 
         </section>

@@ -30,10 +30,11 @@ import OrderDetails from '../order-details/order-details';
 function App() {
 
     const dispatch = useDispatch();
-    const products = useSelector((store) => store.getProducts.products);
-    const productsFailed = useSelector((store) => store.getProducts.productsFailed);
 
+    const productsFailed = useSelector((store) => store.getProducts.productsFailed);
+    const detailsVisible = useSelector(store => store.ingredientDetails.visible);
     let accessToken = Cookies.get('accessToken');
+
 
     function onCloseModal() {
         dispatch({
@@ -51,11 +52,11 @@ function App() {
             dispatch(userGetData());
         }
 
+
+
     }, [accessToken, dispatch]);
 
 
-    const detailsVisible = useSelector(store => store.ingredientDetails.visible);
-    const orderNumber = useSelector(store => store.orderNumber.orderNumber)
 
     return (
         <>

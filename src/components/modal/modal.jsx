@@ -4,15 +4,16 @@ import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay.jsx';
 import PropTypes from 'prop-types';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { NavLink,useLocation } from 'react-router-dom';
-import OrderDetails from '../order-details/order-details';
+import { NavLink, useLocation } from 'react-router-dom';
+
 
 function Modal({ onCloseModal, children }) {
 
     const location = useLocation();
-    
+
+
     useEffect(() => {
-           
+
         function modalEscClose(event) {
 
             if (event.code === 'Escape')
@@ -20,9 +21,9 @@ function Modal({ onCloseModal, children }) {
 
         };
 
-        if (location.pathname === '/' ) {
-            onCloseModal()
-        }
+        if (location.pathname === '/') {
+            onCloseModal();
+        };
 
         document.addEventListener('keydown', modalEscClose);
 
@@ -30,7 +31,7 @@ function Modal({ onCloseModal, children }) {
             document.removeEventListener('keydown', modalEscClose)
         }
 
-    }, [onCloseModal,children]);
+    }, [onCloseModal, children]);
 
     return ReactDOM.createPortal(
         <>

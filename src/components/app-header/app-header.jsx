@@ -4,18 +4,16 @@ import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ListIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app-header.module.css';
-import {  NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import {  useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 
 function AppHeader() {
 
-    const dispatch = useDispatch();
     const currentPath = useLocation().pathname
-    
+
 
     return (
         <header className={styles.header}>
@@ -29,10 +27,11 @@ function AppHeader() {
                         })}
                         className={({ isActive }) =>
 
-                            isActive ? classNames(styles.element) : classNames(styles.element, 'text_color_inactive',)
+                            isActive ? classNames(styles.element) :
+                                classNames(styles.element, 'text_color_inactive',)
                         }
                         onClick={() => {
-                         
+
                         }
                         }
                     >
@@ -47,7 +46,8 @@ function AppHeader() {
                             color: isActive ? 'white' : ''
                         })}
                         className={({ isActive }) =>
-                            isActive ? classNames(styles.element) : classNames(styles.element, 'text_color_inactive',)
+                            isActive ? classNames(styles.element) :
+                                classNames(styles.element, 'text_color_inactive',)
                         }
                     >
                         <ListIcon type={currentPath === '/orders' ? 'primary' : "secondary"} />
@@ -57,7 +57,7 @@ function AppHeader() {
                 </div>
 
                 <NavLink to='/'
-                  
+
                     className={styles.logo}>
                     <Logo />
                 </NavLink>
@@ -69,9 +69,10 @@ function AppHeader() {
                     })}
                     className={({ isActive }) =>
 
-                        isActive ? classNames(styles.element) : classNames(styles.element, 'text_color_inactive',)
+                        isActive ? classNames(styles.element) :
+                            classNames(styles.element, 'text_color_inactive',)
                     }
-                    
+
                 >
                     <ProfileIcon type={currentPath === '/profile' ? 'primary' : "secondary"} />
                     <p className="text text_type_main-default  " >
