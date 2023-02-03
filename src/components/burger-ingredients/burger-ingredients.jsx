@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -7,7 +7,7 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useDispatch, useSelector } from 'react-redux';
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
 import { Link } from 'react-scroll';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useModalData } from '../../services/custom-hooks/custom-hooks';
 
 function BurgerIngredients() {

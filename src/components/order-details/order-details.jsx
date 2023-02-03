@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 
-function OrderDetails({ onCloseModal, }) {
+function OrderDetails() {
 
     const { orderNumber } = useSelector(store => store.orderNumber);
     const orderFailed = useSelector(store => store.orderNumber.orderFailed);
@@ -47,9 +47,6 @@ function OrderDetails({ onCloseModal, }) {
     )
 }
 
-OrderDetails.propTypes = {
-    onCloseModal: PropTypes.func.isRequired,
-}
 
 export default OrderDetails
 

@@ -3,9 +3,8 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import React from 'react';
 
-const IngredientDetails = React.forwardRef(({ onCloseModal  },ref) => {
+function IngredientDetails() {
 
      const current = useSelector((store) =>  (store.ingredientDetails.current));
      
@@ -16,11 +15,7 @@ const IngredientDetails = React.forwardRef(({ onCloseModal  },ref) => {
                 <p className="text text_type_main-large">
                     Детали ингредиента
                 </p>
-                {/* <NavLink to='/'>
-                <div ref={ref} onClick={onCloseModal} className={styles.close}>
-                    <CloseIcon type="primary"  />
-                </div>
-                </NavLink> */}
+               
             </div>
             <div>
                 <div className={styles.body} key={current._id}>
@@ -68,11 +63,10 @@ const IngredientDetails = React.forwardRef(({ onCloseModal  },ref) => {
         </div>) : null
 
     )
-})
+}
 
 IngredientDetails.propTypes = {
     
-    onCloseModal: PropTypes.func,
 
 }
 

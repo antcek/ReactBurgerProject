@@ -20,6 +20,7 @@ import ProtectedRouteElement from '../protected-route/protected-route';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { IngredientsPage } from '../../pages/ingredients/ingredients';
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
+import Modal from '../modal/modal';
 
 
 
@@ -78,20 +79,19 @@ function App() {
                                 </div>
                             </main>
                         </>} >
+                            {detailsVisible && <Route path='/ingredients/:id' element={<Modal onCloseModal={onCloseModal}>
+                                    <IngredientDetails />
+                                </Modal>} />
 
-                            {detailsVisible &&
-                                <Route path='/ingredients/:id'
-                                    element={<IngredientDetails onCloseModal={onCloseModal} />}
-                                />}
-
-                            <Route path='*' element={<Error404Page />} />
-
+                            }
                         </Route>
+                        <Route path='*' element={<Error404Page />} />
 
-                        {<Route path='/ingredients' element={<IngredientsPage />} >
+                        { <Route path='/ingredients' element={<IngredientsPage />} >
                             <Route path=':id'
-                                element={<IngredientDetails onCloseModal={onCloseModal} />} />
+                                element={<IngredientDetails />} />
                         </Route>}
+
 
 
 
