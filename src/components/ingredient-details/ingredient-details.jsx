@@ -1,31 +1,32 @@
 import styles from './ingredient-details.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
-
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router';
+import { NavLink } from 'react-router-dom';
+import React from 'react';
 
+const IngredientDetails = React.forwardRef(({ onCloseModal  },ref) => {
 
-function IngredientDetails({ onCloseModal  }) {
-
-     const { name, calories, proteins, fat, carbohydrates, image_large, _id } = useSelector((store) => (store.ingredientDetails.current));
-   
-
+     const current = useSelector((store) =>  (store.ingredientDetails.current));
+     
     return (
-        <div className={styles.details} >
+      
+        current?._id ? ( <div className={styles.details} >
             <div className={styles.header} >
                 <p className="text text_type_main-large">
                     Детали ингредиента
                 </p>
-                <div onClick={onCloseModal} className={styles.close}>
-                    <CloseIcon type="primary" />
+                {/* <NavLink to='/'>
+                <div ref={ref} onClick={onCloseModal} className={styles.close}>
+                    <CloseIcon type="primary"  />
                 </div>
+                </NavLink> */}
             </div>
             <div>
-                <div className={styles.body} key={_id}>
-                    <img src={image_large} alt='ингредиент' />
+                <div className={styles.body} key={current._id}>
+                    <img src={current.image_large} alt='ингредиент' />
                     <p className="text text_type_main-medium mt-4 mb-8">
-                        {name}
+                        {current.name}
                     </p>
                     <div className={styles.wrapperCalories}>
                         <div className={styles.substances}>
@@ -33,7 +34,7 @@ function IngredientDetails({ onCloseModal  }) {
                                 Калории,ккал
                             </p>
                             <p className="text text_type_digits-default text_color_inactive ">
-                                {calories}
+                                {current.calories}
                             </p>
                         </div>
                         <div className={styles.substances}>
@@ -41,7 +42,7 @@ function IngredientDetails({ onCloseModal  }) {
                                 Белки, г
                             </p>
                             <p className="text text_type_digits-default text_color_inactive ">
-                                {proteins}
+                                {current.proteins}
                             </p>
                         </div>
                         <div className={styles.substances}>
@@ -49,7 +50,7 @@ function IngredientDetails({ onCloseModal  }) {
                                 Жиры, г
                             </p>
                             <p className="text text_type_digits-default text_color_inactive ">
-                                {fat}
+                                {current.fat}
                             </p>
                         </div>
                         <div className={styles.substances}>
@@ -57,21 +58,21 @@ function IngredientDetails({ onCloseModal  }) {
                                 Углеводы, г
                             </p>
                             <p className="text text_type_digits-default text_color_inactive ">
-                                {carbohydrates}
+                                {current.carbohydrates}
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
 
-        </div>
+        </div>) : null
 
     )
-}
+})
 
 IngredientDetails.propTypes = {
     
-    onCloseModal: PropTypes.func.isRequired,
+    onCloseModal: PropTypes.func,
 
 }
 

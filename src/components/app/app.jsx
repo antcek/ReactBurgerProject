@@ -20,13 +20,14 @@ import ProtectedRouteElement from '../protected-route/protected-route';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { IngredientsPage } from '../../pages/ingredients/ingredients';
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
-import Modal from '../modal/modal';
+
 
 
 
 function App() {
 
     const dispatch = useDispatch();
+    const products = useSelector((store) => store.getProducts.products);
     const productsFailed = useSelector((store) => store.getProducts.productsFailed);
     let accessToken = Cookies.get('accessToken');
 
@@ -48,7 +49,9 @@ function App() {
 
     }, [accessToken, dispatch]);
 
-    const products = useSelector((store) => store.getProducts.products);
+
+    const detailsVisible = useSelector(store => store.ingredientDetails.visible);
+
 
     return (
         <>
@@ -75,15 +78,23 @@ function App() {
                                 </div>
                             </main>
                         </>} >
-                            <Route  path='/ingredients' element={<IngredientsPage/>}>
-                               
-                                  <Route  path=':id' element={<IngredientDetails products={products} onCloseModal={onCloseModal} />} />
-                                
-                            
+
+                            {detailsVisible &&
+                                <Route path='/ingredients/:id'
+                                    element={<IngredientDetails onCloseModal={onCloseModal} />}
+                                />}
+
+                            <Route path='*' element={<Error404Page />} />
+
                         </Route>
-                         </Route>
-                        <Route path='*' element={<Error404Page />} />
-                       
+
+                        {<Route path='/ingredients' element={<IngredientsPage />} >
+                            <Route path=':id'
+                                element={<IngredientDetails onCloseModal={onCloseModal} />} />
+                        </Route>}
+
+
+
                     </Routes>
                 </Router>
 

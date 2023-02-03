@@ -15,16 +15,18 @@ import {
 
 import DraggedIngredientCard from '../burger-constructor-ingredients/burger-constructor-ingredients';
 import { sendOrder } from '../../services/thunk-actions/thunk-actions';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import Cookies from 'js-cookie';
+import { useModalData } from '../../services/custom-hooks/custom-hooks';
 
 
 function BurgerConstructor() {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    useModalData();
     const products = useSelector(store => store.getProducts.products);
-    const accessToken = Cookies.get('accessToken')
+    const accessToken = Cookies.get('accessToken');
 
     const currentIngredient = useSelector(store => store.ingredientDetails.current);
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
@@ -41,7 +43,7 @@ function BurgerConstructor() {
         return { ingredients: burgerForOrder.map(ingredient => ingredient._id) }
     }, [burgerForOrder]
     )
-    
+
     const totalPrice = useMemo(() => {
         return draggedBunsPrice * 2 + draggedIngredientsPrice
     }, [draggedBunsPrice, draggedIngredientsPrice])
@@ -117,20 +119,25 @@ function BurgerConstructor() {
         const currentTarget = event.currentTarget;
         const targetProduct = products.find((product) => product._id === currentTarget.getAttribute('id'))
 
+        navigate(`/ingredients/${targetProduct?._id}`);
+        if (targetProduct) {
+        localStorage.setItem('modalData', JSON.stringify(targetProduct));
+        }
         if (event.target.closest('.constructor-element__action'))
             return;
 
         else {
+
             dispatch({
                 type: CURRENT_INGREDIENT_DETAILS,
                 product: targetProduct,
                 visible: true
             });
         }
-
     };
 
     function onCloseModal() {
+        localStorage.removeItem('modalData')
         dispatch({
             type: CURRENT_INGREDIENT_DETAILS,
             product: null,
