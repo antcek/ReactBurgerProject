@@ -12,40 +12,35 @@ export const LeftSideMenu = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.menu}>
         <NavLink
           to='/profile'
-          style={() => ({
-            color: `#8585AD` ,
-            textDecoration: 'none'
-          })}
-         
+          className={() =>
+            classNames(`${location.pathname === '/profile' ? styles.elementActive
+              : styles.elementDisactive}`,
+            )}
         >
-          <p className={`text text_type_main-medium ${location.pathname === '/profile' ?
-            styles.element : ''} `} >
+          <p className='text text_type_main-medium '>
             Профиль
           </p>
 
         </NavLink>
         <NavLink
           to='/profile/orders'
-          style={({ isActive }) => ({
-
-            color: isActive ? 'white' : '',
-            textDecoration: 'none'
-          })}
-          className={({ isActive }) =>
-
-            isActive ? '' : classNames('text_color_inactive',)
-          }
+          className={() =>
+            classNames(`${location.pathname === '/profile/orders' ? styles.elementActive
+              : styles.elementDisactive}`,
+            )}
         >
           <p className="text text_type_main-medium">
             История заказов
           </p>
         </NavLink>
         <div
+          className={styles.logout}
           onClick={() => {
             dispatch(logout());
           }}

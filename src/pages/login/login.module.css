@@ -5,7 +5,9 @@
   justify-content: center;
   flex-direction: column;
   padding-top: 180px;
-  gap: 24px
+  gap: 24px;
+  flex-grow:0;
+  flex-shrink: 0;
 }
 
 .hints {
@@ -15,6 +17,15 @@
   gap: 16px;
   padding: 0;
   justify-content: center;
+}
+
+.form {
+ 
+  display:flex;
+  flex-wrap:wrap;
+  gap: 24px;
+  justify-content: center;
+  max-width: 480px
 }
 
 .buttons {

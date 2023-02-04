@@ -8,13 +8,12 @@ export function IngredientsPage() {
 
   useModalData();
 
-
   return (
-    <>
-      <AppHeader />
-      <div className={styles.container}>
-        <Outlet />
-      </div>
-    </>
+  <>
+    <AppHeader />
+    <div className={styles.container}>
+      <Outlet />
+    </div>
+  </>
   )
 }

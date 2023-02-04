@@ -1,19 +1,10 @@
 import styles from './order-details.module.css';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
-
 
 function OrderDetails() {
 
     const { orderNumber } = useSelector(store => store.orderNumber);
     const orderFailed = useSelector(store => store.orderNumber.orderFailed);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        navigate('/order', { replace: true })
-
-    }, [])
 
 
     return (

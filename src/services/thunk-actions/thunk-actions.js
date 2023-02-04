@@ -82,7 +82,8 @@ export function sendOrder(idConstructor) {
                 {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + Cookies.get('accessToken')
                     },
                     body: JSON.stringify(idConstructor),
                 })

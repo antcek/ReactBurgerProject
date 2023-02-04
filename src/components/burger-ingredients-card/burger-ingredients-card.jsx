@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 import ingredientTypes from '../../prop-types/prop-types.jsx';
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
+import React from 'react';
 
 
-function IngredientCard({ onOpenModal, product }) {
+const IngredientCard = React.forwardRef(({ onOpenModal, product },ref) => {
 
     const productType = product.type === 'bun' ? 'bun' : 'ingredients';
 
@@ -36,7 +37,8 @@ function IngredientCard({ onOpenModal, product }) {
         <div onClick={onOpenModal}
             id={product._id}
             className={`${cardClasses}`}
-            key={product._id}>
+            key={product._id}
+           >
            
                 {draggedBuns.map(item => item.name === product.name ? <Counter key={item._id} count={setBunsCount()} size="default" extraClass="m-1" />
                     : null)}
@@ -56,7 +58,7 @@ function IngredientCard({ onOpenModal, product }) {
         </div>
 
     );
-}
+})
 
 IngredientCard.propTypes = {
     onOpenModal: PropTypes.func.isRequired,

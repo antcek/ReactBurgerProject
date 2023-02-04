@@ -1,12 +1,12 @@
 import { useLocation } from "react-router";
-import {useEffect} from 'react';
+import { useEffect,useState } from 'react';
 import { CURRENT_INGREDIENT_DETAILS } from "../actions/ingredient-details";
 import { useDispatch } from "react-redux";
 
 export const useModalData = () => {
 
-  const dispatch = useDispatch();
-  const location = useLocation();
+    const dispatch = useDispatch();
+    const location = useLocation();
     const modalIngredient = JSON.parse(localStorage.getItem('modalData'));
     const locationUrlIndex = location.pathname.indexOf('/ingredients/');
     const locationIngredientId = location.pathname.substring(locationUrlIndex + '/ingredients/'.length)
@@ -22,3 +22,13 @@ export const useModalData = () => {
 
     }, [locationIngredientId])
 }
+
+export function useForm(nameValue) {
+    const [values, setValues] = useState(nameValue);
+  
+    const handleChange = event => {
+      const { value, name } = event.target;
+      setValues({ ...values, [name]: value });
+    };
+    return { values, handleChange, setValues };
+  }

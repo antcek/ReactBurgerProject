@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -7,37 +7,51 @@ import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-de
 import { Link } from 'react-scroll';
 import { useNavigate } from 'react-router-dom';
 import { useModalData } from '../../services/custom-hooks/custom-hooks';
+import Modal from '../modal/modal';
+import IngredientDetails from '../ingredient-details/ingredient-details';
+import { SCROLL_DURATION } from '../../utils/constants';
 
 function BurgerIngredients() {
 
     const dispatch = useDispatch();
-    useModalData()
+    useModalData();
+
 
     const products = useSelector((store) => store.getProducts.products);
+    const modalVisible = useSelector(store => store.ingredientDetails.visible);
+    const currentIngredient = useSelector(store => store.ingredientDetails.current);
 
     const [current, setCurrent] = useState('Булки');
 
-    const buns = products.filter(ingredient => ingredient.type === 'bun');
-    const main = products.filter(ingredient => ingredient.type === 'main');
-    const sauce = products.filter(ingredient => ingredient.type === 'sauce');
+    const buns = useMemo(() => {
+        return products.filter(ingredient => ingredient.type === 'bun');
+    }, [products])
+
+    const main = useMemo(() => {
+        return products.filter(ingredient => ingredient.type === 'main');
+    }, [products]);
+
+    const sauce = useMemo(() => {
+        return products.filter(ingredient => ingredient.type === 'sauce');
+    }, [products]);
     const navigate = useNavigate();
 
-    const containerRef = document.getElementById('ingredients-container');
+    const containerRef = useRef(null);
     const bunRef = useRef(null);
     const sauceRef = useRef(null);
     const mainRef = useRef(null);
 
     const scrollNavigation = () => {
 
-        if (Math.abs(bunRef.current.getBoundingClientRect().top - containerRef.getBoundingClientRect().top)
-            < Math.abs(sauceRef.current.getBoundingClientRect().top - containerRef.getBoundingClientRect().top)) {
+        if (Math.abs(bunRef?.current.getBoundingClientRect().top - containerRef?.current.getBoundingClientRect()?.top)
+            < Math.abs(sauceRef?.current.getBoundingClientRect().top - containerRef?.current.getBoundingClientRect()?.top)) {
             setCurrent('Булки');
         }
 
         else setCurrent('Соусы');
 
-        if (Math.abs(mainRef.current.getBoundingClientRect().top - containerRef.getBoundingClientRect().top)
-            < Math.abs(sauceRef.current.getBoundingClientRect().top - containerRef.getBoundingClientRect().top)) {
+        if (Math.abs(mainRef?.current.getBoundingClientRect().top - containerRef?.current.getBoundingClientRect().top)
+            < Math.abs(sauceRef?.current.getBoundingClientRect().top - containerRef?.current.getBoundingClientRect().top)) {
             setCurrent('Начинки');
         };
 
@@ -46,9 +60,13 @@ function BurgerIngredients() {
     function onOpenModal(event) {
 
         const currentTarget = event.currentTarget;
-        const targetProduct = products.find((product) => product._id === currentTarget.getAttribute('id'))
-        navigate(`/ingredients/${targetProduct?._id}`);
-        localStorage.setItem('modalData', JSON.stringify(targetProduct))
+        const targetProduct = products.find((product) => product?._id === currentTarget?.getAttribute('id'))
+        if (targetProduct) {
+            navigate(`/ingredients/${targetProduct?._id}`)
+            localStorage.setItem('modalData', JSON.stringify(targetProduct));
+        }
+        else if (event.target.closest('.constructor-element__action')) { return false }
+
         dispatch({
             type: CURRENT_INGREDIENT_DETAILS,
             product: targetProduct,
@@ -56,6 +74,21 @@ function BurgerIngredients() {
         })
 
     };
+    function onCloseModal() {
+
+        localStorage.removeItem('modalData');
+
+        navigate('/')
+
+        dispatch({
+            type: CURRENT_INGREDIENT_DETAILS,
+            product: null,
+            visible: false
+        });
+    }
+
+
+
 
     return (
 
@@ -68,7 +101,7 @@ function BurgerIngredients() {
                     to='ingredients-buns'
                     spy={true}
                     smooth={true}
-                    duration={400}
+                    duration={SCROLL_DURATION}
                     containerId='ingredients-container'
                     onSetActive={() => setCurrent('Булки')}
                 >
@@ -80,7 +113,7 @@ function BurgerIngredients() {
                     to='ingredients-sauces'
                     spy={true}
                     smooth={true}
-                    duration={400}
+                    duration={SCROLL_DURATION}
                     containerId='ingredients-container'
                     onSetActive={() => setCurrent('Соусы')}
                 >
@@ -92,7 +125,7 @@ function BurgerIngredients() {
                     to='ingredients-main'
                     spy={true}
                     smooth={true}
-                    duration={400}
+                    duration={SCROLL_DURATION}
                     containerId='ingredients-container'
                     onSetActive={() => setCurrent('Начинки')}
                 >
@@ -102,13 +135,15 @@ function BurgerIngredients() {
                 </Link>
             </div>
 
-            <div id='ingredients-container' onScroll={scrollNavigation} className={styles.container} >
+            <div id='ingredients-container' ref={containerRef} onScroll={scrollNavigation} className={styles.container} >
                 <p id='ingredients-buns' ref={bunRef} className="text text_type_main-medium ">
                     Булки
                 </p>
                 <div className={styles.wrapper}>
 
-                    {buns.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
+                    {buns?.map((product) =>
+                        <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />
+                    )}
 
                 </div>
                 <p id='ingredients-sauces' ref={sauceRef} className="text text_type_main-medium mt-10">
@@ -125,6 +160,9 @@ function BurgerIngredients() {
                 </div>
 
             </div>
+            {modalVisible && currentIngredient && <Modal onCloseModal={onCloseModal}>
+                {<IngredientDetails />}
+            </Modal>}
         </section>
 
     )

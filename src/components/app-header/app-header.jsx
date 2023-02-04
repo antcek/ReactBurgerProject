@@ -12,7 +12,7 @@ import { useLocation } from 'react-router-dom';
 
 function AppHeader() {
 
-    const currentPath = useLocation().pathname
+    const currentPath = useLocation().pathname;
 
 
     return (
@@ -22,19 +22,12 @@ function AppHeader() {
                 <div className={styles.wrapper}>
                     <NavLink
                         to='/'
-                        style={({ isActive }) => ({
-                            color: isActive ? 'white' : ''
-                        })}
+
                         className={({ isActive }) =>
+                            classNames(styles.element, { 'text_color_inactive': !isActive },
+                                `${isActive ? styles.activeElement : 'text_color_inactive'}`)
 
-                            isActive ? classNames(styles.element) :
-                                classNames(styles.element, 'text_color_inactive',)
-                        }
-                        onClick={() => {
-
-                        }
-                        }
-                    >
+                        }>
                         <BurgerIcon type={(currentPath === '/')
                             ? 'primary' : "secondary"} />
                         <p className="text text_type_main-default  ">
@@ -42,12 +35,10 @@ function AppHeader() {
                     </NavLink>
                     <NavLink
                         to='*'
-                        style={({ isActive }) => ({
-                            color: isActive ? 'white' : ''
-                        })}
                         className={({ isActive }) =>
-                            isActive ? classNames(styles.element) :
-                                classNames(styles.element, 'text_color_inactive',)
+                            classNames(styles.element, { 'text_color_inactive': !isActive },
+                                `${isActive ? styles.activeElement : 'text_color_inactive'}`)
+
                         }
                     >
                         <ListIcon type={currentPath === '/orders' ? 'primary' : "secondary"} />
@@ -56,21 +47,15 @@ function AppHeader() {
                     </NavLink>
                 </div>
 
-                <NavLink to='/'
-
-                    className={styles.logo}>
+                <NavLink to='/' className={styles.logo}>
                     <Logo />
                 </NavLink>
 
                 <NavLink
                     to='/profile'
-                    style={({ isActive }) => ({
-                        color: isActive ? 'white' : ''
-                    })}
                     className={({ isActive }) =>
-
-                        isActive ? classNames(styles.element) :
-                            classNames(styles.element, 'text_color_inactive',)
+                        classNames(styles.element, { 'text_color_inactive': !isActive },
+                            `${isActive ? styles.activeElement : 'text_color_inactive'}`)
                     }
 
                 >

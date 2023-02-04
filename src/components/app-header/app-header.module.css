@@ -18,7 +18,11 @@
     gap: 8px;
     text-decoration: none;
     
+}
 
+
+.activeElement {
+    color:white;
 }
 
 .wrapper {

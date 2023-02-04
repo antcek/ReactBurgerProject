@@ -21,8 +21,8 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import { IngredientsPage } from '../../pages/ingredients/ingredients';
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
 import Modal from '../modal/modal';
-import OrderDetails from '../order-details/order-details';
 import { OrderPage } from '../../pages/orders/orders';
+
 
 
 function App() {
@@ -33,7 +33,10 @@ function App() {
     const detailsVisible = useSelector(store => store.ingredientDetails.visible);
     let accessToken = Cookies.get('accessToken');
 
+
     function onCloseModal() {
+        localStorage.removeItem('modalData');
+
         dispatch({
             type: CURRENT_INGREDIENT_DETAILS,
             product: null,
@@ -47,12 +50,10 @@ function App() {
 
         if (accessToken) {
             dispatch(userGetData());
-        }
-
+        };
 
 
     }, [accessToken, dispatch]);
-
 
 
     return (
@@ -85,10 +86,7 @@ function App() {
                                 element={<Modal onCloseModal={onCloseModal}>
                                     <IngredientDetails />
                                 </Modal>} />}
-                            {<Route path={`/order`}
-                                element={<Modal onCloseModal={onCloseModal}>
-                                    <OrderDetails />
-                                </Modal>} />}
+
                         </Route>
                         <Route path='*' element={<Error404Page />} />
 

@@ -2,15 +2,18 @@ import styles from './ingredient-details.module.css';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
 
-function IngredientDetails() {
 
+function IngredientDetails() {
+     
      const current = useSelector((store) => (store.ingredientDetails.current));
      const location = useLocation();
      const locationUrlIndex = location.pathname.indexOf('/ingredients/');
      const locationIngredientId = location.pathname.substring(locationUrlIndex + '/ingredients/'.length)
      const products = useSelector((store) => store.getProducts.products);
      const neededProduct = products?.find(item => item._id === locationIngredientId);
+
      
+
     return (
       
         current?._id ? ( <div className={styles.details} >

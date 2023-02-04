@@ -2,32 +2,33 @@ import React, { useState, useEffect } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './profile.module.css';
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
-import {  updateUserInfo } from '../../services/thunk-actions/thunk-actions';
+import { updateUserInfo } from '../../services/thunk-actions/thunk-actions';
 import { useSelector, useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
 import { userGetData } from '../../services/thunk-actions/thunk-actions';
 import { LeftSideMenu } from '../../components/left-side-menu/left-side-menu';
+import { useForm } from '../../services/custom-hooks/custom-hooks';
 
+
+const inputValues = {
+  name: '',
+  email: '',
+  password: ''
+};
 
 export function ProfilPage() {
 
   const dispatch = useDispatch();
+  const { values, handleChange, setValues } = useForm(inputValues);
 
-  const [nameValue, setNameValue] = useState('');
-  const [loginValue, setLoginValue] = useState('');
-  const [passwordValue, setPasswordValue] = useState('');
-  const onPasswordChange = e => {
-    setPasswordValue(e.target.value)
-  };
-
-  const isUserLogged = useSelector(store => store.loginUser.userAuthorizied);
   const userData = useSelector(store => store.loginUser.user);
   const accessToken = Cookies.get('accessToken');
 
   const isChanging = () => {
-    if (userData && (loginValue !== userData.email ||
-      nameValue !== userData.name ||
-      passwordValue !== '')) {
+
+    if (userData && (values.email !== userData.email ||
+      values.name !== userData.name ||
+      values.password !== '')) {
 
       return true
     }
@@ -38,11 +39,11 @@ export function ProfilPage() {
   useEffect(() => {
 
     if (userData) {
-      setLoginValue(userData?.email);
-      setNameValue(userData?.name);
+      values.name = userData?.name;
+      values.email = userData?.email
     }
 
-  }, [isUserLogged, userData, accessToken,]);
+  }, [userData, accessToken]);
 
   useEffect(() => {
 
@@ -55,9 +56,17 @@ export function ProfilPage() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    dispatch(updateUserInfo(nameValue, loginValue, passwordValue));
-    setPasswordValue('')
+    dispatch(updateUserInfo(values.name, values.email, values.password));
+    values.password = ''
   }
+
+  const dataReset = () => {
+    if (userData) {
+      values.email = userData?.email;
+      values.name = userData?.name;
+    }
+  }
+
 
   return (
     <>
@@ -68,42 +77,30 @@ export function ProfilPage() {
           <form onSubmit={handleSubmit} className={styles.info} >
             <Input
               placeholder={'Имя'}
-              onChange={e => {
-                isChanging();
-                setNameValue(e.target.value)
-              }
-              }
-              value={nameValue}
+              onChange={handleChange}
+              value={values.name}
               name={'name'}
               error={false}
               icon="EditIcon"
               errorText={'Ошибка'}
               size={'default'}
             />
-            <EmailInput onChange={(e) => {
-              isChanging();
-              setLoginValue(e.target.value);
-            }}
-              value={loginValue}
+            <EmailInput onChange={handleChange}
+              value={values.email}
               name={'email'}
               isIcon={false}
               icon="EditIcon"
               placeholder={'Логин'} />
 
             <PasswordInput
-              onChange={onPasswordChange}
-              value={passwordValue}
+              onChange={handleChange}
+              value={values.password}
               name={'password'}
 
             />
 
             {isChanging() ? <div className={styles.formButtons}>
-              <Button onClick={() => {
-                if (userData) {
-                  setLoginValue(userData?.email);
-                  setNameValue(userData?.name);
-                }
-              }} htmlType="submit" type="primary" size="medium">
+              <Button onClick={dataReset} htmlType="submit" type="primary" size="medium">
                 Отмена
               </Button>
               <Button

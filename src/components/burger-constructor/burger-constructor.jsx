@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useEffect } from 'react';
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
-import IngredientDetails from '../ingredient-details/ingredient-details';
 import OrderDetails from '../order-details/order-details.jsx';
 import Modal from '../modal/modal.jsx';
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,7 +14,7 @@ import {
 
 import DraggedIngredientCard from '../burger-constructor-ingredients/burger-constructor-ingredients';
 import { sendOrder } from '../../services/thunk-actions/thunk-actions';
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useModalData } from '../../services/custom-hooks/custom-hooks';
 
@@ -26,18 +25,12 @@ function BurgerConstructor() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useModalData();
-    const location = useLocation();
-
-    useEffect(() => {
-
-        if (location.pathname === '/order') {
-            navigate('/')
-        }
-    }, [])
-
 
     const products = useSelector(store => store.getProducts.products);
+    const location = useLocation();
     const accessToken = Cookies.get('accessToken');
+    const orderNumber = useSelector(store => store.orderNumber.orderNumber)
+
 
     const currentIngredient = useSelector(store => store.ingredientDetails.current);
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
@@ -45,19 +38,23 @@ function BurgerConstructor() {
     const constructorIngredients = useSelector(store => store.burgerConstructor.ingredients);
     const constructorBuns = useSelector(store => store.burgerConstructor.buns);
 
-    const draggedBunsPrice = constructorBuns.reduce((accum, curr) => accum + curr.price, 0);
-    const draggedIngredientsPrice = constructorIngredients.reduce((accum, curr) => accum + curr.price, 0);
+    const bunsForOrder = useMemo(() => {
+        return { ...constructorBuns }
+    }, [constructorBuns])
 
-    const bunsForOrder = constructorBuns.slice().concat(constructorBuns);
-    const burgerForOrder = bunsForOrder.concat(constructorIngredients);
     const burgerAllId = useMemo(() => {
-        return { ingredients: burgerForOrder.map(ingredient => ingredient._id) }
-    }, [burgerForOrder]
-    )
+
+
+        return { ingredients: [bunsForOrder[0], ...constructorIngredients, bunsForOrder[0]].map(ingredient => ingredient?._id) }
+    }, [bunsForOrder, constructorIngredients])
 
     const totalPrice = useMemo(() => {
+
+        const draggedBunsPrice = constructorBuns.reduce((accum, curr) => accum + curr.price, 0);
+        const draggedIngredientsPrice = constructorIngredients.reduce((accum, curr) => accum + curr.price, 0);
+
         return draggedBunsPrice * 2 + draggedIngredientsPrice
-    }, [draggedBunsPrice, draggedIngredientsPrice])
+    }, [constructorBuns, constructorIngredients])
 
 
     const [{ canDrop }, dropBun] = useDrop({
@@ -128,32 +125,50 @@ function BurgerConstructor() {
     function onOpenModal(event) {
 
         const currentTarget = event.currentTarget;
-        const targetProduct = products.find((product) => product._id === currentTarget.getAttribute('id'))
+        const targetProduct = products.find((product) => product._id === currentTarget.getAttribute('id'));
 
-        navigate(`/ingredients/${targetProduct?._id}`);
         if (targetProduct) {
+            navigate(`/ingredients/${targetProduct?._id}`)
             localStorage.setItem('modalData', JSON.stringify(targetProduct));
         }
-        if (event.target.closest('.constructor-element__action')) { return }
+        else if (event.target.closest('.constructor-element__action')) { return false }
 
-        else {
-            dispatch({
-                type: CURRENT_INGREDIENT_DETAILS,
-                product: targetProduct,
-                visible: true
-            });
-        }
+        dispatch({
+            type: CURRENT_INGREDIENT_DETAILS,
+            product: targetProduct,
+            visible: true
+        });
     };
 
     function onCloseModal() {
-        localStorage.removeItem('modalData')
+        localStorage.removeItem('modalData');
+
+        if (location.pathname.startsWith('/ingredients')) {
+            navigate('/', { replace: true })
+        }
+
         dispatch({
             type: CURRENT_INGREDIENT_DETAILS,
             product: null,
             visible: false
         });
 
+
     };
+
+    const createOrder = () => {
+        if (accessToken && burgerAllId.ingredients[0] !== undefined) {
+            dispatch(sendOrder(burgerAllId));
+        }
+
+        else navigate('/login', { replace: true })
+    }
+
+    const isModalPossible = () => {
+        if (accessToken && burgerAllId.ingredients[0] !== undefined) {
+            return onOpenModal
+        }
+    }
 
     return (
 
@@ -228,25 +243,20 @@ function BurgerConstructor() {
                     </div>
                 </div>
 
-                {burgerForOrder.length === 0 ?
+                {burgerAllId.ingredients[0] === undefined ?
                     <Button disabled htmlType="button" type="primary" size="large">
                         Оформить заказ
                     </Button>
 
-                    : <div onClick={() => {
-                        accessToken ? dispatch(sendOrder(burgerAllId))
-                            : navigate('/login', { replace: true })
-                    }
-                    }>
-                        <Button onClick={accessToken ? onOpenModal : null} htmlType="button" type="primary" size="large">
+                    : <div onClick={createOrder}>
+                        <Button onClick={isModalPossible()} htmlType="button" type="primary" size="large">
                             Оформить заказ
                         </Button>
                     </div>}
 
             </div>
-            {modalVisible && <Modal onCloseModal={onCloseModal}>
-                {currentIngredient ? <IngredientDetails />
-                    : <OrderDetails onCloseModal={onCloseModal} />}
+            {modalVisible && !currentIngredient && <Modal onCloseModal={onCloseModal}>
+                {<OrderDetails onCloseModal={onCloseModal} />}
             </Modal>}
 
         </section>

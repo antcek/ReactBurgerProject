@@ -30,38 +30,40 @@ export function LoginPage() {
     if (loggedUser) {
       return navigate('/', { replace: true })
     }
-  }, [loggedUser, navigate])
+  }, [loggedUser, navigate]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (passwordValue.length > 5) {
+      dispatch(loginUser(loginValue, passwordValue))
+    }
+  }
 
 
   return (
     <>
       <AppHeader />
-      <div className={styles.loginContainer}>
+      <div className={styles.loginContainer} >
         <p className="text text_type_main-large">
           Вход
         </p>
-        <EmailInput
-          onChange={onLoginChange}
-          value={loginValue}
-          name={'email'}
-          isIcon={false} />
-        <PasswordInput
-          onChange={onPasswordChange}
-          value={passwordValue}
-          name={'password'}
-        />
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <EmailInput
+            onChange={onLoginChange}
+            value={loginValue}
+            name={'email'}
+            isIcon={false} />
+          <PasswordInput
+            onChange={onPasswordChange}
+            value={passwordValue}
+            name={'password'}
+          />
 
-
-        <Button onClick={() => {
-          if (passwordValue.length > 5) {
-            dispatch(loginUser(loginValue, passwordValue))
-          }
-        }
-
-        } htmlType="button" type="primary" size="large">
-          Войти
-        </Button>
-
+          <Button htmlType="submit" type="primary" size="large">
+            Войти
+          </Button>
+        </form>
       </div>
       <div className={styles.hints}>
         <div className={styles.loginHelp}>
