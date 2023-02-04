@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useEffect } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-constructor.module.css';
 import OrderDetails from '../order-details/order-details.jsx';
@@ -29,7 +29,7 @@ function BurgerConstructor() {
     const products = useSelector(store => store.getProducts.products);
     const location = useLocation();
     const accessToken = Cookies.get('accessToken');
-    const orderNumber = useSelector(store => store.orderNumber.orderNumber)
+    
 
 
     const currentIngredient = useSelector(store => store.ingredientDetails.current);

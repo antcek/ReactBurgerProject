@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './reset-password.module.css';
 import { PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -13,21 +13,15 @@ export function ResetPasswordPage() {
   const navigate = useNavigate();
 
   const [tokenValue, setTokenValue] = useState('');
-  const inputRef = useRef(null);
+
   const loggedUser = useSelector(store => store.loginUser.userAuthorizied);
   const isEmailSended = useSelector(store => store.recoverPassword.recoverSuccess)
   const [passwordValue, setPasswordValue] = useState('');
   const onPasswordChange = e => {
     setPasswordValue(e.target.value)
   };
-  
+
   const isPasswordReset = useSelector(store => store.resetPassword.resetSuccess)
-console.log(isPasswordReset)
-  const sendResetRequest = async () => {
-    if (passwordValue.length > 5) {
-    dispatch(resetPassword(passwordValue, tokenValue));
-    }
-  }
 
   useEffect(() => {
     if (loggedUser) {
@@ -39,10 +33,18 @@ console.log(isPasswordReset)
     };
 
     if (isPasswordReset) {
-      navigate('/login', {replace:true})
+      navigate('/login', { replace: true })
     }
-  }, [loggedUser, navigate, isEmailSended,isPasswordReset])
+  }, [loggedUser, navigate, isEmailSended, isPasswordReset])
 
+  const handleSubmitReset = (event) => {
+
+    event.preventDefault();
+    if (passwordValue.length > 5) {
+      dispatch(resetPassword(passwordValue, tokenValue));
+    }
+
+  }
 
   return (
     <>
@@ -51,26 +53,27 @@ console.log(isPasswordReset)
         <p className="text text_type_main-medium ">
           Восстановление пароля
         </p>
-        <PasswordInput
-          onChange={onPasswordChange}
-          value={passwordValue}
-          name={'password'}
-          placeholder={'Введите новый пароль'}
-        />
-        <Input
-          type={'text'}
-          placeholder={'Введите код из письма'}
-          onChange={e => setTokenValue(e.target.value)}
-          value={tokenValue}
-          name={'name'}
-          error={false}
-          ref={inputRef}
-          errorText={'Ошибка'}
-          size={'default'}
-        />
-        <Button onClick={sendResetRequest} htmlType="button" type="primary" size="large">
-          Сохранить
-        </Button>
+        <form onSubmit={handleSubmitReset} className={styles.form}>
+          <PasswordInput
+            onChange={onPasswordChange}
+            value={passwordValue}
+            name={'password'}
+            placeholder={'Введите новый пароль'}
+          />
+          <Input
+            type={'text'}
+            placeholder={'Введите код из письма'}
+            onChange={e => setTokenValue(e.target.value)}
+            value={tokenValue}
+            name={'name'}
+            error={false}
+            errorText={'Ошибка'}
+            size={'default'}
+          />
+          <Button htmlType="submit" type="primary" size="large">
+            Сохранить
+          </Button>
+        </form>
       </div>
       <div className={styles.resetPassword}>
         <p className="text text_type_main-default  text_color_inactive">

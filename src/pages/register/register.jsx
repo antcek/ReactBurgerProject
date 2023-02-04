@@ -1,4 +1,4 @@
-import React, { useState,  useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './register.module.css';
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -28,59 +28,60 @@ export function RegisterPage() {
     setPasswordValue(e.target.value)
   };
 
-  function isRegistered() {
-
-    dispatch(registerUser(nameValue, loginValue, passwordValue));
-  };
-
   useEffect(() => {
     if (registeredUser && !loggedUser) {
-      navigate('/login', {replace:true})
+      navigate('/login', { replace: true })
     }
 
     if (loggedUser) {
-      navigate(-1, {replace:true})
+      navigate(-1, { replace: true })
     }
-  }, [registeredUser,loggedUser,navigate]);
+  }, [registeredUser, loggedUser, navigate]);
 
-  
+  const handleSubmitRegister = (event) => {
+
+    event.preventDefault();
+
+    dispatch(registerUser(nameValue, loginValue, passwordValue));
+  }
 
   return (
     <>
-
       <AppHeader />
-
       <div className={styles.registerContainer}>
         <p className="text text_type_main-large">
           Регистрация
         </p>
-        <Input
-          type={'text'}
-          placeholder={'Имя'}
-          onChange={e => setNameValue(e.target.value)}
-          value={nameValue}
-          name={'name'}
-          error={false}
+        <form onSubmit={handleSubmitRegister} className={styles.form}>
+          <Input
+            type={'text'}
+            placeholder={'Имя'}
+            onChange={e => setNameValue(e.target.value)}
+            value={nameValue}
+            name={'name'}
+            error={false}
+            errorText={'Ошибка'}
+            size={'default'}
+          />
+          <EmailInput onChange={onLoginRegister}
+            value={loginValue}
+            name={'email'}
+            isIcon={false}
+            errorText={'Введите правильный e-mail адрес'}
+          />
 
-          errorText={'Ошибка'}
-          size={'default'}
-        />
-        <EmailInput onChange={onLoginRegister}
-          value={loginValue}
-          name={'email'}
-          isIcon={false} />
-        <PasswordInput
-          onChange={onPasswordRegister}
-          value={passwordValue}
-          name={'password'}
-        />
+          <PasswordInput
+            onChange={onPasswordRegister}
+            value={passwordValue}
+            name={'password'}
+            errorText={'Ваш пароль должен быть длиннее 6 символов'}
+          />
 
-
-        <Button onClick={isRegistered}
-          htmlType="button" type="primary" size="large">
-          Зарегистрироваться
-        </Button>
-
+          <Button
+            htmlType="submit" type="primary" size="large">
+            Зарегистрироваться
+          </Button>
+        </form>
       </div>
       <div className={styles.registerHelp}>
         <p className="text text_type_main-default  text_color_inactive">

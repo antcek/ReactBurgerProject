@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './profile.module.css';
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -9,26 +9,26 @@ import { userGetData } from '../../services/thunk-actions/thunk-actions';
 import { LeftSideMenu } from '../../components/left-side-menu/left-side-menu';
 import { useForm } from '../../services/custom-hooks/custom-hooks';
 
-
-const inputValues = {
+const initialInput = {
   name: '',
   email: '',
   password: ''
-};
+}
+
 
 export function ProfilPage() {
 
   const dispatch = useDispatch();
-  const { values, handleChange, setValues } = useForm(inputValues);
 
   const userData = useSelector(store => store.loginUser.user);
   const accessToken = Cookies.get('accessToken');
 
+  const { values, handleChange, setValues } = useForm(initialInput);
   const isChanging = () => {
 
-    if (userData && (values.email !== userData.email ||
-      values.name !== userData.name ||
-      values.password !== '')) {
+    if (userData && (values?.email !== userData.email ||
+      values?.name !== userData.name ||
+      values?.password !== '')) {
 
       return true
     }
@@ -39,11 +39,15 @@ export function ProfilPage() {
   useEffect(() => {
 
     if (userData) {
-      values.name = userData?.name;
-      values.email = userData?.email
+      setValues({
+        ...values,
+        name: userData?.name,
+        email: userData?.email
+      })
     }
+    // отключил эслинт, т.к при добавлении values в зависимости происходит бесконечный рендер
+  }, [setValues, userData]);  //eslint-disable-line
 
-  }, [userData, accessToken]);
 
   useEffect(() => {
 
@@ -51,19 +55,26 @@ export function ProfilPage() {
       dispatch(userGetData());
     };
 
-  }, [dispatch, accessToken])
+  }, [accessToken, dispatch])
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     dispatch(updateUserInfo(values.name, values.email, values.password));
-    values.password = ''
+    setValues({
+      ...values,
+      password: ''
+    })
   }
 
   const dataReset = () => {
     if (userData) {
-      values.email = userData?.email;
-      values.name = userData?.name;
+      setValues({
+        ...values,
+        name: userData?.name,
+        email: userData?.email
+      })
+
     }
   }
 
@@ -78,7 +89,7 @@ export function ProfilPage() {
             <Input
               placeholder={'Имя'}
               onChange={handleChange}
-              value={values.name}
+              value={values?.name}
               name={'name'}
               error={false}
               icon="EditIcon"
@@ -86,7 +97,7 @@ export function ProfilPage() {
               size={'default'}
             />
             <EmailInput onChange={handleChange}
-              value={values.email}
+              value={values?.email}
               name={'email'}
               isIcon={false}
               icon="EditIcon"
@@ -94,7 +105,7 @@ export function ProfilPage() {
 
             <PasswordInput
               onChange={handleChange}
-              value={values.password}
+              value={values?.password}
               name={'password'}
 
             />
