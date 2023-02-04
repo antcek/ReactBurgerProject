@@ -74,7 +74,8 @@ function AppHeader() {
                     }
 
                 >
-                    <ProfileIcon type={currentPath === '/profile' ? 'primary' : "secondary"} />
+                    <ProfileIcon type={currentPath === ('/profile') ? 'primary' :
+                        currentPath === '/profile/orders' ? 'primary' : 'secondary'} />
                     <p className="text text_type_main-default  " >
                         Личный кабинет</p>
 

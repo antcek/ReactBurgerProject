@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import ingredientTypes from '../../prop-types/prop-types.jsx';
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router';
-import { NavLink } from 'react-router-dom';
+
 
 function IngredientCard({ onOpenModal, product }) {
 

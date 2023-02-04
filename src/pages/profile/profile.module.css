@@ -7,17 +7,6 @@
 }
 
 
-.menu {
-  width: 100%;
-  max-width: 320px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-  text-decoration: none;
- 
-
-}
 
 .form {
   display:flex;
@@ -38,22 +27,3 @@
   gap: 24px;
 }
 
-.wrapper {
-  
-  max-width: 320px;
-  display:flex;
-  flex-direction:column;
-  white-space: break-spaces;
-  gap:104px;
-  
-}
-
-.logout:hover {
-
-  cursor: pointer;
-
-}
-
-.logout:active {
-  color:white
-}

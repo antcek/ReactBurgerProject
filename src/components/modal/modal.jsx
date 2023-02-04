@@ -11,7 +11,6 @@ function Modal({ onCloseModal, children }) {
 
     const location = useLocation();
 
-
     useEffect(() => {
 
         function modalEscClose(event) {
@@ -31,7 +30,7 @@ function Modal({ onCloseModal, children }) {
             document.removeEventListener('keydown', modalEscClose)
         }
 
-    }, [onCloseModal, children]);
+    }, [onCloseModal, children,location]);
 
     return ReactDOM.createPortal(
         <>

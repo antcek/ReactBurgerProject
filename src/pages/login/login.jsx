@@ -6,7 +6,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../services/thunk-actions/thunk-actions';
 import { REGISTER_SUCCESS } from '../../services/actions/register';
-import { userGetData } from '../../services/thunk-actions/thunk-actions';
 
 
 export function LoginPage() {
@@ -15,7 +14,8 @@ export function LoginPage() {
   const dispatch = useDispatch();
   const loggedUser = useSelector(store => store.loginUser.userAuthorizied);
   const navigate = useNavigate();
-  const [loginValue, setLoginValue] = useState('')
+  const [loginValue, setLoginValue] = useState('');
+
   const onLoginChange = e => {
     setLoginValue(e.target.value)
   };
@@ -26,10 +26,11 @@ export function LoginPage() {
   }
 
   useEffect(() => {
+
     if (loggedUser) {
-      return navigate('/', {replace:true})
+      return navigate('/', { replace: true })
     }
-  }, [loggedUser,navigate])
+  }, [loggedUser, navigate])
 
 
   return (
@@ -53,7 +54,7 @@ export function LoginPage() {
 
         <Button onClick={() => {
           if (passwordValue.length > 5) {
-          dispatch(loginUser(loginValue, passwordValue))
+            dispatch(loginUser(loginValue, passwordValue))
           }
         }
 

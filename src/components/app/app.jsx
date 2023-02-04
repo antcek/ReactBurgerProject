@@ -22,9 +22,7 @@ import { IngredientsPage } from '../../pages/ingredients/ingredients';
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-
-
-
+import { OrderPage } from '../../pages/orders/orders';
 
 
 function App() {
@@ -34,7 +32,6 @@ function App() {
     const productsFailed = useSelector((store) => store.getProducts.productsFailed);
     const detailsVisible = useSelector(store => store.ingredientDetails.visible);
     let accessToken = Cookies.get('accessToken');
-
 
     function onCloseModal() {
         dispatch({
@@ -71,8 +68,9 @@ function App() {
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path='/forgot-password' element={<ForgotPasswordPage />} />
                         <Route path='/reset-password' element={<ResetPasswordPage />} />
-                        <Route path='/profile'
-                            element={<ProtectedRouteElement element={<ProfilPage />} />} />
+                        <Route path='/profile' element={<ProtectedRouteElement element={<ProfilPage />} />} />
+                        <Route path='/profile/orders' element={<ProtectedRouteElement element={<OrderPage />} />} />
+
                         <Route path="/" element={<> <AppHeader />
                             <main>
                                 <div className={styles.sections}>
