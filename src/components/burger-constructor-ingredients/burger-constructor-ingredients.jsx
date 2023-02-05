@@ -42,7 +42,9 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
 
     return (
 
-        <div ref={sortedDrop} >
+        <div
+            
+            ref={sortedDrop} >
             <div ref={sortedDrag} className={styles.ingredientsContainer}>
                 <div>
                     <DragIcon />
@@ -50,7 +52,6 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
 
                 <div ref={refIng} id={ingredient._id} onClick={onOpenModal} className={ingredientIsDrag}>
                     <ConstructorElement
-                   
                         handleClose={() =>
                             dispatch({
                                 type: DELETE_CONSTRUCTOR_INGREDIENT,
@@ -62,7 +63,6 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
                         thumbnail={ingredient.image}
                     />
                 </div>
-
             </div>
         </div>
 

@@ -11,12 +11,14 @@ import {
     SET_CONSTRUCTOR_INGREDIENT,
     SORT_CONSTRUCTOR_INGREDIENT
 } from '../../services/actions/burger-constructor';
-
 import DraggedIngredientCard from '../burger-constructor-ingredients/burger-constructor-ingredients';
 import { sendOrder } from '../../services/thunk-actions/thunk-actions';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useModalData } from '../../services/custom-hooks/custom-hooks';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FlapperSpinner } from "react-spinners-kit";
+
 
 
 
@@ -29,8 +31,6 @@ function BurgerConstructor() {
     const products = useSelector(store => store.getProducts.products);
     const location = useLocation();
     const accessToken = Cookies.get('accessToken');
-
-
 
     const currentIngredient = useSelector(store => store.ingredientDetails.current);
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
@@ -178,10 +178,17 @@ function BurgerConstructor() {
                 <div ref={dropBun}>
                     {constructorBuns.length === 0 ?
                         <div className={bunHovered}>
+                            <FlapperSpinner
+                                color='#e104fc'
+                                size={30} />
                             Перенесите сюда булку
                         </div>
                         : constructorBuns.map((bun) =>
-                            <div key={bun._id} id={bun._id} onClick={onOpenModal} className={styles.buns}>
+                            <motion.div
+                                initial={{ opacity: 0, }}
+                                animate={{ opacity: 1, }}
+                                transition={{ duration: 1 }}
+                                key={bun._id} id={bun._id} onClick={onOpenModal} className={styles.buns}>
                                 <ConstructorElement
 
                                     type="top"
@@ -190,7 +197,7 @@ function BurgerConstructor() {
                                     price={bun.price}
                                     thumbnail={bun.image_large}
                                 />
-                            </div>
+                            </motion.div>
                         )
                     }
 
@@ -205,26 +212,38 @@ function BurgerConstructor() {
                             :
                             <div className={styles.wrapper}>
                                 {constructorIngredients.map((ingredient, index) =>
+                                    <motion.div
+                                        initial={{ scale: 0, }}
+                                        animate={{ scale: 1, }}
+                                        transition={{ duration: 1 }}
+                                        key={ingredient.key}>
+                                        <DraggedIngredientCard
 
-
-                                    <DraggedIngredientCard
-                                        id={ingredient._id}
-                                        moveIngredient={moveIngredient}
-                                        key={ingredient.key}
-                                        onOpenModal={onOpenModal}
-                                        ingredient={ingredient}
-                                        index={index} />)}
+                                            id={ingredient._id}
+                                            moveIngredient={moveIngredient}
+                                            onOpenModal={onOpenModal}
+                                            ingredient={ingredient}
+                                            index={index} />
+                                    </motion.div>
+                                )}
                             </div>
                         }
                     </div>
 
                     {constructorBuns.length === 0 ?
                         <div className={botBunHovered}>
+                            <FlapperSpinner
+                                color='#e104fc'
+                                size={30} />
                             Перенесите сюда булку
                         </div>
                         :
                         constructorBuns.map(bun =>
-                            <div key={bun._id} id={bun._id} onClick={onOpenModal} className={styles.buns}>
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.6 }}
+                                key={bun._id} id={bun._id} onClick={onOpenModal} className={styles.buns}>
                                 <ConstructorElement
 
                                     type="bottom"
@@ -233,7 +252,7 @@ function BurgerConstructor() {
                                     price={bun.price}
                                     thumbnail={bun.image_large}
                                 />
-                            </div>)}
+                            </motion.div>)}
                 </div>
             </div>
             <div className={styles.order}>
@@ -243,7 +262,6 @@ function BurgerConstructor() {
                         <CurrencyIcon type="primary" />
                     </div>
                 </div>
-
                 {burgerAllId.ingredients[0] === undefined ?
                     <Button disabled htmlType="button" type="primary" size="large">
                         Оформить заказ
@@ -256,10 +274,20 @@ function BurgerConstructor() {
                     </div>}
 
             </div>
-            {modalVisible && !currentIngredient && <Modal onCloseModal={onCloseModal}>
-                {<OrderDetails onCloseModal={onCloseModal} />}
-            </Modal>}
-
+            <AnimatePresence>
+                {modalVisible && !currentIngredient &&
+                    <motion.div
+                        initial={{ opacity: 0, scaleY: 1 }}
+                        animate={{ opacity: 1, scaleY: 1 }}
+                        exit={{ opacity: 0, scaleY: 0 }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <Modal onCloseModal={onCloseModal}>
+                            {<OrderDetails onCloseModal={onCloseModal} />}
+                        </Modal>
+                    </motion.div>
+                }
+            </AnimatePresence>
         </section>
 
     )

@@ -19,8 +19,8 @@ export const useModalData = () => {
                 visible: true,
             })
         }
-
-    }, [locationIngredientId])
+         // ругается на modalIngredients, который в зависимостях даёт бесконечный рендер
+    }, [locationIngredientId,dispatch]) // eslint-disable-line
 }
 
 export function useForm(nameValue) {

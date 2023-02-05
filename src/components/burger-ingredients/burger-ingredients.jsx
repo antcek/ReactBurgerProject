@@ -10,6 +10,7 @@ import { useModalData } from '../../services/custom-hooks/custom-hooks';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { SCROLL_DURATION } from '../../utils/constants';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function BurgerIngredients() {
 
@@ -160,9 +161,19 @@ function BurgerIngredients() {
                 </div>
 
             </div>
-            {modalVisible && currentIngredient && <Modal onCloseModal={onCloseModal}>
-                {<IngredientDetails />}
-            </Modal>}
+            <AnimatePresence>
+                {modalVisible && currentIngredient &&
+                    <motion.div
+                        initial={{ opacity: 0}}
+                        animate={{ opacity: 1}}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3}}
+                    >
+                        <Modal onCloseModal={onCloseModal}>
+                            {<IngredientDetails />}
+                        </Modal>
+                    </motion.div>}
+            </AnimatePresence>
         </section>
 
     )

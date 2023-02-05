@@ -4,7 +4,7 @@ import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay.jsx';
 import PropTypes from 'prop-types';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-
+import { motion } from 'framer-motion';
 
 
 
@@ -18,7 +18,6 @@ function Modal({ onCloseModal, children }) {
 
             if (event.code === 'Escape')
                 onCloseModal();
-
         };
 
         document.addEventListener('keydown', modalEscClose);
@@ -30,18 +29,24 @@ function Modal({ onCloseModal, children }) {
     }, [onCloseModal, children]);
 
     return ReactDOM.createPortal(
-        <>
-            <div className={styles.wrapper}>
+        <> 
+            <motion.div
+                initial={{ opacity: 0, }}
+                animate={{ opacity: 1, }}
+                transition={{ duration: 0.5 }}
+                exit={{ opacity: 0 }}>
+                <div className={styles.wrapper}>
+                    <div onClick={onCloseModal} className={styles.close}>
+                        <CloseIcon type="primary" />
+                    </div>
 
-                <div onClick={onCloseModal} className={styles.close}>
-                    <CloseIcon type="primary" />
+                    {children}
+
+
                 </div>
-
-                {children}
-
-
-            </div>
-            <ModalOverlay onCloseModal={onCloseModal} />
+                <ModalOverlay onCloseModal={onCloseModal} />
+            </motion.div>
+       
         </>,
         document.getElementById("react-modals")
     )
