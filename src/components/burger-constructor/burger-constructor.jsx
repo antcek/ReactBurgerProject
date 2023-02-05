@@ -29,7 +29,7 @@ function BurgerConstructor() {
     const products = useSelector(store => store.getProducts.products);
     const location = useLocation();
     const accessToken = Cookies.get('accessToken');
-    
+
 
 
     const currentIngredient = useSelector(store => store.ingredientDetails.current);
@@ -127,11 +127,12 @@ function BurgerConstructor() {
         const currentTarget = event.currentTarget;
         const targetProduct = products.find((product) => product._id === currentTarget.getAttribute('id'));
 
+        if (event.target.closest('.constructor-element__action')) { return };
+
         if (targetProduct) {
             navigate(`/ingredients/${targetProduct?._id}`)
             localStorage.setItem('modalData', JSON.stringify(targetProduct));
-        }
-        else if (event.target.closest('.constructor-element__action')) { return false }
+        };
 
         dispatch({
             type: CURRENT_INGREDIENT_DETAILS,

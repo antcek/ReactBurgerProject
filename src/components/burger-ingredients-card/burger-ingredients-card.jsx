@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import React from 'react';
 
 
-const IngredientCard = React.forwardRef(({ onOpenModal, product },ref) => {
+const IngredientCard =(({ onOpenModal, product }) => {
 
     const productType = product.type === 'bun' ? 'bun' : 'ingredients';
 
