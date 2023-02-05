@@ -3,16 +3,23 @@ import ReactDOM from 'react-dom';
 import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay.jsx';
 import PropTypes from 'prop-types';
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+
+
+
+
 
 function Modal({ onCloseModal, children }) {
+
 
     useEffect(() => {
 
         function modalEscClose(event) {
 
             if (event.code === 'Escape')
-                onCloseModal()
-        }
+                onCloseModal();
+
+        };
 
         document.addEventListener('keydown', modalEscClose);
 
@@ -20,16 +27,20 @@ function Modal({ onCloseModal, children }) {
             document.removeEventListener('keydown', modalEscClose)
         }
 
-    }, [onCloseModal]);
+    }, [onCloseModal, children]);
 
     return ReactDOM.createPortal(
         <>
-            <div className={styles.modal}>
+            <div className={styles.wrapper}>
+
+                <div onClick={onCloseModal} className={styles.close}>
+                    <CloseIcon type="primary" />
+                </div>
 
                 {children}
 
-            </div>
 
+            </div>
             <ModalOverlay onCloseModal={onCloseModal} />
         </>,
         document.getElementById("react-modals")

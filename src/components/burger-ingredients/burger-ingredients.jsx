@@ -1,65 +1,58 @@
-import React, {useCallback,useState, useRef} from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from '../modal/modal.jsx';
-import IngredientDetails from '../ingredient-details/ingredient-details';
 import { useDispatch, useSelector } from 'react-redux';
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
-
+import { Link } from 'react-scroll';
+import { useNavigate } from 'react-router-dom';
+import { useModalData } from '../../services/custom-hooks/custom-hooks';
+import Modal from '../modal/modal';
+import IngredientDetails from '../ingredient-details/ingredient-details';
+import { SCROLL_DURATION } from '../../utils/constants';
 
 function BurgerIngredients() {
 
     const dispatch = useDispatch();
+    useModalData();
+
 
     const products = useSelector((store) => store.getProducts.products);
-    
-     const [current, setCurrent] = useState('Булки');
-
     const modalVisible = useSelector(store => store.ingredientDetails.visible);
+    const currentIngredient = useSelector(store => store.ingredientDetails.current);
 
-    const currentTarget = useSelector(store => store.ingredientDetails.current);
+    const [current, setCurrent] = useState('Булки');
 
-    const buns = products.filter(ingredient => ingredient.type === 'bun');
-    const main = products.filter(ingredient => ingredient.type === 'main');
-    const sauce = products.filter(ingredient => ingredient.type === 'sauce');
+    const buns = useMemo(() => {
+        return products.filter(ingredient => ingredient.type === 'bun');
+    }, [products])
+
+    const main = useMemo(() => {
+        return products.filter(ingredient => ingredient.type === 'main');
+    }, [products]);
+
+    const sauce = useMemo(() => {
+        return products.filter(ingredient => ingredient.type === 'sauce');
+    }, [products]);
+    const navigate = useNavigate();
 
     const containerRef = useRef(null);
-    const bunRef =useRef(null)
-    const sauceRef = useRef(null)
-    const mainRef = useRef(null)
+    const bunRef = useRef(null);
+    const sauceRef = useRef(null);
+    const mainRef = useRef(null);
 
-    
-    const categoryChange = useCallback( (value) => {
-        
-          setCurrent(value);
-
-        if (value === 'Булки') {
-            bunRef.current.scrollIntoView({ behavior: 'smooth' });
-            
-        } else if (value === 'Соусы') {
-            sauceRef.current.scrollIntoView({ behavior: 'smooth' });
-        } else if (value === 'Начинки') {
-            mainRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-         
-        
-         
-    },[bunRef,sauceRef,mainRef,setCurrent] );
-   
     const scrollNavigation = () => {
 
-        if (Math.abs(bunRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)
-            < Math.abs(sauceRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)) {
-             setCurrent('Булки');
+        if (Math.abs(bunRef?.current.getBoundingClientRect().top - containerRef?.current.getBoundingClientRect()?.top)
+            < Math.abs(sauceRef?.current.getBoundingClientRect().top - containerRef?.current.getBoundingClientRect()?.top)) {
+            setCurrent('Булки');
         }
 
-         else setCurrent('Соусы');
+        else setCurrent('Соусы');
 
-        if (Math.abs(mainRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)
-            < Math.abs(sauceRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)) {
-             setCurrent('Начинки');
+        if (Math.abs(mainRef?.current.getBoundingClientRect().top - containerRef?.current.getBoundingClientRect().top)
+            < Math.abs(sauceRef?.current.getBoundingClientRect().top - containerRef?.current.getBoundingClientRect().top)) {
+            setCurrent('Начинки');
         };
 
     }
@@ -67,7 +60,12 @@ function BurgerIngredients() {
     function onOpenModal(event) {
 
         const currentTarget = event.currentTarget;
-        const targetProduct = products.find((product) => product._id === currentTarget.getAttribute('id'))
+        const targetProduct = products.find((product) => product?._id === currentTarget?.getAttribute('id'))
+        if (targetProduct) {
+            navigate(`/ingredients/${targetProduct?._id}`)
+            localStorage.setItem('modalData', JSON.stringify(targetProduct));
+        }
+        else if (event.target.closest('.constructor-element__action')) { return false }
 
         dispatch({
             type: CURRENT_INGREDIENT_DETAILS,
@@ -76,49 +74,85 @@ function BurgerIngredients() {
         })
 
     };
-
     function onCloseModal() {
+
+        localStorage.removeItem('modalData');
+
+        navigate('/')
 
         dispatch({
             type: CURRENT_INGREDIENT_DETAILS,
             product: null,
-            visible: false,
+            visible: false
         });
-    };
+    }
+
+
 
 
     return (
+
         <section className={styles.ingredients} >
             <h1 className="text text_type_main-large">
                 Соберите бургер
             </h1 >
             <div className={styles.tabs} >
-                <Tab value="Булки" active={current === 'Булки'} onClick={categoryChange}>
-                    Булки
-                </Tab>
-                <Tab value="Соусы" active={current === 'Соусы'} onClick={categoryChange}>
-                    Соусы
-                </Tab>
-                <Tab value="Начинки" active={current === 'Начинки'} onClick={categoryChange}>
-                    Начинки
-                </Tab>
+                <Link
+                    to='ingredients-buns'
+                    spy={true}
+                    smooth={true}
+                    duration={SCROLL_DURATION}
+                    containerId='ingredients-container'
+                    onSetActive={() => setCurrent('Булки')}
+                >
+                    <Tab value="Булки" active={current === 'Булки'} >
+                        Булки
+                    </Tab>
+                </Link>
+                <Link
+                    to='ingredients-sauces'
+                    spy={true}
+                    smooth={true}
+                    duration={SCROLL_DURATION}
+                    containerId='ingredients-container'
+                    onSetActive={() => setCurrent('Соусы')}
+                >
+                    <Tab value="Соусы" active={current === 'Соусы'}>
+                        Соусы
+                    </Tab>
+                </Link>
+                <Link
+                    to='ingredients-main'
+                    spy={true}
+                    smooth={true}
+                    duration={SCROLL_DURATION}
+                    containerId='ingredients-container'
+                    onSetActive={() => setCurrent('Начинки')}
+                >
+                    <Tab value="Начинки" active={current === 'Начинки'} >
+                        Начинки
+                    </Tab>
+                </Link>
             </div>
 
-            <div ref={containerRef} onScroll={scrollNavigation} className={styles.container} >
-                <p ref={bunRef} className="text text_type_main-medium ">
+            <div id='ingredients-container' ref={containerRef} onScroll={scrollNavigation} className={styles.container} >
+                <p id='ingredients-buns' ref={bunRef} className="text text_type_main-medium ">
                     Булки
                 </p>
                 <div className={styles.wrapper}>
 
-                    {buns.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
+                    {buns?.map((product) =>
+                        <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />
+                    )}
+
                 </div>
-                <p ref={sauceRef} className="text text_type_main-medium mt-10">
+                <p id='ingredients-sauces' ref={sauceRef} className="text text_type_main-medium mt-10">
                     Соусы
                 </p>
                 <div className={styles.wrapper} >
                     {sauce.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
                 </div>
-                <p ref={mainRef}  className="text text_type_main-medium mt-10">
+                <p id='ingredients-main' ref={mainRef} className="text text_type_main-medium mt-10">
                     Начинки
                 </p>
                 <div className={styles.wrapper}>
@@ -126,10 +160,8 @@ function BurgerIngredients() {
                 </div>
 
             </div>
-
-            {modalVisible && <Modal onCloseModal={onCloseModal}>
-                {currentTarget ? <IngredientDetails products={products} onCloseModal={onCloseModal} />
-                    : <></>}
+            {modalVisible && currentIngredient && <Modal onCloseModal={onCloseModal}>
+                {<IngredientDetails />}
             </Modal>}
         </section>
 

@@ -6,17 +6,40 @@
     align-items: start;
     text-align: center;
     justify-content: center;
-    cursor: pointer;
+    cursor:pointer;
+    border-radius: 10%;
+   
+
+}
+
+.dragging {
+    box-shadow: 0px 1px 2px 0px rgba(0,255,255,0.7),
+    1px 2px 4px 0px rgba(0,255,255,0.7),
+    2px 4px 8px 0px rgba(0,255,255,0.7),
+    2px 4px 16px 0px rgba(0,255,255,0.7);
+ 
 }
 
 .cardBody {
     width: 100%;
     display: flex;
     gap: 8px;
-    justify-content: center;
+    justify-content: center; 
 }
 
-.dragging {
 
-    transition: all 400ms ease-in-out;
+.previewImage:hover{
+  
+    transform: scale(1.2);
+    transition: transform 200ms ease-in
+}
+
+.previewImage {
+    cursor: grab;
+   transition: transform 200ms ease-in
+}
+
+.previewImage:active {
+ cursor: grabbing;
+ 
 }

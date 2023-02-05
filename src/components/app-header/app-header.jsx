@@ -4,36 +4,67 @@ import { BurgerIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ListIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app-header.module.css';
+import { NavLink } from 'react-router-dom';
+import classNames from 'classnames';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+
 
 function AppHeader() {
+
+    const currentPath = useLocation().pathname;
+
 
     return (
         <header className={styles.header}>
 
             <div className={styles.container}>
                 <div className={styles.wrapper}>
+                    <NavLink
+                        to='/'
 
-                    <a className={styles.element} href='/'>
-                        <BurgerIcon type="primary" />
-                        <p className="text text_type_main-default ">
+                        className={({ isActive }) =>
+                            classNames(styles.element, { 'text_color_inactive': !isActive },
+                                `${isActive ? styles.activeElement : 'text_color_inactive'}`)
+
+                        }>
+                        <BurgerIcon type={(currentPath === '/')
+                            ? 'primary' : "secondary"} />
+                        <p className="text text_type_main-default  ">
                             Конструктор</p>
-                    </a>
+                    </NavLink>
+                    <NavLink
+                        to='*'
+                        className={({ isActive }) =>
+                            classNames(styles.element, { 'text_color_inactive': !isActive },
+                                `${isActive ? styles.activeElement : 'text_color_inactive'}`)
 
-                    <a href='/' className={styles.element}>
-                        <ListIcon type="secondary" />
-                        <p className="text text_type_main-default text_color_inactive ">
+                        }
+                    >
+                        <ListIcon type={currentPath === '/orders' ? 'primary' : "secondary"} />
+                        <p className="text text_type_main-default  ">
                             Лента заказов</p>
-                    </a>
+                    </NavLink>
                 </div>
-                <a href='/' className={styles.logo}>
-                    <Logo />
-                </a>
 
-                <a href='/' className={styles.element}>
-                    <ProfileIcon type="secondary" />
-                    <p className="text text_type_main-default text_color_inactive " >
+                <NavLink to='/' className={styles.logo}>
+                    <Logo />
+                </NavLink>
+
+                <NavLink
+                    to='/profile'
+                    className={({ isActive }) =>
+                        classNames(styles.element, { 'text_color_inactive': !isActive },
+                            `${isActive ? styles.activeElement : 'text_color_inactive'}`)
+                    }
+
+                >
+                    <ProfileIcon type={currentPath === ('/profile') ? 'primary' :
+                        currentPath === '/profile/orders' ? 'primary' : 'secondary'} />
+                    <p className="text text_type_main-default  " >
                         Личный кабинет</p>
-                </a>
+
+                </NavLink>
             </div>
         </header >
     );

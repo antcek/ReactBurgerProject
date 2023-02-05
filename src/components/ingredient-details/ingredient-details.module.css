@@ -41,12 +41,3 @@
     gap: 8px;
 
 }
-
-.close {
-    width: 24px;
-    height: 24px;
-    position: absolute;
-    right: 40px;
-    top: 60px;
-    cursor: pointer;
-}

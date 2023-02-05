@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  max-width: 1240px;
+  margin: 0 auto;
+  gap: 60px;
+  padding-top: 120px;
+}
+
+
+
+.form {
+  display:flex;
+  flex-direction: column;
+  gap:24px;
+ 
+}
+
+.formButtons {
+  display:flex;
+  gap: 24px;
+  flex-direction: row-reverse;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+

@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 import ingredientTypes from '../../prop-types/prop-types.jsx';
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
+import React from 'react';
 
-function IngredientCard({ onOpenModal, product }) {
+
+const IngredientCard = React.forwardRef(({ onOpenModal, product },ref) => {
 
     const productType = product.type === 'bun' ? 'bun' : 'ingredients';
-    
-    const [, dragRef] = useDrag({
+
+    const [{ isDrag }, dragRef] = useDrag({
 
         type: productType,
         item: { product },
@@ -22,45 +24,45 @@ function IngredientCard({ onOpenModal, product }) {
 
     const draggedBuns = useSelector(store => store.burgerConstructor.buns);
     const draggedIngredients = useSelector(store => store.burgerConstructor.ingredients)
-  
+
     const setBunsCount = () => (draggedBuns.length * 2);
 
     const setIngredientCount = () => (draggedIngredients.filter(item => item.name === product.name).length);
-   
+
+    const cardClasses = `${styles.card} ${isDrag ? styles.dragging : ''}`;
+
 
     return (
 
-        <div  ref={dragRef} onClick={onOpenModal}
+        <div onClick={onOpenModal}
             id={product._id}
-            className={styles.card}
+            className={`${cardClasses}`}
             key={product._id}
-            
-        >
-            {draggedBuns.map(item => item.name === product.name ? <Counter key={item._id} count={setBunsCount()} size="default" extraClass="m-1" />
-                : null)
-            }
+           >
+           
+                {draggedBuns.map(item => item.name === product.name ? <Counter key={item._id} count={setBunsCount()} size="default" extraClass="m-1" />
+                    : null)}
 
-            {draggedIngredients.map((item, index) => item.name === product.name ? <Counter key={index} count={setIngredientCount()} size="default" extraClass="m-1" />
-                : null)
-            }
-            <img  src={product.image} alt='картинка' />
-            <div className={styles.cardBody}>
-                <p className="text text_type_digits-default">{product.price}</p>
-                <CurrencyIcon type="primary" />
-            </div>
-            <p className="text text_type_main-default">
-                {product.name}
-            </p>
+                {draggedIngredients.map((item, index) => item.name === product.name ? <Counter key={index} count={setIngredientCount()} size="default" extraClass="m-1" />
+                    : null)}
+
+                <img ref={dragRef} className={styles.previewImage} src={product.image} alt='картинка' />
+                <div className={styles.cardBody}>
+                    <p className="text text_type_digits-default">{product.price}</p>
+                    <CurrencyIcon type="primary" />
+                </div>
+                <p className="text text_type_main-default">
+                    {product.name}
+                </p>
+           
         </div>
 
-
-
     );
-}
+})
 
 IngredientCard.propTypes = {
     onOpenModal: PropTypes.func.isRequired,
-     product: PropTypes.shape(ingredientTypes).isRequired,
+    product: PropTypes.shape(ingredientTypes).isRequired,
 }
 
 export default IngredientCard
