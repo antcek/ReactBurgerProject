@@ -1,0 +1,10 @@
+export const BURGER_API_URL: string =`https://norma.nomoreparties.space/api`;
+export const NORMA_API: string = `https://norma.nomoreparties.space/api`;
+export const API_PASSWORD_FORGOT: string = `https://norma.nomoreparties.space/api`;
+export const API_PASSWORD_RESET: string = `https://norma.nomoreparties.space/api`;
+export const API_REGISTER: string = `https://norma.nomoreparties.space/api`;
+export const API_LOGIN: string = `https://norma.nomoreparties.space/api`;
+export const API_LOGOUT: string = `https://norma.nomoreparties.space/api`;
+export const API_REFRESH_TOKEN: string = `https://norma.nomoreparties.space/api`;
+export const API_GET_USER_INFO: string = `https://norma.nomoreparties.space/api`;
+export const API_UPDATE_USER_INFO: string = 'https://norma.nomoreparties.space/api';
