@@ -24,6 +24,7 @@ export function ProfilPage() {
   const accessToken = Cookies.get('accessToken');
 
   const { values, handleChange, setValues } = useForm(initialInput);
+
   const isChanging = () => {
 
     if (userData && (values?.email !== userData.email ||
@@ -64,16 +65,17 @@ export function ProfilPage() {
     setValues({
       ...values,
       password: ''
-    })
+    });
   }
 
   const dataReset = () => {
+
     if (userData) {
       setValues({
         ...values,
         name: userData?.name,
         email: userData?.email
-      })
+      });
 
     }
   }
