@@ -10,6 +10,12 @@ export type TValues = {
     password?: string;
 }
 
+export type TFormValues = {
+    values: TValues;
+    handleChange: (event: any) => void;
+    setValues: (values: TValues) => void;
+}
+
 export const useModalData = (): void => {
 
     const dispatch = useDispatch();
@@ -19,7 +25,6 @@ export const useModalData = (): void => {
 
     const storageToken = localStorage.getItem('modalData');
     const modalIngredient = typeof storageToken === 'string' ? JSON.parse(storageToken) : null;
-
 
     useEffect(() => {
         if (locationIngredientId === modalIngredient?._id) {
@@ -33,7 +38,7 @@ export const useModalData = (): void => {
     }, [locationIngredientId, dispatch]) // eslint-disable-line
 }
 
-export function useForm(nameValue: TValues) {
+export function useForm(nameValue: TValues): TFormValues {
     const [values, setValues] = useState(nameValue);
 
     const handleChange = (event: any): void => {

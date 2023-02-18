@@ -10,7 +10,8 @@ import {IModal} from '../../services/types/types';
 const Modal: FC<IModal> = ({ onCloseModal, children }) => {
 
     useEffect(() => {
-        function modalEscClose(event: any) {
+        
+        function modalEscClose(event: any): void {
 
             if (event.code === 'Escape')
                 onCloseModal();

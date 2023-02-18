@@ -72,7 +72,7 @@ const BurgerConstructor: FC = () => {
         }
     });
 
-    const moveIngredient = useCallback((draggedIndex:number , hoverIndex:number ): void => {
+    const moveIngredient = useCallback((draggedIndex:number, hoverIndex:number ): void => {
 
         if (draggedIndex !== hoverIndex) {
             const dragItem = constructorIngredients[draggedIndex];
