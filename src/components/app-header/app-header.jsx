@@ -25,7 +25,8 @@ function AppHeader() {
 
                         className={({ isActive }) =>
                             classNames(styles.element, { 'text_color_inactive': !isActive },
-                                `${isActive ? styles.activeElement : 'text_color_inactive'}`)
+                                `${isActive ? styles.activeElement : !isActive ?
+                                    styles.iconHover : 'text_color_inactive'}`)
 
                         }>
                         <BurgerIcon type={(currentPath === '/')
@@ -37,7 +38,9 @@ function AppHeader() {
                         to='*'
                         className={({ isActive }) =>
                             classNames(styles.element, { 'text_color_inactive': !isActive },
-                                `${isActive ? styles.activeElement : 'text_color_inactive'}`)
+                                `${isActive ? styles.activeElement :
+                                    !isActive ?
+                                        styles.iconHover : 'text_color_inactive'}`)
 
                         }
                     >
@@ -55,11 +58,13 @@ function AppHeader() {
                     to='/profile'
                     className={({ isActive }) =>
                         classNames(styles.element, { 'text_color_inactive': !isActive },
-                            `${isActive ? styles.activeElement : 'text_color_inactive'}`)
+                            `${isActive ? styles.activeElement :
+                                !isActive ?
+                                    styles.iconHover : 'text_color_inactive'}`)
                     }
 
                 >
-                    <ProfileIcon type={currentPath === ('/profile') ? 'primary' :
+                    <ProfileIcon type={currentPath === '/profile' ? 'primary' :
                         currentPath === '/profile/orders' ? 'primary' : 'secondary'} />
                     <p className="text text_type_main-default  " >
                         Личный кабинет</p>

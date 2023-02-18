@@ -11,9 +11,7 @@ import { motion } from 'framer-motion';
 
 function Modal({ onCloseModal, children }) {
 
-
     useEffect(() => {
-
         function modalEscClose(event) {
 
             if (event.code === 'Escape')
