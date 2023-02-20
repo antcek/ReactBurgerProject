@@ -11,7 +11,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LoginPage } from '../../pages/login/login';
 import { RegisterPage } from '../../pages/register/register';
 import { Error404Page } from '../../pages/not-found/not-found';
-import { ForgotPasswordPage } from '../../pages/forgot-password/forgot-password';
+import ForgotPasswordPage from '../../pages/forgot-password/forgot-password';
 import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
 import { ProfilPage } from '../../pages/profile/profile';
 import Cookies from 'js-cookie';
@@ -26,7 +26,7 @@ import { FeedPage } from '../../pages/feed/feed';
 
 
 
-const App: FC = () => {
+ const App: FC = () => {
 
     const dispatch = useDispatch();
     let accessToken = Cookies.get('accessToken');
@@ -49,7 +49,7 @@ const App: FC = () => {
         dispatch(getIngredients() as any);
 
         if (accessToken) {
-            dispatch(userGetData() as any );
+            dispatch(userGetData() as any);
         };
 
     }, [accessToken, dispatch]);

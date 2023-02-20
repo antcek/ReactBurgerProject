@@ -5,9 +5,9 @@ import { useDispatch } from "react-redux";
 import { IUseLocation } from "../types/types";
 
 export type TValues = {
-    name?: string;
-    email?: string;
-    password?: string;
+    name: string;
+    email: string;
+    password: string;
 }
 
 export type TFormValues = {
