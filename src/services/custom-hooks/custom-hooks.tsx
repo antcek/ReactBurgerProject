@@ -12,7 +12,7 @@ export type TValues = {
 
 export type TFormValues = {
     values: TValues;
-    handleChange: (event: any) => void;
+    handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     setValues: (values: TValues) => void;
 }
 
@@ -41,7 +41,7 @@ export const useModalData = (): void => {
 export function useForm(nameValue: TValues): TFormValues {
     const [values, setValues] = useState(nameValue);
 
-    const handleChange = (event: any): void => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const { value, name } = event.target;
         setValues({ ...values, [name]: value });
     };

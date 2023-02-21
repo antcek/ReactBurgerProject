@@ -17,7 +17,7 @@ export const ResetPasswordPage:FC = () => {
   const loggedUser = useSelector((store: any) => store.loginUser.userAuthorizied);
   const isEmailSended = useSelector((store: any) => store.recoverPassword.recoverSuccess)
   const [passwordValue, setPasswordValue] = useState('');
-  const onPasswordChange = (e: any): void => {
+  const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPasswordValue(e.target.value)
   };
 
@@ -37,7 +37,7 @@ export const ResetPasswordPage:FC = () => {
     }
   }, [loggedUser, navigate, isEmailSended, isPasswordReset])
 
-  const handleSubmitReset = (event: any): void => {
+  const handleSubmitReset = (event: React.FormEvent): void => {
 
     event.preventDefault();
     if (passwordValue.length > 5) {

@@ -17,7 +17,9 @@ const ForgotPasswordPage: FC = () => {
   const loggedUser = useSelector((store: any) => store.loginUser.userAuthorizied)
 
   const [loginValue, setLoginValue] = useState('');
-  const onLoginForgot = (e: any) => {
+
+  const onLoginForgot = (e: React.ChangeEvent<HTMLInputElement>): void => {
+
     setLoginValue(e.target.value)
   };
 
@@ -30,7 +32,7 @@ const ForgotPasswordPage: FC = () => {
     }
   }, [passwordRecovered, navigate, loggedUser]);
 
-  const handleSubmitRecover = (event: any) => {
+  const handleSubmitRecover = (event: React.FormEvent): void => {
 
     event.preventDefault();
 

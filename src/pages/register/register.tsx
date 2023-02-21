@@ -19,11 +19,11 @@ export const RegisterPage: FC = () => {
   const [nameValue, setNameValue] = useState('');
   const [loginValue, setLoginValue] = useState('');
 
-  const onLoginRegister = (e: any): void => setLoginValue(e.target.value);
+  const onLoginRegister = (e: React.ChangeEvent<HTMLInputElement>): void => setLoginValue(e.target.value);
 
   const [passwordValue, setPasswordValue] = useState('');
 
-  const onPasswordRegister = (e: any): void => {
+  const onPasswordRegister = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPasswordValue(e.target.value)
   };
 
@@ -37,7 +37,7 @@ export const RegisterPage: FC = () => {
     }
   }, [registeredUser, loggedUser, navigate]);
 
-  const handleSubmitRegister = (event: any): void => {
+  const handleSubmitRegister = (event: React.FormEvent): void => {
 
     event.preventDefault();
 

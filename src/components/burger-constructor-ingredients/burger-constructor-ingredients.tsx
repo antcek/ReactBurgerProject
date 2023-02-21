@@ -1,10 +1,22 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import { DELETE_CONSTRUCTOR_INGREDIENT } from '../../services/actions/burger-constructor';
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch } from 'react-redux';
 import styles from './burger-constructor-ingredients.module.css';
 import { useDrag, useDrop } from 'react-dnd';
-import { IDraggedIngredientCardProps, TItemDrop } from '../../services/types/types';
+import { IIngredientType } from '../../services/types/types';
+
+type TItemDrop = {
+    index: number;
+}
+
+interface IDraggedIngredientCardProps {
+
+    onOpenModal: (event: React.MouseEvent<HTMLDivElement>) => void;
+    ingredient: IIngredientType;
+    index: number;
+    moveIngredient: (arg1: number, arg2: number) => void;
+}
 
 const DraggedIngredientCard: FC<IDraggedIngredientCardProps> = ({ onOpenModal, ingredient, index, moveIngredient }) => {
 

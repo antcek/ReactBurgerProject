@@ -34,7 +34,7 @@ import { FeedPage } from '../../pages/feed/feed';
     const productsFailed = useSelector((store: any) => store.getProducts.productsFailed);
     const detailsVisible = useSelector((store: any) => store.ingredientDetails.visible);
 
-    function onCloseModal() {
+    function onCloseModal(): void {
         localStorage.removeItem('modalData');
 
         dispatch({

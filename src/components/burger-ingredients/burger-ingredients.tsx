@@ -61,7 +61,7 @@ const BurgerIngredients: FC = () => {
         }
     }
 
-    function onOpenModal(event: any): void {
+    function onOpenModal(event: React.MouseEvent<HTMLElement>): void {
 
         const currentTarget = event.currentTarget;
         const targetProduct = products.find((product: IIngredientType) => product?._id === currentTarget?.getAttribute('id'))
@@ -70,7 +70,7 @@ const BurgerIngredients: FC = () => {
             navigate(`/ingredients/${targetProduct?._id}`)
             localStorage.setItem('modalData', JSON.stringify(targetProduct));
         }
-        else if (event.target.closest('.constructor-element__action')) { return }
+        else if ((event.target as HTMLElement).closest('.constructor-element__action')) { return }
 
         dispatch({
             type: CURRENT_INGREDIENT_DETAILS,

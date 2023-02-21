@@ -3,8 +3,12 @@ import styles from './burger-ingredients-card.module.css';
 import { useDrag } from 'react-dnd';
 import { useSelector } from 'react-redux';
 import React, { FC } from 'react';
-import { IIngredientCard, IIngredientType } from '../../services/types/types';
+import { IIngredientType } from '../../services/types/types';
 
+interface IIngredientCard {
+    onOpenModal: (event?: any) => void;
+    product: IIngredientType;
+}
 
 const IngredientCard: FC<IIngredientCard> = (({ onOpenModal, product }) => {
 

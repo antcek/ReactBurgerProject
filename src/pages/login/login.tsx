@@ -15,13 +15,13 @@ export const LoginPage: FC = () => {
   const navigate = useNavigate();
   const [loginValue, setLoginValue] = useState('');
 
-  const onLoginChange = (e: any) => {
+  const onLoginChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setLoginValue(e.target.value)
   };
 
   const [passwordValue, setPasswordValue] = useState('');
 
-  const onPasswordChange = (e: any) => {
+  const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPasswordValue(e.target.value)
   }
 
@@ -32,7 +32,7 @@ export const LoginPage: FC = () => {
     }
   }, [loggedUser, navigate]);
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: React.FormEvent): void => {
     event.preventDefault();
 
     if (passwordValue.length > 5) {

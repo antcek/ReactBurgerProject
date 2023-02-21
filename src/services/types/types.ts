@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 
 export interface ITokens {
   accessToken?: string;
@@ -29,35 +28,9 @@ export interface IIngredientType {
   key?: number;
 }
 
-export type TTab = {
-  onClick: (value:string) => void;
-}
 
-export type TBurgerAllId = {
-  ingredients: Array<string>
-}
 
-export type TItemDrop = {
-  index: number;
-}
 
-export interface IDraggedIngredientCardProps {
-
-  onOpenModal: (event?: any) => void;
-  ingredient: IIngredientType;
-  index: number;
-  moveIngredient: (arg1: number, arg2:number) => void;
-}
-
-export interface IIngredientCard {
-  onOpenModal: (event?: any) => void;
-  product: IIngredientType;
-}
-
-export interface IModal {
-  onCloseModal: () => void;
-  children?: ReactNode;
-}
 
 
 

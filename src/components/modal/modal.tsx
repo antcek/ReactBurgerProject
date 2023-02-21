@@ -1,17 +1,22 @@
-import React, { useEffect, FC } from 'react';
+import React, { useEffect, FC, ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { motion } from 'framer-motion';
-import {IModal} from '../../services/types/types';
+
+
+export interface IModal {
+    onCloseModal: () => void;
+    children?: ReactNode;
+  }
 
 
 const Modal: FC<IModal> = ({ onCloseModal, children }) => {
 
     useEffect(() => {
         
-        function modalEscClose(event: any): void {
+        function modalEscClose(event: KeyboardEvent): void {
 
             if (event.code === 'Escape')
                 onCloseModal();
