@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, FC } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './profile.module.css';
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -9,22 +9,24 @@ import { userGetData } from '../../services/thunk-actions/thunk-actions';
 import { LeftSideMenu } from '../../components/left-side-menu/left-side-menu';
 import { useForm } from '../../services/custom-hooks/custom-hooks';
 
+
 const initialInput = {
   name: '',
   email: '',
-  password: ''
+  password: '',
 }
 
 
-export function ProfilPage() {
+export const ProfilPage: FC = () => {
 
   const dispatch = useDispatch();
 
-  const userData = useSelector(store => store.loginUser.user);
+  const userData = useSelector((store: any) => store.loginUser.user);
   const accessToken = Cookies.get('accessToken');
 
   const { values, handleChange, setValues } = useForm(initialInput);
-  const isChanging = () => {
+
+  const isChanging = (): boolean => {
 
     if (userData && (values?.email !== userData.email ||
       values?.name !== userData.name ||
@@ -52,32 +54,32 @@ export function ProfilPage() {
   useEffect(() => {
 
     if (accessToken) {
-      dispatch(userGetData());
+      dispatch(userGetData() as any);
     };
 
   }, [accessToken, dispatch])
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: any) => {
     event.preventDefault();
 
-    dispatch(updateUserInfo(values.name, values.email, values.password));
+    dispatch(updateUserInfo(values.name, values.email, values.password) as any);
     setValues({
       ...values,
       password: ''
-    })
+    });
   }
 
   const dataReset = () => {
+
     if (userData) {
       setValues({
         ...values,
         name: userData?.name,
         email: userData?.email
-      })
+      });
 
     }
   }
-
 
   return (
     <>
@@ -96,18 +98,18 @@ export function ProfilPage() {
               errorText={'Ошибка'}
               size={'default'}
             />
-            <EmailInput onChange={handleChange}
+            <EmailInput
+              onChange={handleChange}
               value={values?.email}
               name={'email'}
-              isIcon={false}
-              icon="EditIcon"
+              isIcon={true}
               placeholder={'Логин'} />
 
             <PasswordInput
               onChange={handleChange}
               value={values?.password}
               name={'password'}
-
+              
             />
 
             {isChanging() ? <div className={styles.formButtons}>

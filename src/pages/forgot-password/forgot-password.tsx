@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './forgot-password.module.css';
 import { EmailInput, Button, } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -8,16 +8,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { validateEmail } from '../../utils/constants';
 
-export function ForgotPasswordPage() {
+const ForgotPasswordPage: FC = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const passwordRecovered = useSelector(store => store.recoverPassword.recoverSuccess);
-  const loggedUser = useSelector(store => store.loginUser.userAuthorizied)
+  const passwordRecovered = useSelector((store: any) => store.recoverPassword.recoverSuccess);
+  const loggedUser = useSelector((store: any) => store.loginUser.userAuthorizied)
 
-  const [loginValue, setLoginValue] = useState('')
-  const onLoginForgot = e => {
+  const [loginValue, setLoginValue] = useState('');
+
+  const onLoginForgot = (e: React.ChangeEvent<HTMLInputElement>): void => {
+
     setLoginValue(e.target.value)
   };
 
@@ -26,16 +28,16 @@ export function ForgotPasswordPage() {
       navigate('/reset-password', { replace: true })
     }
     if (loggedUser) {
-      navigate(-1, { replace: true })
+      navigate(-1)
     }
   }, [passwordRecovered, navigate, loggedUser]);
 
-  const handleSubmitRecover = (event) => {
+  const handleSubmitRecover = (event: React.FormEvent): void => {
 
     event.preventDefault();
 
     if (validateEmail(loginValue)) {
-      dispatch(recoverPassword(loginValue))
+      dispatch(recoverPassword(loginValue) as any)
     }
   }
 
@@ -52,7 +54,6 @@ export function ForgotPasswordPage() {
             value={loginValue}
             name={'email'}
             isIcon={false}
-            errorText={'Ошибка! Введите валидный e-mail адрес'}
             placeholder="Укажите e-mail"
           />
 
@@ -74,3 +75,4 @@ export function ForgotPasswordPage() {
     </>
   )
 }
+export default ForgotPasswordPage

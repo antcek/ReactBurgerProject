@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './register.module.css';
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -9,40 +9,39 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 
-export function RegisterPage() {
+export const RegisterPage: FC = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const registeredUser = useSelector(store => store.registerUser.registerNewUser);
-  const loggedUser = useSelector(store => store.loginUser.userAuthorizied);
+  const registeredUser = useSelector((store: any) => store.registerUser.registerNewUser);
+  const loggedUser = useSelector((store: any) => store.loginUser.userAuthorizied);
   const [nameValue, setNameValue] = useState('');
   const [loginValue, setLoginValue] = useState('');
 
-  const onLoginRegister = e => {
-    setLoginValue(e.target.value)
-  };
+  const onLoginRegister = (e: React.ChangeEvent<HTMLInputElement>): void => setLoginValue(e.target.value);
 
   const [passwordValue, setPasswordValue] = useState('');
-  const onPasswordRegister = e => {
+
+  const onPasswordRegister = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPasswordValue(e.target.value)
   };
 
   useEffect(() => {
     if (registeredUser && !loggedUser) {
-      navigate('/login', { replace: true })
+      navigate('/login', { replace: true });
     }
 
     if (loggedUser) {
-      navigate(-1, { replace: true })
+      navigate(-1);
     }
   }, [registeredUser, loggedUser, navigate]);
 
-  const handleSubmitRegister = (event) => {
+  const handleSubmitRegister = (event: React.FormEvent): void => {
 
     event.preventDefault();
 
-    dispatch(registerUser(nameValue, loginValue, passwordValue));
+    dispatch(registerUser(nameValue, loginValue, passwordValue) as any);
   }
 
   return (
@@ -67,14 +66,12 @@ export function RegisterPage() {
             value={loginValue}
             name={'email'}
             isIcon={false}
-            errorText={'Введите правильный e-mail адрес'}
           />
 
           <PasswordInput
             onChange={onPasswordRegister}
             value={passwordValue}
             name={'password'}
-            errorText={'Ваш пароль должен быть длиннее 6 символов'}
           />
 
           <Button

@@ -93,10 +93,16 @@ export function sendOrder(idConstructor) {
                 }))
 
         } catch (err) {
-            dispatch(sendOrder(idConstructor))
+
+            dispatch(userGetData());
+            dispatch(sendOrder(idConstructor));
+
             dispatch({
                 type: ORDER_FAILED
-            })
+            });
+
+
+
         }
     }
 }

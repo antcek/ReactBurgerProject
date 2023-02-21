@@ -1,24 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, FC, ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import styles from './modal.module.css';
-import ModalOverlay from '../modal-overlay/modal-overlay.jsx';
-import PropTypes from 'prop-types';
+import ModalOverlay from '../modal-overlay/modal-overlay';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { motion } from 'framer-motion';
 
 
+export interface IModal {
+    onCloseModal: () => void;
+    children?: ReactNode;
+  }
 
 
-
-function Modal({ onCloseModal, children }) {
-
+const Modal: FC<IModal> = ({ onCloseModal, children }) => {
 
     useEffect(() => {
-
-        function modalEscClose(event) {
+        
+        function modalEscClose(event: KeyboardEvent): void {
 
             if (event.code === 'Escape')
                 onCloseModal();
-
         };
 
         document.addEventListener('keydown', modalEscClose);
@@ -30,9 +31,13 @@ function Modal({ onCloseModal, children }) {
     }, [onCloseModal, children]);
 
     return ReactDOM.createPortal(
-        <>
-            <div className={styles.wrapper}>
 
+        <motion.div
+            initial={{ opacity: 0, }}
+            animate={{ opacity: 1, }}
+            transition={{ duration: 0.5 }}
+            exit={{ opacity: 0 }}>
+            <div className={styles.wrapper}>
                 <div onClick={onCloseModal} className={styles.close}>
                     <CloseIcon type="primary" />
                 </div>
@@ -42,14 +47,12 @@ function Modal({ onCloseModal, children }) {
 
             </div>
             <ModalOverlay onCloseModal={onCloseModal} />
-        </>,
-        document.getElementById("react-modals")
+        </motion.div>,
+
+        document.getElementById("react-modals")!
     )
 }
 
-Modal.propTypes = {
-    onCloseModal: PropTypes.func.isRequired,
-    children: PropTypes.element.isRequired,
-};
+
 
 export default Modal

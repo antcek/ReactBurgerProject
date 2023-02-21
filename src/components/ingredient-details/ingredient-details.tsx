@@ -1,33 +1,33 @@
 import styles from './ingredient-details.module.css';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
+import { IIngredientType, IUseLocation } from '../../services/types/types';
+import { FC } from 'react';
 
 
-function IngredientDetails() {
-     
-     const current = useSelector((store) => (store.ingredientDetails.current));
-     const location = useLocation();
-     const locationUrlIndex = location.pathname.indexOf('/ingredients/');
-     const locationIngredientId = location.pathname.substring(locationUrlIndex + '/ingredients/'.length)
-     const products = useSelector((store) => store.getProducts.products);
-     const neededProduct = products?.find(item => item._id === locationIngredientId);
+const IngredientDetails: FC = () => {
 
-     
+    const current = useSelector((store: any) => (store.ingredientDetails.current));
+
+    const location: IUseLocation = useLocation();
+    const locationUrlIndex = location.pathname.indexOf('/ingredients/');
+    const locationIngredientId = location.pathname.substring(locationUrlIndex + '/ingredients/'.length)
+
+    const products = useSelector((store: any) => store.getProducts.products);
+    const neededProduct = products?.find((item: IIngredientType) => item._id === locationIngredientId);
 
     return (
-      
-        current?._id ? ( <div className={styles.details} >
+        current?._id ? (<div className={styles.details} >
             <div className={styles.header} >
                 <p className="text text_type_main-large">
                     Детали ингредиента
                 </p>
-               
             </div>
             <div>
                 <div className={styles.body} key={current._id}>
                     <img src={current.image_large} alt='ингредиент' />
                     <p className="text text_type_main-medium mt-4 mb-8">
-                        {current.name || neededProduct?.name }
+                        {current.name || neededProduct?.name}
                     </p>
                     <div className={styles.wrapperCalories}>
                         <div className={styles.substances}>
@@ -35,7 +35,7 @@ function IngredientDetails() {
                                 Калории,ккал
                             </p>
                             <p className="text text_type_digits-default text_color_inactive ">
-                                {current.calories ||  neededProduct?.calories}
+                                {current.calories || neededProduct?.calories}
                             </p>
                         </div>
                         <div className={styles.substances}>
@@ -43,7 +43,7 @@ function IngredientDetails() {
                                 Белки, г
                             </p>
                             <p className="text text_type_digits-default text_color_inactive ">
-                                {current.proteins || neededProduct?.proteins }
+                                {current.proteins || neededProduct?.proteins}
                             </p>
                         </div>
                         <div className={styles.substances}>
@@ -59,19 +59,19 @@ function IngredientDetails() {
                                 Углеводы, г
                             </p>
                             <p className="text text_type_digits-default text_color_inactive ">
-                                {current.carbohydrates }
+                                {current.carbohydrates}
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
 
-        </div>) : ( <div className={styles.details} >
+        </div>) : (<div className={styles.details} >
             <div className={styles.header} >
                 <p className="text text_type_main-large">
                     Детали ингредиента
                 </p>
-               
+
             </div>
             <div>
                 <div className={styles.body} key={neededProduct?._id}>

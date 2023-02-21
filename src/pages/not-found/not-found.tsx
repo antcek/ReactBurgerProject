@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {FC} from 'react';
 import { Link } from 'react-router-dom';
 import styles from './not-found.module.css';
 
-export function Error404Page() {
+export const Error404Page:FC = () => {
 
   return (
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, FC } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './login.module.css';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -8,20 +8,20 @@ import { loginUser } from '../../services/thunk-actions/thunk-actions';
 import { REGISTER_SUCCESS } from '../../services/actions/register';
 
 
-export function LoginPage() {
-
+export const LoginPage: FC = () => {
 
   const dispatch = useDispatch();
-  const loggedUser = useSelector(store => store.loginUser.userAuthorizied);
+  const loggedUser = useSelector((store: any) => store.loginUser.userAuthorizied);
   const navigate = useNavigate();
   const [loginValue, setLoginValue] = useState('');
 
-  const onLoginChange = e => {
+  const onLoginChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setLoginValue(e.target.value)
   };
 
   const [passwordValue, setPasswordValue] = useState('');
-  const onPasswordChange = e => {
+
+  const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPasswordValue(e.target.value)
   }
 
@@ -32,12 +32,12 @@ export function LoginPage() {
     }
   }, [loggedUser, navigate]);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent): void => {
     event.preventDefault();
 
     if (passwordValue.length > 5) {
-      dispatch(loginUser(loginValue, passwordValue))
-    }
+      dispatch(loginUser(loginValue, passwordValue) as any)
+    };
   }
 
 

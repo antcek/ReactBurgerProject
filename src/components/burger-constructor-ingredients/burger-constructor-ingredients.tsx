@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { DELETE_CONSTRUCTOR_INGREDIENT } from '../../services/actions/burger-constructor';
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch } from 'react-redux';
 import styles from './burger-constructor-ingredients.module.css';
 import { useDrag, useDrop } from 'react-dnd';
-import { useRef } from 'react';
-import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
-import ingredientTypes from '../../prop-types/prop-types';
+import { IIngredientType } from '../../services/types/types';
 
-export default function DraggedIngredientCard({ onOpenModal, ingredient, index, moveIngredient }) {
+type TItemDrop = {
+    index: number;
+}
+
+interface IDraggedIngredientCardProps {
+
+    onOpenModal: (event: React.MouseEvent<HTMLDivElement>) => void;
+    ingredient: IIngredientType;
+    index: number;
+    moveIngredient: (arg1: number, arg2: number) => void;
+}
+
+const DraggedIngredientCard: FC<IDraggedIngredientCardProps> = ({ onOpenModal, ingredient, index, moveIngredient }) => {
 
     const [{ isDragging }, sortedDrag] = useDrag({
         type: 'sort-ingredients',
@@ -21,12 +30,11 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
 
     });
 
-
     const [, sortedDrop] = useDrop({
         accept: 'sort-ingredients',
-      
-        hover: (item, monitor) => {
-     
+
+        hover: (item: TItemDrop, monitor) => {
+
             const draggedIndex = item.index;
             const hoverIndex = index;
             if (monitor.didDrop()) return;
@@ -34,27 +42,20 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
             moveIngredient(draggedIndex, hoverIndex);
             item.index = hoverIndex;
         },
-      
+
     });
 
-
-    const refIng = useRef(null);
     const dispatch = useDispatch();
-
-    const ingredientIsDrag = `${styles.main} ${isDragging ? styles.dragging : ''} `
-    
+    const ingredientIsDrag = `${styles.main} ${isDragging ? styles.dragging : ''}`;
 
     return (
-        
+
         <div ref={sortedDrop} >
-           
-                 
             <div ref={sortedDrag} className={styles.ingredientsContainer}>
                 <div>
-                    <DragIcon />
+                    <DragIcon type='primary' />
                 </div>
-               
-                <div ref={refIng} id={ingredient._id} onClick={onOpenModal} className={ingredientIsDrag}>
+                <div id={ingredient._id} onClick={onOpenModal} className={ingredientIsDrag}>
                     <ConstructorElement
                         handleClose={() =>
                             dispatch({
@@ -67,18 +68,11 @@ export default function DraggedIngredientCard({ onOpenModal, ingredient, index, 
                         thumbnail={ingredient.image}
                     />
                 </div>
-               
-            </div> 
+            </div>
         </div>
 
     )
 }
 
-DraggedIngredientCard.propTypes = {
 
-    onOpenModal: PropTypes.func.isRequired,
-    ingredient: PropTypes.shape(ingredientTypes).isRequired,
-    index: PropTypes.number.isRequired,
-    moveIngredient: PropTypes.func.isRequired,
-
-}
+export default DraggedIngredientCard;

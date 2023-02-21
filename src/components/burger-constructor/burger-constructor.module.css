@@ -1,4 +1,4 @@
-.constructor {
+.burgerConstructor {
     box-sizing: border-box;
     margin-top: 84px;
     height: 100%;
@@ -60,8 +60,8 @@
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
-    padding: 16px 32px 16px 24px;
-    gap: 20px;
+    padding: 16px 32px 16px 46px;
+    gap: 20%;
     background: var(--background-element);
     border-radius: 40px 40px 88px 88px;
     width: 100%;
@@ -70,7 +70,7 @@
     font-family: 'Jet Brains Mono';
     font-size: 16px;
     line-height: 24px;
-    justify-content: center;
+    justify-content: flex-start;
     margin-left: 32px;
 
 }
@@ -81,8 +81,7 @@
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
-    padding: 16px 32px 16px 24px;
-    gap: 20px;
+    padding: 16px 32px 16px 46px;
     background: var(--background-element);
     width: 100%;
     min-height: 80px;
@@ -90,7 +89,8 @@
     font-family: 'Jet Brains Mono';
     font-size: 16px;
     line-height: 24px;
-    justify-content: center;
+    justify-content: flex-start;
+    gap: 20%;
     border-radius: 88px 88px 40px 40px;
     margin-left: 32px;
 }

@@ -1,17 +1,17 @@
-import React from 'react';
+import React, {FC} from 'react';
 import styles from './left-side-menu.module.css';
 import { NavLink } from 'react-router-dom';
 import { logout } from '../../services/thunk-actions/thunk-actions';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import classNames from 'classnames';
+import { IUseLocation } from '../../services/types/types';
 
 
-export const LeftSideMenu = () => {
+export const LeftSideMenu: FC = () => {
 
   const dispatch = useDispatch();
-  const location = useLocation();
-
+  const location: IUseLocation = useLocation();
 
   return (
     <div className={styles.wrapper}>
@@ -42,7 +42,7 @@ export const LeftSideMenu = () => {
         <div
           className={styles.logout}
           onClick={() => {
-            dispatch(logout());
+            dispatch(logout() as any);
           }}
         >
           <p className={`text text_type_main-medium text_color_inactive ${styles.logout}`}>

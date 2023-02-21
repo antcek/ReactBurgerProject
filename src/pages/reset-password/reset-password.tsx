@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './reset-password.module.css';
 import { PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
@@ -7,25 +7,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import { resetPassword } from '../../services/thunk-actions/thunk-actions';
 
 
-export function ResetPasswordPage() {
+export const ResetPasswordPage:FC = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [tokenValue, setTokenValue] = useState('');
 
-  const loggedUser = useSelector(store => store.loginUser.userAuthorizied);
-  const isEmailSended = useSelector(store => store.recoverPassword.recoverSuccess)
+  const loggedUser = useSelector((store: any) => store.loginUser.userAuthorizied);
+  const isEmailSended = useSelector((store: any) => store.recoverPassword.recoverSuccess)
   const [passwordValue, setPasswordValue] = useState('');
-  const onPasswordChange = e => {
+  const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPasswordValue(e.target.value)
   };
 
-  const isPasswordReset = useSelector(store => store.resetPassword.resetSuccess)
+  const isPasswordReset = useSelector((store: any) => store.resetPassword.resetSuccess)
 
   useEffect(() => {
     if (loggedUser) {
-      navigate(-1, { replace: true })
+      navigate(-1)
     };
 
     if (!loggedUser && !isEmailSended) {
@@ -37,11 +37,11 @@ export function ResetPasswordPage() {
     }
   }, [loggedUser, navigate, isEmailSended, isPasswordReset])
 
-  const handleSubmitReset = (event) => {
+  const handleSubmitReset = (event: React.FormEvent): void => {
 
     event.preventDefault();
     if (passwordValue.length > 5) {
-      dispatch(resetPassword(passwordValue, tokenValue));
+      dispatch(resetPassword(passwordValue, tokenValue) as any);
     }
 
   }

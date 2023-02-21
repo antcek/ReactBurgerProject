@@ -20,6 +20,10 @@
     
 }
 
+.iconHover:hover {
+    color: gainsboro;
+}
+
 
 .activeElement {
     color:white;

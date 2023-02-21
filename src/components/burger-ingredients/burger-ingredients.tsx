@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, FC } from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -10,62 +10,67 @@ import { useModalData } from '../../services/custom-hooks/custom-hooks';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { SCROLL_DURATION } from '../../utils/constants';
+import { motion, AnimatePresence } from 'framer-motion';
+import { IIngredientType } from '../../services/types/types';
 
-function BurgerIngredients() {
+const BurgerIngredients: FC = () => {
 
     const dispatch = useDispatch();
     useModalData();
 
+    const products = useSelector((store: any) => store.getProducts.products);
+    const modalVisible = useSelector((store: any) => store.ingredientDetails.visible);
+    const currentIngredient = useSelector((store: any) => store.ingredientDetails.current);
 
-    const products = useSelector((store) => store.getProducts.products);
-    const modalVisible = useSelector(store => store.ingredientDetails.visible);
-    const currentIngredient = useSelector(store => store.ingredientDetails.current);
-
-    const [current, setCurrent] = useState('Булки');
+    const [current, setCurrent] = useState<string>('Булки');
 
     const buns = useMemo(() => {
-        return products.filter(ingredient => ingredient.type === 'bun');
+        return products.filter((ingredient: IIngredientType) => ingredient.type === 'bun');
     }, [products])
 
     const main = useMemo(() => {
-        return products.filter(ingredient => ingredient.type === 'main');
+        return products.filter((ingredient: IIngredientType) => ingredient.type === 'main');
     }, [products]);
 
     const sauce = useMemo(() => {
-        return products.filter(ingredient => ingredient.type === 'sauce');
+        return products.filter((ingredient: IIngredientType) => ingredient.type === 'sauce');
     }, [products]);
+
     const navigate = useNavigate();
 
-    const containerRef = useRef(null);
-    const bunRef = useRef(null);
-    const sauceRef = useRef(null);
-    const mainRef = useRef(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const bunRef = useRef<HTMLDivElement>(null);
+    const sauceRef = useRef<HTMLDivElement>(null);
+    const mainRef = useRef<HTMLDivElement>(null);
 
     const scrollNavigation = () => {
 
-        if (Math.abs(bunRef?.current.getBoundingClientRect().top - containerRef?.current.getBoundingClientRect()?.top)
-            < Math.abs(sauceRef?.current.getBoundingClientRect().top - containerRef?.current.getBoundingClientRect()?.top)) {
-            setCurrent('Булки');
+        if (containerRef.current && bunRef.current && sauceRef.current && mainRef.current) {
+
+            if (Math.abs(bunRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect()?.top)
+                < Math.abs(sauceRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect()?.top)) {
+                setCurrent('Булки');
+            }
+
+            else setCurrent('Соусы');
+
+            if (Math.abs(mainRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)
+                < Math.abs(sauceRef.current.getBoundingClientRect().top - containerRef.current.getBoundingClientRect().top)) {
+                setCurrent('Начинки');
+            };
         }
-
-        else setCurrent('Соусы');
-
-        if (Math.abs(mainRef?.current.getBoundingClientRect().top - containerRef?.current.getBoundingClientRect().top)
-            < Math.abs(sauceRef?.current.getBoundingClientRect().top - containerRef?.current.getBoundingClientRect().top)) {
-            setCurrent('Начинки');
-        };
-
     }
 
-    function onOpenModal(event) {
+    function onOpenModal(event: React.MouseEvent<HTMLElement>): void {
 
         const currentTarget = event.currentTarget;
-        const targetProduct = products.find((product) => product?._id === currentTarget?.getAttribute('id'))
+        const targetProduct = products.find((product: IIngredientType) => product?._id === currentTarget?.getAttribute('id'))
+
         if (targetProduct) {
             navigate(`/ingredients/${targetProduct?._id}`)
             localStorage.setItem('modalData', JSON.stringify(targetProduct));
         }
-        else if (event.target.closest('.constructor-element__action')) { return false }
+        else if ((event.target as HTMLElement).closest('.constructor-element__action')) { return }
 
         dispatch({
             type: CURRENT_INGREDIENT_DETAILS,
@@ -74,7 +79,7 @@ function BurgerIngredients() {
         })
 
     };
-    function onCloseModal() {
+    function onCloseModal(): void {
 
         localStorage.removeItem('modalData');
 
@@ -86,9 +91,6 @@ function BurgerIngredients() {
             visible: false
         });
     }
-
-
-
 
     return (
 
@@ -103,9 +105,8 @@ function BurgerIngredients() {
                     smooth={true}
                     duration={SCROLL_DURATION}
                     containerId='ingredients-container'
-                    onSetActive={() => setCurrent('Булки')}
                 >
-                    <Tab value="Булки" active={current === 'Булки'} >
+                    <Tab onClick={() => setCurrent('Булки')} value="Булки" active={current === 'Булки'} >
                         Булки
                     </Tab>
                 </Link>
@@ -115,9 +116,9 @@ function BurgerIngredients() {
                     smooth={true}
                     duration={SCROLL_DURATION}
                     containerId='ingredients-container'
-                    onSetActive={() => setCurrent('Соусы')}
+
                 >
-                    <Tab value="Соусы" active={current === 'Соусы'}>
+                    <Tab onClick={() => setCurrent('Соусы')} value="Соусы" active={current === 'Соусы'}>
                         Соусы
                     </Tab>
                 </Link>
@@ -127,9 +128,8 @@ function BurgerIngredients() {
                     smooth={true}
                     duration={SCROLL_DURATION}
                     containerId='ingredients-container'
-                    onSetActive={() => setCurrent('Начинки')}
                 >
-                    <Tab value="Начинки" active={current === 'Начинки'} >
+                    <Tab onClick={() => setCurrent('Начинки')} value="Начинки" active={current === 'Начинки'} >
                         Начинки
                     </Tab>
                 </Link>
@@ -141,7 +141,7 @@ function BurgerIngredients() {
                 </p>
                 <div className={styles.wrapper}>
 
-                    {buns?.map((product) =>
+                    {buns?.map((product: IIngredientType) =>
                         <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />
                     )}
 
@@ -150,19 +150,29 @@ function BurgerIngredients() {
                     Соусы
                 </p>
                 <div className={styles.wrapper} >
-                    {sauce.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
+                    {sauce.map((product: IIngredientType) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
                 </div>
                 <p id='ingredients-main' ref={mainRef} className="text text_type_main-medium mt-10">
                     Начинки
                 </p>
                 <div className={styles.wrapper}>
-                    {main.map((product) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
+                    {main.map((product: IIngredientType) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
                 </div>
 
             </div>
-            {modalVisible && currentIngredient && <Modal onCloseModal={onCloseModal}>
-                {<IngredientDetails />}
-            </Modal>}
+            <AnimatePresence>
+                {modalVisible && currentIngredient &&
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                    >
+                        <Modal onCloseModal={onCloseModal}>
+                            {<IngredientDetails />}
+                        </Modal>
+                    </motion.div>}
+            </AnimatePresence>
         </section>
 
     )

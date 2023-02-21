@@ -6,14 +6,15 @@ import { ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './app-header.module.css';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
-import React from 'react';
+import React, { FC } from 'react';
 import { useLocation } from 'react-router-dom';
+import { IUseLocation } from '../../services/types/types';
 
 
-function AppHeader() {
+const AppHeader: FC = () => {
 
-    const currentPath = useLocation().pathname;
-
+    const location: IUseLocation = useLocation();
+    const currentPath = location.pathname;
 
     return (
         <header className={styles.header}>
@@ -25,7 +26,8 @@ function AppHeader() {
 
                         className={({ isActive }) =>
                             classNames(styles.element, { 'text_color_inactive': !isActive },
-                                `${isActive ? styles.activeElement : 'text_color_inactive'}`)
+                                `${isActive ? styles.activeElement : !isActive ?
+                                    styles.iconHover : 'text_color_inactive'}`)
 
                         }>
                         <BurgerIcon type={(currentPath === '/')
@@ -34,14 +36,16 @@ function AppHeader() {
                             Конструктор</p>
                     </NavLink>
                     <NavLink
-                        to='*'
+                        to='/feed'
                         className={({ isActive }) =>
                             classNames(styles.element, { 'text_color_inactive': !isActive },
-                                `${isActive ? styles.activeElement : 'text_color_inactive'}`)
+                                `${isActive ? styles.activeElement :
+                                    !isActive ?
+                                        styles.iconHover : 'text_color_inactive'}`)
 
                         }
                     >
-                        <ListIcon type={currentPath === '/orders' ? 'primary' : "secondary"} />
+                        <ListIcon type={currentPath === '/feed' ? 'primary' : "secondary"} />
                         <p className="text text_type_main-default  ">
                             Лента заказов</p>
                     </NavLink>
@@ -55,15 +59,15 @@ function AppHeader() {
                     to='/profile'
                     className={({ isActive }) =>
                         classNames(styles.element, { 'text_color_inactive': !isActive },
-                            `${isActive ? styles.activeElement : 'text_color_inactive'}`)
+                            `${isActive ? styles.activeElement :
+                                !isActive ?
+                                    styles.iconHover : 'text_color_inactive'}`)
                     }
-
                 >
-                    <ProfileIcon type={currentPath === ('/profile') ? 'primary' :
+                    <ProfileIcon type={currentPath === '/profile' ? 'primary' :
                         currentPath === '/profile/orders' ? 'primary' : 'secondary'} />
                     <p className="text text_type_main-default  " >
                         Личный кабинет</p>
-
                 </NavLink>
             </div>
         </header >
