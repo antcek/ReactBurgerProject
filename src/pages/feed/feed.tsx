@@ -40,13 +40,27 @@ export const FeedPage: FC = () => {
             Death Star Starship Main бургер
           </h1 >
           <div className={styles.cardBottom}>
-            <div className={styles.ingredient}>
-              <div className={styles.ingredientContent}>
-                <img src='https://code.s3.yandex.net/react/code/bun-01.png' alt='icon' />
-
+            <div className={styles.burger}>
+              <div className={styles.ingredient}>
+                <img src='https://code.s3.yandex.net/react/code/bun-01.png' />
+                <div className={styles.ingredientContent}>
+                </div>
               </div>
-
+              <div className={styles.ingredient}>
+                <img src='https://code.s3.yandex.net/react/code/bun-01.png' />
+                <div className={styles.ingredientContent}>
+                </div>
+              </div>
+              <div className={styles.ingredient}>
+                <img src='https://code.s3.yandex.net/react/code/bun-01.png' />
+                <div className={styles.ingredientContent}>
+                </div>
+              </div>
+              
+            
             </div>
+
+
             <div className={styles.price}>
               <p className="text text_type_digits-default">480</p>
 
