@@ -47,7 +47,8 @@
   border-radius: 40px;
   flex-direction: column;
   max-width: 584px;
-  margin-right: 8px
+  margin-right: 8px;
+  cursor:pointer;
 }
 
 .heading {
