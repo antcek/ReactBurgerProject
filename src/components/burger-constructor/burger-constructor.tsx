@@ -218,8 +218,8 @@ const BurgerConstructor: FC = () => {
                                 <div className={styles.wrapper}>
                                     {constructorIngredients.map((ingredient: IIngredientType, index: number) =>
                                         <motion.div
-                                            initial={{ scale: 0, }}
-                                            animate={{ scale: 1, }}
+                                            initial={{ opacity: 0, }}
+                                            animate={{ opacity: 1, }}
                                             transition={{ duration: 1 }}
                                             key={ingredient.key}>
                                             <DraggedIngredientCard
@@ -279,9 +279,9 @@ const BurgerConstructor: FC = () => {
                 <AnimatePresence>
                     {modalVisible && !currentIngredient &&
                         <motion.div
-                            initial={{ opacity: 0, scaleY: 1 }}
-                            animate={{ opacity: 1, scaleY: 1 }}
-                            exit={{ opacity: 0, scaleY: 0 }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1}}
+                            exit={{ opacity: 0}}
                             transition={{ duration: 0.6 }}
                         >
                             <Modal onCloseModal={onCloseModal}>
