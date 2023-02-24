@@ -248,7 +248,6 @@ const BurgerConstructor: FC = () => {
                                     transition={{ duration: 0.6 }}
                                     key={bun._id} id={bun._id} onClick={onOpenModal} className={styles.buns}>
                                     <ConstructorElement
-
                                         type="bottom"
                                         isLocked={true}
                                         text={`${bun.name} (низ)`}
