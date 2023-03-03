@@ -9,7 +9,8 @@ import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk))) 
+                                            // applyMiddleware через запятую socketMiddleware(url...)
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
