@@ -1,5 +1,5 @@
 import { Navigate, RouteProps } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector } from '../../services/types/hooks';
 import Cookies from 'js-cookie';
 import { FC } from 'react';
 

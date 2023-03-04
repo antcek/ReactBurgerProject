@@ -4,7 +4,7 @@ export const RESET_FAILED: 'RESET_FAILED' = 'RESET_FAILED';
 
 export interface IReset {
   success: boolean;
-  message: string
+  message: string;
 }
 
 export interface IResetRequestAction {
@@ -13,11 +13,11 @@ export interface IResetRequestAction {
 
 export interface IResetSuccessAction {
   readonly type: typeof RESET_SUCCESS;
-  readonly reset: IReset
+  readonly reset: IReset | boolean;
 }
 
 export interface IResetFailedAction {
   readonly type: typeof RESET_FAILED;
 }
 
-export type TResetActions = IResetRequestAction | IResetSuccessAction | IResetFailedAction;
+export type TResetActions = | IResetRequestAction | IResetSuccessAction | IResetFailedAction;

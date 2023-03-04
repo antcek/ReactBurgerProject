@@ -1,5 +1,5 @@
 import styles from './ingredient-details.module.css';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/types/hooks';
 import { useLocation } from 'react-router';
 import { IIngredientType, IUseLocation } from '../../services/types/types';
 import { FC } from 'react';

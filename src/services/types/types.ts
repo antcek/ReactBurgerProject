@@ -28,6 +28,12 @@ export interface IIngredientType {
   key?: number;
 }
 
+export interface IIngredients {
+  success: boolean;
+  data?: Array<IIngredientType>;
+}
+
+
 
 
 

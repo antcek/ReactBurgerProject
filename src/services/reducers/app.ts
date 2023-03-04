@@ -9,14 +9,14 @@ import { IIngredientType } from '../types/types';
 interface IInitialAppState {
   productsRequest: boolean;
   productsFailed: boolean;
-  products: ReadonlyArray<IIngredientType>
+  products: readonly IIngredientType[] | unknown;
 }
 
 const initialAppState: IInitialAppState = {
 
   productsRequest: false,
   productsFailed: false,
-  products: []
+  products: [],
 
 }
 

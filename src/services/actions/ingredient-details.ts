@@ -14,4 +14,4 @@ export interface ICurrentIngsDetailsModalAction {
   readonly visible: boolean;
 }
 
-export type TCurrentIngredientDetailsActions = ICurrentIngDetailsAction | ICurrentIngsDetailsModalAction
+export type TCurrentIngredientDetailsActions = | ICurrentIngDetailsAction | ICurrentIngsDetailsModalAction

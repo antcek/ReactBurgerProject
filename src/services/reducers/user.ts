@@ -18,11 +18,11 @@ import { IUser } from "../actions/register";
 interface IInitialState {
   loginRequest: boolean;
   loginFailed: boolean;
-  userAuthorizied: boolean | IUser;
+  userAuthorizied: boolean | IUser | null;
   logoutRequest: boolean;
   logoutFailed: boolean;
   dataRequest: boolean;
-  user: null | IUser;
+  user: null | IUser | unknown;
   updateDataRequest: boolean;
   updateDataFailed: boolean;
   dataFailed: boolean;

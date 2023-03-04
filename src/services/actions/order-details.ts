@@ -15,4 +15,4 @@ export interface IOrderFailedAction {
   readonly type: typeof ORDER_FAILED;
 }
 
-export type TOrderActions = IOrderRequestAction | IOrderSuccessAction | IOrderFailedAction;
+export type TOrderActions = | IOrderRequestAction | IOrderSuccessAction | IOrderFailedAction;

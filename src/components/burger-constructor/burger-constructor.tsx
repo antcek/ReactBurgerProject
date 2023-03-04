@@ -3,7 +3,7 @@ import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktiku
 import styles from './burger-constructor.module.css';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/types/hooks';
 import { CURRENT_INGREDIENTS_DETAILS_MODAL, CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
 import { useDrop } from 'react-dnd';
 import {

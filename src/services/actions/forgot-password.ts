@@ -16,4 +16,4 @@ export interface IRecoverFailedAction {
   readonly type: typeof RECOVER_FAILED;
 }
 
-export type TRecoverActions = IRecoverRequestAction | IRecoverSuccessAction | IRecoverFailedAction;
+export type TRecoverActions = | IRecoverRequestAction | IRecoverSuccessAction | IRecoverFailedAction;

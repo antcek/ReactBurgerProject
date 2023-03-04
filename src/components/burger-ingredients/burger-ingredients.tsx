@@ -2,7 +2,7 @@ import React, { useState, useRef, useMemo, FC } from 'react';
 import styles from './burger-ingredients.module.css';
 import IngredientCard from '../burger-ingredients-card/burger-ingredients-card';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/types/hooks';
 import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
 import { Link } from 'react-scroll';
 import { useNavigate } from 'react-router-dom';
@@ -25,15 +25,15 @@ const BurgerIngredients: FC = () => {
     const [current, setCurrent] = useState<string>('Булки');
 
     const buns = useMemo(() => {
-        return products.filter((ingredient: IIngredientType) => ingredient.type === 'bun');
+        return products?.filter((ingredient: IIngredientType) => ingredient.type === 'bun');
     }, [products])
 
     const main = useMemo(() => {
-        return products.filter((ingredient: IIngredientType) => ingredient.type === 'main');
+        return products?.filter((ingredient: IIngredientType) => ingredient.type === 'main');
     }, [products]);
 
     const sauce = useMemo(() => {
-        return products.filter((ingredient: IIngredientType) => ingredient.type === 'sauce');
+        return products?.filter((ingredient: IIngredientType) => ingredient.type === 'sauce');
     }, [products]);
 
     const navigate = useNavigate();
@@ -150,13 +150,13 @@ const BurgerIngredients: FC = () => {
                     Соусы
                 </p>
                 <div className={styles.wrapper} >
-                    {sauce.map((product: IIngredientType) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
+                    {sauce?.map((product: IIngredientType) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
                 </div>
                 <p id='ingredients-main' ref={mainRef} className="text text_type_main-medium mt-10">
                     Начинки
                 </p>
                 <div className={styles.wrapper}>
-                    {main.map((product: IIngredientType) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
+                    {main?.map((product: IIngredientType) => <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />)}
                 </div>
 
             </div>

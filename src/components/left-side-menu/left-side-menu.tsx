@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import styles from './left-side-menu.module.css';
 import { NavLink } from 'react-router-dom';
 import { logout } from '../../services/thunk-actions/thunk-actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/types/hooks';
 import { useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import { IUseLocation } from '../../services/types/types';

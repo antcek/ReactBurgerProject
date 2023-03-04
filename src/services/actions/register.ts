@@ -18,12 +18,12 @@ export interface IRegisterRequestAction {
 
 export interface IRegisterSuccessAction {
   readonly type: typeof REGISTER_SUCCESS;
-  readonly user: IUser;
- 
+  readonly user: IUser | boolean ;
+
 }
 
 export interface IRegisterFailedAction {
   readonly type: typeof REGISTER_FAILED;
 }
 
-export type TRegisterActions = IRegisterRequestAction | IRegisterSuccessAction | IRegisterFailedAction;
+export type TRegisterActions = | IRegisterRequestAction | IRegisterSuccessAction | IRegisterFailedAction;

@@ -13,7 +13,7 @@ export interface ISetIngredientAction {
   readonly type: typeof SET_CONSTRUCTOR_INGREDIENT;
   readonly ingredients: ConstructorIngredients;
   readonly key: number;
-  
+
 
 }
 
@@ -29,11 +29,11 @@ export interface ISetBun {
 
 export interface ISortIngredientAction {
   readonly type: typeof SORT_CONSTRUCTOR_INGREDIENT;
-  readonly ingredients: IIngredientType[]; 
+  readonly ingredients: IIngredientType[];
 }
 
 export type TConstructorActions =
-  ISetIngredientAction | 
+  | ISetIngredientAction |
   IDeleteIngredientAction |
-  ISetBun | 
+  ISetBun |
   ISortIngredientAction;

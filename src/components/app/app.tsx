@@ -4,7 +4,7 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 import styles from './app.module.css';
 import React, { useEffect, FC } from 'react';
 import { getIngredients } from '../../services/thunk-actions/thunk-actions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/types/hooks';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
