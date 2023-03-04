@@ -70,6 +70,7 @@ const App: FC = () => {
                         <Route path='/reset-password' element={<ResetPasswordPage />} />
                         <Route path='/profile' element={<ProtectedRouteElement element={<ProfilPage />} />} />
                         <Route path='/profile/orders' element={<ProtectedRouteElement element={<OrderPage />} />} />
+                        <Route path='/profile/orders/:id' element={<ProtectedRouteElement element={<FeedDetailsPage />} />} />
                         <Route path="/" element={<> <AppHeader />
                             <main>
                                 <div className={styles.sections}>
