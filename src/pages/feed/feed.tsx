@@ -3,10 +3,20 @@ import AppHeader from '../../components/app-header/app-header';
 import styles from './feed.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from '../../services/types/hooks';
+import { useNavigate } from 'react-router-dom';
+
 
 export const FeedPage: FC = () => {
 
   const today = new Date();
+
+  const navigate = useNavigate();
+  
+
+  const handleClick = () => {
+
+    navigate(`/feed/${123}`)
+  }
 
   return (
     <>
@@ -18,7 +28,8 @@ export const FeedPage: FC = () => {
       </div>
       <div className={styles.container}>
         <div className={styles.cardWrapper}>
-          <div className={styles.order}>
+         
+          <div onClick={handleClick} className={styles.order}>
             <div className={styles.cardTop}>
               <p className="text text_type_digits-default">#034535</p>
               <FormattedDate
@@ -101,6 +112,7 @@ export const FeedPage: FC = () => {
               </div>
             </div>
           </div>
+          
         </div>
         <div className={styles.details}>
           <div className={styles.currentOrders}>

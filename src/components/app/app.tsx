@@ -23,10 +23,11 @@ import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-de
 import Modal from '../modal/modal';
 import { OrderPage } from '../../pages/orders/orders';
 import { FeedPage } from '../../pages/feed/feed';
+import { FeedDetailsPage } from '../../pages/feed-details-page/feed-details-page';
 
 
 
- const App: FC = () => {
+const App: FC = () => {
 
     const dispatch = useDispatch();
     let accessToken = Cookies.get('accessToken');
@@ -63,7 +64,6 @@ import { FeedPage } from '../../pages/feed/feed';
                 </div> :
                 <Router>
                     <Routes>
-
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
                         <Route path='/forgot-password' element={<ForgotPasswordPage />} />
@@ -80,7 +80,7 @@ import { FeedPage } from '../../pages/feed/feed';
                                 </div>
                             </main>
                         </>} >
-                            {detailsVisible && <Route path={`/ingredients/:id`}
+                            {detailsVisible && <Route path='/ingredients/:id'
                                 element={<Modal onCloseModal={onCloseModal}>
                                     <IngredientDetails />
                                 </Modal>} />}
@@ -88,6 +88,8 @@ import { FeedPage } from '../../pages/feed/feed';
                         <Route path='/feed' element={<FeedPage />}>
 
                         </Route>
+                        <Route path='/feed/:id' element={<FeedDetailsPage />} />
+
                         <Route path='*' element={<Error404Page />} />
                         <Route path='/ingredients' element={<IngredientsPage />} >
                             <Route path=':id'
