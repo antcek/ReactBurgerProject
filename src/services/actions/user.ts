@@ -46,7 +46,7 @@ export interface ILoginDataRequestAction {
 export interface ILoginDataAction {
   readonly type: typeof LOGIN_GET_DATA;
   readonly userAuthorizied: boolean;
-  readonly user: IUser | unknown;
+  readonly user: IUser ;
 }
 
 export interface ILoginDataFailedAction {

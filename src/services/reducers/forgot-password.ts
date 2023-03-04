@@ -3,7 +3,7 @@ import { RECOVER_FAILED, RECOVER_SUCCESS, RECOVER_REQUEST, TRecoverActions } fro
 interface IinitialState {
     recoverRequest: boolean;
     recoverFailed: boolean;
-    recoverSuccess: boolean
+    recoverSuccess: boolean;
   }
 
 const initialState: IinitialState = {

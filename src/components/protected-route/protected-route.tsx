@@ -5,7 +5,7 @@ import { FC } from 'react';
 
 const ProtectedRouteElement: FC<RouteProps> = ({ element }) => {
 
-  const userData = (useSelector((store: any) => store.loginUser));
+  const userData = (useSelector((store) => store.loginUser));
   const accessToken = Cookies.get('accessToken')
 
   return accessToken || userData.userAuthorizied ? <> {element} </>

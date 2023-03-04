@@ -27,15 +27,15 @@ const BurgerConstructor: FC = () => {
     const dispatch = useDispatch();
     useModalData();
 
-    const products = useSelector((store: any) => store.getProducts.products);
+    const products = useSelector((store) => store.getProducts.products);
     const location = useLocation();
     const accessToken = Cookies.get('accessToken');
 
-    const currentIngredient = useSelector((store: any) => store.ingredientDetails.current);
-    const modalVisible = useSelector((store: any) => store.ingredientDetails.visible);
+    const currentIngredient = useSelector((store) => store.ingredientDetails.current);
+    const modalVisible = useSelector((store) => store.ingredientDetails.visible);
 
-    const constructorIngredients = useSelector((store: any) => store.burgerConstructor.ingredients);
-    const constructorBuns = useSelector((store: any) => store.burgerConstructor.buns);
+    const constructorIngredients = useSelector((store) => store.burgerConstructor.ingredients);
+    const constructorBuns = useSelector((store) => store.burgerConstructor.buns);
 
     const bunsForOrder = useMemo(() => {
         return constructorBuns
@@ -123,7 +123,7 @@ const BurgerConstructor: FC = () => {
     function onOpenModal(event: React.MouseEvent<HTMLDivElement>): void {
 
         const currentTarget = event.currentTarget;
-        const targetProduct = products.find((product: IIngredientType) => product._id === currentTarget?.getAttribute('id'));
+        const targetProduct = products?.find((product: IIngredientType) => product._id === currentTarget?.getAttribute('id'));
 
         if ((event.target as HTMLElement).closest('.constructor-element__action')) { return };
 
@@ -159,7 +159,7 @@ const BurgerConstructor: FC = () => {
     const createOrder = (): void => {
 
         if (accessToken && burgerAllId.ingredients[0] !== undefined) {
-            dispatch(sendOrder(burgerAllId) as any);
+            dispatch(sendOrder(burgerAllId) );
         }
 
         else navigate('/login', { replace: true })

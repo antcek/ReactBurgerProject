@@ -7,13 +7,13 @@ import { FC } from 'react';
 
 const IngredientDetails: FC = () => {
 
-    const current = useSelector((store: any) => (store.ingredientDetails.current));
+    const current = useSelector((store) => (store.ingredientDetails.current));
 
     const location: IUseLocation = useLocation();
     const locationUrlIndex = location.pathname.indexOf('/ingredients/');
     const locationIngredientId = location.pathname.substring(locationUrlIndex + '/ingredients/'.length)
 
-    const products = useSelector((store: any) => store.getProducts.products);
+    const products = useSelector((store) => store.getProducts.products);
     const neededProduct = products?.find((item: IIngredientType) => item._id === locationIngredientId);
 
     return (

@@ -9,7 +9,7 @@ import { IIngredientType } from '../types/types';
 interface IInitialAppState {
   productsRequest: boolean;
   productsFailed: boolean;
-  products: readonly IIngredientType[] | unknown;
+  products: readonly IIngredientType[] | undefined ;
 }
 
 const initialAppState: IInitialAppState = {

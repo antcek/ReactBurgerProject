@@ -18,9 +18,9 @@ const BurgerIngredients: FC = () => {
     const dispatch = useDispatch();
     useModalData();
 
-    const products = useSelector((store: any) => store.getProducts.products);
-    const modalVisible = useSelector((store: any) => store.ingredientDetails.visible);
-    const currentIngredient = useSelector((store: any) => store.ingredientDetails.current);
+    const products = useSelector((store) => store.getProducts.products);
+    const modalVisible = useSelector((store) => store.ingredientDetails.visible);
+    const currentIngredient = useSelector((store) => store.ingredientDetails.current);
 
     const [current, setCurrent] = useState<string>('Булки');
 
@@ -64,7 +64,7 @@ const BurgerIngredients: FC = () => {
     function onOpenModal(event: React.MouseEvent<HTMLElement>): void {
 
         const currentTarget = event.currentTarget;
-        const targetProduct = products.find((product: IIngredientType) => product?._id === currentTarget?.getAttribute('id'))
+        const targetProduct = products?.find((product: IIngredientType) => product?._id === currentTarget?.getAttribute('id'))
 
         if (targetProduct) {
             navigate(`/ingredients/${targetProduct?._id}`)

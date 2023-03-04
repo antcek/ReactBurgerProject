@@ -31,8 +31,8 @@ import { FeedPage } from '../../pages/feed/feed';
     const dispatch = useDispatch();
     let accessToken = Cookies.get('accessToken');
 
-    const productsFailed = useSelector((store: any) => store.getProducts.productsFailed);
-    const detailsVisible = useSelector((store: any) => store.ingredientDetails.visible);
+    const productsFailed = useSelector((store) => store.getProducts.productsFailed);
+    const detailsVisible = useSelector((store) => store.ingredientDetails.visible);
 
     function onCloseModal(): void {
         localStorage.removeItem('modalData');
@@ -46,10 +46,10 @@ import { FeedPage } from '../../pages/feed/feed';
 
     useEffect(() => {
 
-        dispatch(getIngredients() as any);
+        dispatch(getIngredients());
 
         if (accessToken) {
-            dispatch(userGetData() as any);
+            dispatch(userGetData());
         };
 
     }, [accessToken, dispatch]);

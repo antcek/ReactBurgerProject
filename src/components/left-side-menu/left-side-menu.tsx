@@ -42,7 +42,7 @@ export const LeftSideMenu: FC = () => {
         <div
           className={styles.logout}
           onClick={() => {
-            dispatch(logout() as any);
+            dispatch(logout());
           }}
         >
           <p className={`text text_type_main-medium text_color_inactive ${styles.logout}`}>

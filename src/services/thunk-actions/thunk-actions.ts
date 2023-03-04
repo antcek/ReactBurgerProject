@@ -35,18 +35,7 @@ import {
 } from "../actions/user";
 import Cookies from 'js-cookie';
 import { AppDispatch, AppThunk } from "../types/redux-index";
-import { IIngredients, IIngredientType } from "../types/types";
-
-type TServerResponse<T> = {
-    success: boolean;
-} & T;
-
-type TPost = {
-    title: string;
-    description: string;
-}
-
-type TCreateResponse = TServerResponse<TPost>;
+import { IIngredients } from "../types/types";
 
 type TRecover = {
     success: boolean;
@@ -80,7 +69,6 @@ export const getIngredients: AppThunk = () => {
                     type: ALL_INGREDIENTS_SUCCESS,
                     products: ingredients.data
                 })
-
             }
             );
 
@@ -96,13 +84,13 @@ export const getIngredients: AppThunk = () => {
 
 
 export const sendOrder: AppThunk = (idConstructor) => {
-    return async function (dispatch) {
+    return async function (dispatch: AppDispatch | AppThunk) {
         dispatch({
             type: ORDER_REQUEST
         });
 
         try {
-            await fetchWithRefresh(`${NORMA_API}/orders`,
+            await fetchWithRefresh<TCreatePostResponse>(`${NORMA_API}/orders`,
                 {
                     method: 'POST',
                     headers: {
@@ -111,9 +99,9 @@ export const sendOrder: AppThunk = (idConstructor) => {
                     },
                     body: JSON.stringify(idConstructor),
                 })
-                .then((result: any) => dispatch({
+                .then((result) => dispatch({
                     type: ORDER_SUCCESS,
-                    orderNumber: result.order.number
+                    orderNumber: result.order?.number
                 }))
 
         } catch (err) {
@@ -133,7 +121,7 @@ export const sendOrder: AppThunk = (idConstructor) => {
 
 export const recoverPassword: AppThunk = (loginValue: string) => {
 
-    return async function (dispatch) {
+    return async function (dispatch: AppDispatch) {
 
         dispatch({
             type: RECOVER_REQUEST,
@@ -302,11 +290,6 @@ export const loginUser: AppThunk = (loginValue: string, passwordValue: string) =
     }
 }
 
-type TUpdateResponse = TServerResponse<{
-    refreshToken: string;
-    accessToken: string;
-}>
-
 export const updateToken = (): Promise<{ refreshToken: string, accessToken: string }> => {
 
     return fetch(`${API_REFRESH_TOKEN}/auth/token`,
@@ -343,12 +326,12 @@ export const updateToken = (): Promise<{ refreshToken: string, accessToken: stri
 
 }
 
-export const fetchWithRefresh = async <T>(url: string, options: any) => {
+export const fetchWithRefresh = async <T>(url: RequestInfo, options: RequestInit) => {
 
     try {
 
         const response = await fetch(url, options);
-        return await checkResponse(response);
+        return await checkResponse<T>(response);
 
     }
     catch (err) {
@@ -414,21 +397,34 @@ export const logout: AppThunk = () => {
                 type: LOGIN_EXIT_FAILED
             })
         }
-
-
     }
 }
+type TServerResponse<T> = {
+    success: boolean;
+    user?: IUser;
+    order?: {
+        number: number
+    }
+
+} & T;
+
+type TPost = {
+    title: string;
+    description: string;
+};
+
+type TCreatePostResponse = TServerResponse<TPost>;
 
 export const userGetData: AppThunk = () => {
 
-    return async function (dispatch) {
+    return async function (dispatch: AppDispatch | AppThunk) {
 
         dispatch({
             type: LOGIN_GET_DATA_REQUEST
         })
 
         try {
-            await fetchWithRefresh(`${API_GET_USER_INFO}/auth/user`,
+            await fetchWithRefresh<TCreatePostResponse>(`${API_GET_USER_INFO}/auth/user`,
                 {
                     method: 'GET',
                     headers: {
@@ -436,7 +432,7 @@ export const userGetData: AppThunk = () => {
                         'Authorization': 'Bearer ' + Cookies.get('accessToken')
                     },
 
-                }).then((result: any) => {
+                }).then((result) => {
 
                     dispatch({
                         type: LOGIN_GET_DATA,
@@ -459,14 +455,14 @@ export const userGetData: AppThunk = () => {
 
 export const updateUserInfo: AppThunk = (nameValue: string, loginValue: string, passwordValue: string) => {
 
-    return async function (dispatch) {
+    return async function (dispatch: AppDispatch | AppThunk) {
 
         dispatch({
             type: USER_UPDATE_INFO_REQUEST
         });
         try {
 
-            await fetchWithRefresh(`${API_UPDATE_USER_INFO}/auth/user`,
+            await fetchWithRefresh<TCreatePostResponse>(`${API_UPDATE_USER_INFO}/auth/user`,
                 {
                     method: 'PATCH',
                     headers: {
@@ -479,7 +475,7 @@ export const updateUserInfo: AppThunk = (nameValue: string, loginValue: string, 
                         password: passwordValue
                     })
 
-                }).then((result: any) => {
+                }).then((result) => {
 
                     dispatch({
                         type: USER_UPDATE_INFO,

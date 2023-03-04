@@ -6,7 +6,7 @@ import { FC } from 'react';
 
 const OrderDetails:FC = () => {
 
-    const { orderNumber, orderFailed, orderRequest } = useSelector((store: any) => store.orderNumber);
+    const { orderNumber, orderFailed, orderRequest } = useSelector((store) => store.orderNumber);
 
     return (
         orderFailed ? <>

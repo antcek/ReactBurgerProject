@@ -24,9 +24,8 @@ type TApplicationActions =
   TUserActions;
 
 export type AppDispatch = Dispatch<TApplicationActions>;
-export type AppThunk<ReturnType = void> = ActionCreator<
-  ThunkAction<ReturnType, Action, RootState, TApplicationActions>
->;
+
+export type AppThunk<ReturnType = void> = ActionCreator<ThunkAction<ReturnType, Action, RootState, TApplicationActions>>;
 
 
 

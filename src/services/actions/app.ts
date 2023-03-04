@@ -10,7 +10,7 @@ export interface IAllIngredientsRequestAction {
 
 export interface IAllIngredientsSuccessAction {
   readonly type: typeof ALL_INGREDIENTS_SUCCESS;
-  readonly products: IIngredientType[] | unknown;
+  readonly products: IIngredientType[] | undefined;
 }
 
 export interface IAllIngredientsFailedAction {

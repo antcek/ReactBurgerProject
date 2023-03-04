@@ -1,7 +1,7 @@
 import { useLocation } from "react-router";
 import { useEffect, useState } from 'react';
 import { CURRENT_INGREDIENT_DETAILS } from "../actions/ingredient-details";
-import { useDispatch } from "react-redux";
+import { useDispatch } from '../../services/types/hooks';
 import { IUseLocation } from "../types/types";
 
 export type TValues = {

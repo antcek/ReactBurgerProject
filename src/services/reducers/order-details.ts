@@ -18,11 +18,11 @@ export const orderNumberReducer = (state = initialState, action: TOrderActions):
     switch (action.type) {
 
         case ORDER_REQUEST: {
-        
+
             return {
                 ...state,
                 orderRequest: true,
-                orderFailed:false,
+                orderFailed: false,
             }
         }
 
@@ -32,7 +32,7 @@ export const orderNumberReducer = (state = initialState, action: TOrderActions):
                 ...state,
                 orderRequest: false,
                 orderNumber: action.orderNumber,
-                orderFailed:false,
+                orderFailed: false,
             }
         }
 

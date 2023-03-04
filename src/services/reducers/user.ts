@@ -22,7 +22,7 @@ interface IInitialState {
   logoutRequest: boolean;
   logoutFailed: boolean;
   dataRequest: boolean;
-  user: null | IUser | unknown;
+  user: null | IUser;
   updateDataRequest: boolean;
   updateDataFailed: boolean;
   dataFailed: boolean;

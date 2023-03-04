@@ -4,7 +4,7 @@ import styles from './forgot-password.module.css';
 import { EmailInput, Button, } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link } from 'react-router-dom';
 import { recoverPassword } from '../../services/thunk-actions/thunk-actions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/types/hooks';
 import { useNavigate } from 'react-router-dom';
 import { validateEmail } from '../../utils/constants';
 
@@ -13,8 +13,8 @@ const ForgotPasswordPage: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const passwordRecovered = useSelector((store: any) => store.recoverPassword.recoverSuccess);
-  const loggedUser = useSelector((store: any) => store.loginUser.userAuthorizied)
+  const passwordRecovered = useSelector((store) => store.recoverPassword.recoverSuccess);
+  const loggedUser = useSelector((store) => store.loginUser.userAuthorizied)
 
   const [loginValue, setLoginValue] = useState('');
 
@@ -37,7 +37,7 @@ const ForgotPasswordPage: FC = () => {
     event.preventDefault();
 
     if (validateEmail(loginValue)) {
-      dispatch(recoverPassword(loginValue) as any)
+      dispatch(recoverPassword(loginValue))
     }
   }
 

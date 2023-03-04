@@ -10,6 +10,8 @@ export interface IUser {
   };
   accessToken: string;
   refreshToken: string;
+  email: string | undefined;
+  name: string | undefined;
 }
 
 export interface IRegisterRequestAction {

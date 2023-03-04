@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './feed.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-
+import { useDispatch, useSelector } from '../../services/types/hooks';
 
 export const FeedPage: FC = () => {
 
