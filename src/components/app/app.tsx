@@ -66,11 +66,16 @@ const App: FC = () => {
                 <Router>
                     <Routes>
                         <Route path="/login" element={<LoginPage />} />
-                        <Route path="/register" element={<RegisterPage />} />
-                        <Route path='/forgot-password' element={<ForgotPasswordPage />} />
-                        <Route path='/reset-password' element={<ResetPasswordPage />} />
-                        <Route path='/profile' element={<ProtectedRouteElement element={<ProfilPage />} />} />
-                        <Route path='/profile/orders' element={<ProtectedRouteElement element={<OrderPage />} />} />
+                        <Route path="/register/" element={<RegisterPage />} />
+                        <Route path='/forgot-password/' element={<ForgotPasswordPage />} />
+                        <Route path='/reset-password/' element={<ResetPasswordPage />} />
+                        <Route path='/profile/' element={<ProtectedRouteElement element={<ProfilPage />} />} />
+                        <Route path='/profile/orders/' element={<ProtectedRouteElement element={<OrderPage />} />} >
+                            {detailsVisible && <Route path=':id' element={
+                                <Modal onCloseModal={onCloseModal}>
+                                    <CreatedOrderDetails />
+                                </Modal>} />}
+                        </Route>
                         <Route path='/profile/orders/:id' element={<ProtectedRouteElement element={<FeedDetailsPage />} />} />
                         <Route path="/" element={<> <AppHeader />
                             <main>
@@ -87,20 +92,19 @@ const App: FC = () => {
                                     <IngredientDetails />
                                 </Modal>} />}
                         </Route>
-                        <Route path='/feed' element={<FeedPage />} />
-                        {detailsVisible && <Route path='/feed/:id'element={
-                                <Modal onCloseModal={onCloseModal}>
-                                 <CreatedOrderDetails/>
-                                </Modal>} />}
-                        
-                        <Route path='/feed/:id' element={<FeedDetailsPage />} />
+                        <Route path='/feed/' element={<FeedPage />} >
 
+                            {detailsVisible && <Route path=':id' element={
+                                <Modal onCloseModal={onCloseModal}>
+                                    <CreatedOrderDetails />
+                                </Modal>} />}
+                        </Route>
+                        <Route path='/feed/:id' element={<FeedDetailsPage />} />
                         <Route path='*' element={<Error404Page />} />
-                        <Route path='/ingredients' element={<IngredientsPage />} >
+                        <Route path='/ingredients/' element={<IngredientsPage />} >
                             <Route path=':id'
                                 element={<IngredientDetails />} />
                         </Route>
-
                     </Routes>
                 </Router>
             }

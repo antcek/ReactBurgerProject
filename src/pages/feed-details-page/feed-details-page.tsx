@@ -5,6 +5,7 @@ import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burge
 import { useDispatch, useSelector } from '../../services/types/hooks';
 
 
+
 export const FeedDetailsPage: FC = () => {
 
   const today = new Date();
@@ -17,7 +18,7 @@ export const FeedDetailsPage: FC = () => {
     0,
   );
 
-
+  
 
   return (
     <>
@@ -81,6 +82,7 @@ export const FeedDetailsPage: FC = () => {
           </div>
         </div>
       </div>
+      
     </>
   )
 }

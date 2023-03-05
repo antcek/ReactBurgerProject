@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import styles from './created-order-details.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch, useSelector } from '../../services/types/hooks';
 
 export const CreatedOrderDetails: FC = () => {
 
@@ -14,7 +13,6 @@ export const CreatedOrderDetails: FC = () => {
     today.getMinutes() - 1,
     0,
   );
-
 
   return (
     <div className={styles.container}>

@@ -3,7 +3,7 @@ import {
     CURRENT_INGREDIENTS_DETAILS_MODAL,
     FEED_MODAl_DETAILS, 
     PERSONAL_MODAL_DETAILS,
-    TCurrentIngredientDetailsActions
+    TAllDetailsActions
 } from '../actions/ingredient-details';
 import { IIngredientType } from '../types/types';
 
@@ -20,7 +20,7 @@ const initialState: IInitialState = {
     visible: false,
 }
 
-export const ingredientDetailsReducer = (state = initialState, action: TCurrentIngredientDetailsActions): IInitialState => {
+export const ingredientDetailsReducer = (state = initialState, action: TAllDetailsActions): IInitialState => {
 
     switch (action.type) {
 

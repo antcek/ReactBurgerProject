@@ -2,17 +2,46 @@ import AppHeader from "../../components/app-header/app-header";
 import { LeftSideMenu } from "../../components/left-side-menu/left-side-menu";
 import styles from './orders.module.css';
 import { FC } from 'react';
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { FormattedDate, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { FEED_MODAl_DETAILS } from "../../services/actions/ingredient-details";
+import { IUseLocation } from "../../services/types/types";
+import { AnimatePresence,motion } from "framer-motion";
+import Modal from "../../components/modal/modal";
+import { CreatedOrderDetails } from "../../components/created-order-details/created-order-details";
+import { useSelector, useDispatch } from "../../services/types/hooks";
 
 
 export const OrderPage: FC = () => {
 
   const navigate = useNavigate();
   const today = new Date();
+  const dispatch = useDispatch();
+  const location: IUseLocation = useLocation();
+  const createdOrderVisible = useSelector((store) => store.ingredientDetails.visible);
+
+  function onCloseModal(): void {
+
+    dispatch({
+      type: FEED_MODAl_DETAILS,
+      product: null,
+      visible: false
+    });
+
+    if (location.pathname.startsWith('/profile/orders')) {
+      navigate('/profile/orders/', { replace: true })
+    }
+
+  };
+
   const handleClick = () => {
 
-    navigate(`/profile/orders/${'id'}`)
+    dispatch({
+      type: FEED_MODAl_DETAILS,
+      visible: true
+    });
+
+    navigate(`/profile/orders/${124}`);
   }
 
   return (
@@ -107,9 +136,21 @@ export const OrderPage: FC = () => {
               </div>
             </div>
           </div>
-          
         </div>
       </div>
+      <AnimatePresence>
+        {createdOrderVisible &&
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Modal onCloseModal={onCloseModal}>
+              {<CreatedOrderDetails />}
+            </Modal>
+          </motion.div>}
+      </AnimatePresence>
     </>
   )
 }

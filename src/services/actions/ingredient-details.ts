@@ -27,5 +27,5 @@ export interface IPersonalModalDetails {
 
 }
 
-export type TCurrentIngredientDetailsActions = | ICurrentIngDetailsAction 
+export type TAllDetailsActions = | ICurrentIngDetailsAction 
 | ICurrentIngsDetailsModalAction | IFeedModalDetails | IPersonalModalDetails;

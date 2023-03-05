@@ -1,10 +1,15 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './feed.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from '../../services/types/hooks';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FEED_MODAl_DETAILS } from '../../services/actions/ingredient-details';
+import { AnimatePresence, motion } from 'framer-motion';
+import { CreatedOrderDetails } from '../../components/created-order-details/created-order-details';
+import Modal from '../../components/modal/modal';
+import { IUseLocation } from '../../services/types/types';
+
 
 
 export const FeedPage: FC = () => {
@@ -12,14 +17,32 @@ export const FeedPage: FC = () => {
   const today = new Date();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const createdOrderVisible = useSelector((store) => store.ingredientDetails.visible);
+  const location: IUseLocation = useLocation();
+
+  function onCloseModal(): void {
+
+    dispatch({
+      type: FEED_MODAl_DETAILS,
+      product: null,
+      visible: false
+    });
+
+    if (location.pathname.startsWith('/feed')) {
+      navigate('/feed/', { replace: true })
+    }
+
+  };
 
   const handleClick = () => {
 
     dispatch({
       type: FEED_MODAl_DETAILS,
       visible: true
-    })
-    navigate(`/feed/${123}`);
+    });
+
+    navigate(`/feed/${123}`) // айдишник заказа
+
   }
 
 
@@ -155,6 +178,19 @@ export const FeedPage: FC = () => {
           <p className={`text text_type_digits-large ${styles.numbers}`}>138</p>
         </div>
       </div>
+      <AnimatePresence>
+        {createdOrderVisible &&
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Modal onCloseModal={onCloseModal}>
+              {<CreatedOrderDetails />}
+            </Modal>
+          </motion.div>}
+      </AnimatePresence>
     </>
   )
 }

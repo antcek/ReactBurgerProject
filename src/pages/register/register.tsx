@@ -28,7 +28,7 @@ export const RegisterPage: FC = () => {
 
   useEffect(() => {
     if (registeredUser && !loggedUser) {
-      navigate('/login', { replace: true });
+      navigate('/login/', { replace: true });
     }
 
     if (loggedUser) {

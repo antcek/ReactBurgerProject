@@ -31,7 +31,7 @@ export const LeftSideMenu: FC = () => {
         <NavLink
           to='/profile/orders'
           className={() =>
-            classNames(`${location.pathname === '/profile/orders' ? styles.elementActive
+            classNames(`${location.pathname.startsWith('/profile/orders') ? styles.elementActive
               : styles.elementDisactive}`,
             )}
         >
