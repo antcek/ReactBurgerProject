@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './feed.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -9,16 +9,30 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { CreatedOrderDetails } from '../../components/created-order-details/created-order-details';
 import Modal from '../../components/modal/modal';
 import { IUseLocation } from '../../services/types/types';
+import { WS_CONNECTION_CLOSED, WS_CONNECTION_START, WS_GET_MESSAGE } from '../../services/actions/web-socket';
+import { ALL_CREATED_ORDERS_URL } from '../../utils/api';
 
 
 
 export const FeedPage: FC = () => {
 
-  const today = new Date();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const createdOrderVisible = useSelector((store) => store.ingredientDetails.visible);
   const location: IUseLocation = useLocation();
+
+  useEffect(() => {
+    dispatch({ type: WS_CONNECTION_START })
+
+    return () => {
+      dispatch({ type: WS_CONNECTION_CLOSED })
+    }
+  }, [dispatch]);
+
+  const wsData = useSelector(store => store.wsReducer);
+  const ingredients = useSelector(store => store.getProducts);
+  console.log(ingredients.products)
+
 
   function onCloseModal(): void {
 
@@ -45,8 +59,6 @@ export const FeedPage: FC = () => {
 
   }
 
-
-
   return (
     <>
       <AppHeader />
@@ -58,89 +70,65 @@ export const FeedPage: FC = () => {
       <div className={styles.container}>
         <div className={styles.cardWrapper}>
 
-          <div onClick={handleClick} className={styles.order}>
-            <div className={styles.cardTop}>
-              <p className="text text_type_digits-default">#034535</p>
-              <FormattedDate
-                date={
-                  new Date(
-                    today.getFullYear(),
-                    today.getMonth(),
-                    today.getDate(),
-                    today.getHours(),
-                    today.getMinutes() - 1,
-                    0,
-                  )
-                }
-                className={styles.date}
-              />
-            </div>
-            <h1 className="text text_type_main-medium ">
-              Death Star Starship Main бургер
-            </h1 >
-            <div className={styles.cardBottom}>
-              <div className={styles.burger}>
-                {/* выводить массив через arr.reverse.map ...  */}
-                <svg className={styles.ingredient} width="64" height="64" viewBox="0 0 64 64" fill="#131316" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-                  <g clipPath="url(#clip0_16791_2983)">
-                    <rect width="64" height="64" rx="32" fill="#131316" />
-                    <mask id="mask0_16791_2983" maskUnits="userSpaceOnUse" x="-24" y="4" width="112" height="56">
-                      <rect x="-24" y="4" width="112" height="56" fill="black" />
-                    </mask>
-                    <g mask="url(#mask0_16791_2983)">
-                      <rect x="-24" y="4" width="112" height="56" fill="url(#pattern0)" />
-                    </g>
-                  </g>
-                  <rect x="1" y="1" width="62" height="62" rx="31" stroke="url(#paint0_linear_16791_2983)" strokeWidth="2" />
-                  <defs>
-                    <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
-                      <use xlinkHref="#image0_16791_2983" transform="scale(0.00150602 0.00301205)" />
-                    </pattern>
-                    <linearGradient id="paint0_linear_16791_2983" x1="1.44676e-06" y1="64" x2="76.7401" y2="25.1941" gradientUnits="userSpaceOnUse">
-                      <stop stopColor="#801AB3" />
-                      <stop offset="1" stopColor="#4C4CFF" />
-                    </linearGradient>
-                    <clipPath id="clip0_16791_2983">
-                      <rect width="64" height="64" rx="32" fill="white" />
-                    </clipPath>
-                  </defs>
-                  {/* вставлять нужную картинку! */}
-                  <image xlinkHref={`https://code.s3.yandex.net/react/code/bun-01.png`} width="112" height="56" x="0" y="0" />
-                </svg>
-                <svg className={styles.ingredient} width="64" height="64" viewBox="0 0 64 64" fill="#131316" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-                  <g clipPath="url(#clip0_16791_2983)">
-                    <rect width="64" height="64" rx="32" fill="#131316" />
-                    <mask id="mask0_16791_2983" maskUnits="userSpaceOnUse" x="-24" y="4" width="112" height="56">
-                      <rect x="-24" y="4" width="112" height="56" fill="black" />
-                    </mask>
-                    <g mask="url(#mask0_16791_2983)">
-                      <rect x="-24" y="4" width="112" height="56" fill="url(#pattern0)" />
-                    </g>
-                  </g>
-                  <rect x="1" y="1" width="62" height="62" rx="31" stroke="url(#paint0_linear_16791_2983)" strokeWidth="2" />
-                  <defs>
-                    <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
-                      <use xlinkHref="#image0_16791_2983" transform="scale(0.00150602 0.00301205)" />
-                    </pattern>
-                    <linearGradient id="paint0_linear_16791_2983" x1="1.44676e-06" y1="64" x2="76.7401" y2="25.1941" gradientUnits="userSpaceOnUse">
-                      <stop stopColor="#801AB3" />
-                      <stop offset="1" stopColor="#4C4CFF" />
-                    </linearGradient>
-                    <clipPath id="clip0_16791_2983">
-                      <rect width="64" height="64" rx="32" fill="white" />
-                    </clipPath>
-                  </defs>
-
-                </svg>
-                {/* для бургера с длинной >5 - отдельно выводить круг с opacity 0.6 с условным рендером */}
+          { wsData.messages[0]?.orders?.map((order, index,array) => {
+            
+            return (
+              <div onClick={handleClick} className={styles.order}>
+              <div className={styles.cardTop}>
+                <p className="text text_type_digits-default">{`#${order.number}`}</p>
+                <FormattedDate
+                  date={
+                    new Date(order.createdAt)
+                  }
+                  className={styles.date}
+                />
               </div>
-
-              <div className={styles.price}>
-                <p className="text text_type_digits-default">480</p>
-                <CurrencyIcon type="primary" />
+              <h1 className="text text_type_main-medium ">
+               {order.name}
+              </h1 >
+              <div className={styles.cardBottom}>
+                <div className={styles.burger}>
+              {/* выводить массив через arr.reverse.map ...  */}
+                  <svg className={styles.ingredient} width="64" height="64" viewBox="0 0 64 64" fill="#131316" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                    <g clipPath="url(#clip0_16791_2983)">
+                      <rect width="64" height="64" rx="32" fill="#131316" />
+                      <mask id="mask0_16791_2983" maskUnits="userSpaceOnUse" x="-24" y="4" width="112" height="56">
+                        <rect x="-24" y="4" width="112" height="56" fill="black" />
+                      </mask>
+                      <g mask="url(#mask0_16791_2983)">
+                        <rect x="-24" y="4" width="112" height="56" fill="url(#pattern0)" />
+                      </g>
+                    </g>
+                    <rect x="1" y="1" width="62" height="62" rx="31" stroke="url(#paint0_linear_16791_2983)" strokeWidth="2" />
+                    <defs>
+                      <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+                        <use xlinkHref="#image0_16791_2983" transform="scale(0.00150602 0.00301205)" />
+                      </pattern>
+                      <linearGradient id="paint0_linear_16791_2983" x1="1.44676e-06" y1="64" x2="76.7401" y2="25.1941" gradientUnits="userSpaceOnUse">
+                        <stop stopColor="#801AB3" />
+                        <stop offset="1" stopColor="#4C4CFF" />
+                      </linearGradient>
+                      <clipPath id="clip0_16791_2983">
+                        <rect width="64" height="64" rx="32" fill="white" />
+                      </clipPath>
+                    </defs>
+                    {/* вставлять нужную картинку! */}
+                    <image xlinkHref={`https://code.s3.yandex.net/react/code/bun-01.png`} width="112" height="56" x="0" y="0" />
+                  </svg>
+                 
+                  {/* для бургера с длинной >5 - отдельно выводить круг с opacity 0.6 с условным рендером */}
+                </div>
+  
+                <div className={styles.price}>
+                  <p className="text text_type_digits-default">480</p>
+                  <CurrencyIcon type="primary" />
+                </div>
               </div>
             </div>
-          </div>
+            )
+          })
+          
+        }
 
         </div>
         <div className={styles.details}>
@@ -171,11 +159,12 @@ export const FeedPage: FC = () => {
           <h2 className="text text_type_main-medium">
             Выполнено за все время:
           </h2 >
-          <p className={`text text_type_digits-large pb-15 ${styles.numbers}`}>28 752</p>
+          <p className={`text text_type_digits-large pb-15 ${styles.numbers}`}>{wsData?.messages[0]?.total}</p>
           <h2 className="text text_type_main-medium">
             Выполнено за сегодня:
           </h2 >
-          <p className={`text text_type_digits-large ${styles.numbers}`}>138</p>
+          <p className={`text text_type_digits-large ${styles.numbers}`}>
+            {wsData?.messages[0]?.totalToday}</p>
         </div>
       </div>
       <AnimatePresence>

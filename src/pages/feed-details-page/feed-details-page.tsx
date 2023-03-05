@@ -4,8 +4,6 @@ import styles from './feed-details.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from '../../services/types/hooks';
 
-
-
 export const FeedDetailsPage: FC = () => {
 
   const today = new Date();
@@ -18,7 +16,6 @@ export const FeedDetailsPage: FC = () => {
     0,
   );
 
-  
 
   return (
     <>

@@ -9,11 +9,12 @@ import { TResetActions } from '../actions/reset-password';
 import { TUserActions } from '../actions/user';
 import { ThunkAction } from 'redux-thunk';
 import { Action, ActionCreator, Dispatch } from 'redux';
+import { TWSActions } from '../actions/web-socket';
 
 
 export type RootState = ReturnType<typeof store.getState>;
 
-type TApplicationActions =
+export type TApplicationActions =
   | TAllIngredientsActions |
   TConstructorActions |
   TAllDetailsActions |
@@ -21,7 +22,8 @@ type TApplicationActions =
   TOrderActions |
   TRegisterActions |
   TResetActions |
-  TUserActions;
+  TUserActions |
+  TWSActions;
 
 export type AppDispatch = Dispatch<TApplicationActions>;
 
