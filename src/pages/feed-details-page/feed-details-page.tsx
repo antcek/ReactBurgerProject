@@ -17,6 +17,8 @@ export const FeedDetailsPage: FC = () => {
     0,
   );
 
+
+
   return (
     <>
       <AppHeader />

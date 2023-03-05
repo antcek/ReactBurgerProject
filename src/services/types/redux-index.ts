@@ -9,6 +9,7 @@ import { TResetActions } from '../actions/reset-password';
 import { TUserActions } from '../actions/user';
 import { ThunkAction } from 'redux-thunk';
 import { Action, ActionCreator, Dispatch } from 'redux';
+import { TAllModalDetails } from '../actions/feed-modal';
 
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -21,7 +22,7 @@ type TApplicationActions =
   TOrderActions |
   TRegisterActions |
   TResetActions |
-  TUserActions;
+  TUserActions | TAllModalDetails;
 
 export type AppDispatch = Dispatch<TApplicationActions>;
 

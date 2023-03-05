@@ -1,5 +1,12 @@
-import { CURRENT_INGREDIENT_DETAILS, CURRENT_INGREDIENTS_DETAILS_MODAL, TCurrentIngredientDetailsActions } from '../actions/ingredient-details';
+import {
+    CURRENT_INGREDIENT_DETAILS,
+    CURRENT_INGREDIENTS_DETAILS_MODAL,
+    FEED_MODAl_DETAILS, 
+    PERSONAL_MODAL_DETAILS,
+    TCurrentIngredientDetailsActions
+} from '../actions/ingredient-details';
 import { IIngredientType } from '../types/types';
+
 
 
 interface IInitialState {
@@ -27,6 +34,21 @@ export const ingredientDetailsReducer = (state = initialState, action: TCurrentI
         }
 
         case CURRENT_INGREDIENTS_DETAILS_MODAL: {
+            return {
+                ...state,
+                visible: action.visible
+            }
+        }
+
+        case FEED_MODAl_DETAILS: {
+
+            return {
+                ...state,
+                visible: action.visible,
+            }
+        }
+
+        case PERSONAL_MODAL_DETAILS: {
             return {
                 ...state,
                 visible: action.visible

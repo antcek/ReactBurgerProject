@@ -24,6 +24,7 @@ import Modal from '../modal/modal';
 import { OrderPage } from '../../pages/orders/orders';
 import { FeedPage } from '../../pages/feed/feed';
 import { FeedDetailsPage } from '../../pages/feed-details-page/feed-details-page';
+import { CreatedOrderDetails } from '../created-order-details/created-order-details';
 
 
 
@@ -86,9 +87,12 @@ const App: FC = () => {
                                     <IngredientDetails />
                                 </Modal>} />}
                         </Route>
-                        <Route path='/feed' element={<FeedPage />}>
-
-                        </Route>
+                        <Route path='/feed' element={<FeedPage />} />
+                        {detailsVisible && <Route path='/feed/:id'element={
+                                <Modal onCloseModal={onCloseModal}>
+                                 <CreatedOrderDetails/>
+                                </Modal>} />}
+                        
                         <Route path='/feed/:id' element={<FeedDetailsPage />} />
 
                         <Route path='*' element={<Error404Page />} />

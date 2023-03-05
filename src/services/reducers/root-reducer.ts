@@ -8,6 +8,7 @@ import {resetPasswordReducer} from './reset-password';
 import { registerUserReducer } from './register';
 import { loginUserReducer } from './user';
 
+
 export const rootReducer = combineReducers({
 
     getProducts: getProductsReducer,

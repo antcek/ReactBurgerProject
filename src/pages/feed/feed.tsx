@@ -4,19 +4,25 @@ import styles from './feed.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from '../../services/types/hooks';
 import { useNavigate } from 'react-router-dom';
+import { FEED_MODAl_DETAILS } from '../../services/actions/ingredient-details';
 
 
 export const FeedPage: FC = () => {
 
   const today = new Date();
-
   const navigate = useNavigate();
-  
+  const dispatch = useDispatch();
 
   const handleClick = () => {
 
-    navigate(`/feed/${123}`)
+    dispatch({
+      type: FEED_MODAl_DETAILS,
+      visible: true
+    })
+    navigate(`/feed/${123}`);
   }
+
+
 
   return (
     <>
@@ -28,7 +34,7 @@ export const FeedPage: FC = () => {
       </div>
       <div className={styles.container}>
         <div className={styles.cardWrapper}>
-         
+
           <div onClick={handleClick} className={styles.order}>
             <div className={styles.cardTop}>
               <p className="text text_type_digits-default">#034535</p>
@@ -112,7 +118,7 @@ export const FeedPage: FC = () => {
               </div>
             </div>
           </div>
-          
+
         </div>
         <div className={styles.details}>
           <div className={styles.currentOrders}>

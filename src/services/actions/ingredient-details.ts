@@ -2,6 +2,8 @@ import { IIngredientType } from "../types/types";
 
 export const CURRENT_INGREDIENT_DETAILS: 'CURRENT_INGREDIENT_DETAILS' = 'CURRENT_INGREDIENT_DETAILS';
 export const CURRENT_INGREDIENTS_DETAILS_MODAL: 'CURRENT_INGREDIENTS_DETAILS_MODAL' = 'CURRENT_INGREDIENTS_DETAILS_MODAL';
+export const FEED_MODAl_DETAILS: 'FEED_MODAl_DETAILS' = 'FEED_MODAl_DETAILS';
+export const PERSONAL_MODAL_DETAILS: 'PERSONAL_MODAL_DETAILS' = 'PERSONAL_MODAL_DETAILS';
 
 export interface ICurrentIngDetailsAction {
   readonly type: typeof CURRENT_INGREDIENT_DETAILS;
@@ -14,4 +16,16 @@ export interface ICurrentIngsDetailsModalAction {
   readonly visible: boolean;
 }
 
-export type TCurrentIngredientDetailsActions = | ICurrentIngDetailsAction | ICurrentIngsDetailsModalAction
+export interface IFeedModalDetails {
+  readonly type: typeof FEED_MODAl_DETAILS;
+  visible: boolean;
+}
+
+export interface IPersonalModalDetails {
+  readonly type: typeof PERSONAL_MODAL_DETAILS;
+  visible: boolean;
+
+}
+
+export type TCurrentIngredientDetailsActions = | ICurrentIngDetailsAction 
+| ICurrentIngsDetailsModalAction | IFeedModalDetails | IPersonalModalDetails;
