@@ -35,7 +35,7 @@ const Modal: FC<IModal> = ({ onCloseModal, children }) => {
         <motion.div
             initial={{ opacity: 0, }}
             animate={{ opacity: 1, }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.2 }}
             exit={{ opacity: 0 }}>
             <div className={styles.wrapper}>
                 <div onClick={onCloseModal} className={styles.close}>
