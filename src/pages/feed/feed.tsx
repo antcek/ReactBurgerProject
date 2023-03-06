@@ -32,7 +32,7 @@ export const FeedPage: FC = () => {
   let wsData = useSelector(store => store.wsReducer);
   const ingredients = useSelector(store => store.getProducts.products);
 
- // сравнить ingredients с wsData и записать резалт в новую переменную, от
+  // сравнить ingredients с wsData и записать резалт в новую переменную, от
 
   function onCloseModal(): void {
 
@@ -88,7 +88,10 @@ export const FeedPage: FC = () => {
                 </h1 >
                 <div className={styles.cardBottom}>
                   <div className={styles.burger}>
-                    {order.ingredients.map((ingredientCreated, ingredientIndex, arrOrder) => {
+                    <p className={`text text_type_digits-default ${styles.additionalQuantity}`}>
+                      {order.ingredients.length > 5 ? `+${order.ingredients.length - 5}`: null}
+                    </p>
+                    {order?.ingredients.map((ingredientCreated, ingredientIndex, arrOrder) => {
 
                       if (arrOrder.length < 6) {
 
@@ -118,24 +121,72 @@ export const FeedPage: FC = () => {
                             </defs>
                             {ingredients?.map((ingredientProduct, index) => {
 
-                              if (ingredientProduct._id === ingredientCreated)
+                              if (ingredientProduct._id === ingredientCreated) {
                                 return (<image key={index} xlinkHref={`${ingredientProduct.image}`}
                                   width="112" height="56" x="0" y="0" />)
+                              }
+
+                              else return null
                             })}
 
                           </svg>
                         )
                       }
 
+                      else return null
+
                     })}
                     {order.ingredients.map((ingredientCreated, productIndex, arr) => {
 
+                      const reversedIndex = arr.length - 1 - productIndex;
+
                       const classForLastIng = `${styles.lastIngredient}`
 
-                      if (arr.length >= 6 && productIndex !== 5 && productIndex < 6) {
+                      if (arr.length >= 6 && reversedIndex !== 5 && reversedIndex < 6) {
 
                         return (
-                          <svg key={productIndex} className={styles.ingredient} width="64" height="64" viewBox="0 0 64 64" fill="#131316" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                          <svg key={reversedIndex} className={styles.ingredient} width="64" height="64" viewBox="0 0 64 64" fill="#131316" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                            <g clipPath="url(#clip0_16791_2983)">
+                              <rect width="64" height="64" rx="32" fill="#131316" />
+                              <mask id="mask0_16791_2983" maskUnits="userSpaceOnUse" x="-24" y="4" width="112" height="56">
+                                <rect x="-24" y="4" width="112" height="56" fill="black" />
+                              </mask>
+                              <g mask="url(#mask0_16791_2983)">
+                                <rect x="-24" y="4" width="112" height="56" fill="url(#pattern0)" />
+                              </g>
+                            </g>
+                            <rect x="1" y="1" width="62" height="62" rx="31" stroke="url(#paint0_linear_16791_2983)" strokeWidth="2" />
+                            <defs>
+                              <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                <use xlinkHref="#image0_16791_2983" transform="scale(0.00150602 0.00301205)" />
+                              </pattern>
+                              <linearGradient id="paint0_linear_16791_2983" x1="1.44676e-06" y1="64" x2="76.7401" y2="25.1941" gradientUnits="userSpaceOnUse">
+                                <stop stopColor="#801AB3" />
+                                <stop offset="1" stopColor="#4C4CFF" />
+                              </linearGradient>
+                              <clipPath id="clip0_16791_2983">
+                                <rect width="64" height="64" rx="32" fill="white" />
+                              </clipPath>
+                            </defs>
+
+                            {ingredients?.map((ingredientProduct, index) => {
+
+                              if (ingredientProduct._id === ingredientCreated) {
+                                return (<image key={index} xlinkHref={`${ingredientProduct.image}`}
+                                  width="112" height="56" x="0" y="0" />)
+                              }
+
+                              else return null
+                            })
+                            }
+
+                          </svg>
+                        )
+                      }
+
+                      if (reversedIndex === 5) {
+                        return (
+                          <svg key={reversedIndex} className={`${styles.ingredient} ${classForLastIng}`} width="64" height="64" viewBox="0 0 64 64" fill="#131316" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
                             <g clipPath="url(#clip0_16791_2983)">
                               <rect width="64" height="64" rx="32" fill="#131316" />
                               <mask id="mask0_16791_2983" maskUnits="userSpaceOnUse" x="-24" y="4" width="112" height="56">
@@ -160,9 +211,14 @@ export const FeedPage: FC = () => {
                             </defs>
                             {ingredients?.map((ingredientProduct, index) => {
 
-                              if (ingredientProduct._id === ingredientCreated)
-                                return (<image key={index} xlinkHref={`${ingredientProduct.image}`}
-                                  width="112" height="56" x="0" y="0" />)
+                              if (ingredientProduct._id === ingredientCreated) {
+                                return (
+                                  <image key={index} xlinkHref={`${ingredientProduct.image}`}
+                                    width="112" height="56" x="0" y="0" />
+                                )
+                              }
+
+                              else return null;
                             })
                             }
 
@@ -170,42 +226,7 @@ export const FeedPage: FC = () => {
                         )
                       }
 
-                    else if (productIndex === 5 ) {
-                        return (
-                          <svg key={productIndex} className={`${styles.ingredient} ${classForLastIng}`} width="64" height="64" viewBox="0 0 64 64" fill="#131316" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-                            <g clipPath="url(#clip0_16791_2983)">
-                              <rect width="64" height="64" rx="32" fill="#131316" />
-                              <mask id="mask0_16791_2983" maskUnits="userSpaceOnUse" x="-24" y="4" width="112" height="56">
-                                <rect x="-24" y="4" width="112" height="56" fill="black" />
-                              </mask>
-                              <g mask="url(#mask0_16791_2983)">
-                                <rect x="-24" y="4" width="112" height="56" fill="url(#pattern0)" />
-                              </g>
-                            </g>
-                            <rect x="1" y="1" width="62" height="62" rx="31" stroke="url(#paint0_linear_16791_2983)" strokeWidth="2" />
-                            <defs>
-                              <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
-                                <use xlinkHref="#image0_16791_2983" transform="scale(0.00150602 0.00301205)" />
-                              </pattern>
-                              <linearGradient id="paint0_linear_16791_2983" x1="1.44676e-06" y1="64" x2="76.7401" y2="25.1941" gradientUnits="userSpaceOnUse">
-                                <stop stopColor="#801AB3" />
-                                <stop offset="1" stopColor="#4C4CFF" />
-                              </linearGradient>
-                              <clipPath id="clip0_16791_2983">
-                                <rect width="64" height="64" rx="32" fill="white" />
-                              </clipPath>
-                            </defs>
-                            {ingredients?.slice().map((ingredientProduct, index) => {
-
-                              if (ingredientProduct._id === ingredientCreated)
-                                return (<image key={index} xlinkHref={`${ingredientProduct.image}`}
-                                  width="112" height="56" x="0" y="0" />)
-                            })
-                            }
-
-                          </svg>
-                        )
-                      }
+                      else return null
 
                     })}
 

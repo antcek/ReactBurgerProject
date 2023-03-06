@@ -48,7 +48,7 @@
   flex-direction: column;
   max-width: 584px;
   margin-right: 8px;
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .heading {
@@ -90,6 +90,16 @@
   opacity: 0.6;
 }
 
+.additionalQuantity {
+  
+  z-index:31;
+  top: 32px;
+  right: 32px;
+  transform:translate(50%, -50%);
+  position:absolute;
+ 
+}
+
 .ingredient:not(:last-child) {
 
   margin-left: -15px;
@@ -105,7 +115,7 @@
   position: relative;
   display: flex;
   flex-direction: row-reverse;
-  overflow-x:hidden;
+  overflow-x: hidden;
 }
 
 .price {
