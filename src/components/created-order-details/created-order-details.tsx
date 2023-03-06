@@ -15,9 +15,9 @@ export const CreatedOrderDetails: FC = () => {
   });
 
   const orderPrice = useOrderFullPrice();
+  console.log(targetOrder)
 
 
-  console.log(useOrderFullPrice())
 
   return (
     <div className={styles.container}>

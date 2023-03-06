@@ -28,7 +28,7 @@ export const FeedPage: FC = () => {
     }
   }, [dispatch]);
 
-  let wsData = useSelector(store => store.wsReducer);
+  const wsData = useSelector(store => store.wsReducer);
   const ingredients = useSelector(store => store.getProducts.products);
 
   function onCloseModal(): void {
@@ -58,8 +58,6 @@ export const FeedPage: FC = () => {
 
     navigate(`/feed/${targetOrder?._id}/`);
   }
-
-  const orderPrice = useOrderFullPrice();
 
   return (
     <>
@@ -229,7 +227,17 @@ export const FeedPage: FC = () => {
 
                   </div>
                   <div className={styles.price}>
-                    <p className="text text_type_digits-default">{orderPrice}</p>
+
+                    <p className="text text_type_digits-default">
+                      {order.ingredients.map(item => {
+                      
+                        return ingredients?.find(ingredient => (ingredient._id === item))
+
+                      }).reduce((accumulator, item) => {
+
+                        return accumulator + (item?.type === 'bun' ?
+                          item!.price * 2 : item!.price)
+                      }, 0)}</p>
                     <CurrencyIcon type="primary" />
                   </div>
                 </div>

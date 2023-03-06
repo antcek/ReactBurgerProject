@@ -50,7 +50,7 @@ export function useForm(nameValue: TValues): TFormValues {
     return { values, handleChange, setValues };
 }
 
-export const useOrderFullPrice = () => {
+export const useOrderFullPrice = (): number | undefined => {
 
     const targetOrder = useSelector(store => store.ingredientDetails.targetOrder);
     const allIngredients = useSelector(store => store.getProducts.products);
@@ -58,11 +58,11 @@ export const useOrderFullPrice = () => {
     const orderAllData = targetOrder?.ingredients?.map(orderItem => {
 
         return allIngredients?.find(ingredient => (ingredient._id === orderItem))
-      });
-    
+    });
+
     return orderAllData?.reduce((accumulator, item) => {
-    
+
         return accumulator + (item?.type === 'bun' ? item!.price * 2 : item!.price)
-      }, 0);
-  
-  }
+    }, 0);
+
+}
