@@ -2,7 +2,7 @@ import { useLocation } from "react-router";
 import { useEffect, useState } from 'react';
 import { CURRENT_INGREDIENT_DETAILS } from "../actions/ingredient-details";
 import { useDispatch, useSelector } from '../../services/types/hooks';
-import { IUseLocation } from "../types/types";
+import { IOrderData, IUseLocation } from "../types/types";
 
 
 export type TValues = {
@@ -50,17 +50,15 @@ export function useForm(nameValue: TValues): TFormValues {
     return { values, handleChange, setValues };
 }
 
-export const useOrderFullPrice = (): number | undefined => {
+export const useOrderFullPrice = (targetOrder: IOrderData | undefined | null): number | undefined => {
 
-    const targetOrder = useSelector(store => store.ingredientDetails.targetOrder);
     const allIngredients = useSelector(store => store.getProducts.products);
-
     const orderAllData = targetOrder?.ingredients?.map(orderItem => {
 
         return allIngredients?.find(ingredient => (ingredient._id === orderItem))
     });
 
-    return orderAllData?.reduce((accumulator, item) => {
+    return orderAllData?.reduce((accumulator, item): number => {
 
         return accumulator + (item?.type === 'bun' ? item!.price * 2 : item!.price)
     }, 0);

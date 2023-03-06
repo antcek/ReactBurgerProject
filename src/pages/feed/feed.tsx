@@ -56,7 +56,7 @@ export const FeedPage: FC = () => {
       targetOrder: targetOrder
     });
 
-    navigate(`/feed/${targetOrder?._id}/`);
+    navigate(`/feed/${targetOrder?._id}`);
   }
 
   return (

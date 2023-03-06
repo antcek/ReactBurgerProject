@@ -9,15 +9,13 @@ export const CreatedOrderDetails: FC = () => {
 
   const targetOrder = useSelector(store => store.ingredientDetails.targetOrder);
   const allIngredients = useSelector(store => store.getProducts.products);
+
   const orderAllData = targetOrder?.ingredients?.map(orderItem => {
 
     return allIngredients?.find(ingredient => (ingredient._id === orderItem))
   });
 
-  const orderPrice = useOrderFullPrice();
-  console.log(targetOrder)
-
-
+  const orderPrice = useOrderFullPrice(targetOrder);
 
   return (
     <div className={styles.container}>
