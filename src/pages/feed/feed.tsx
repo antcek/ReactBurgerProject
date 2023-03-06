@@ -29,10 +29,10 @@ export const FeedPage: FC = () => {
     }
   }, [dispatch]);
 
-  const wsData = useSelector(store => store.wsReducer);
-  const ingredients = useSelector(store => store.getProducts);
-  console.log(ingredients.products)
+  let wsData = useSelector(store => store.wsReducer);
+  const ingredients = useSelector(store => store.getProducts.products);
 
+ // сравнить ingredients с wsData и записать резалт в новую переменную, от
 
   function onCloseModal(): void {
 
@@ -70,65 +70,155 @@ export const FeedPage: FC = () => {
       <div className={styles.container}>
         <div className={styles.cardWrapper}>
 
-          { wsData.messages[0]?.orders?.map((order, index,array) => {
-            
+          {wsData.messages[0]?.orders?.map((order, createdOrderIndex) => {
+
             return (
-              <div onClick={handleClick} className={styles.order}>
-              <div className={styles.cardTop}>
-                <p className="text text_type_digits-default">{`#${order.number}`}</p>
-                <FormattedDate
-                  date={
-                    new Date(order.createdAt)
-                  }
-                  className={styles.date}
-                />
-              </div>
-              <h1 className="text text_type_main-medium ">
-               {order.name}
-              </h1 >
-              <div className={styles.cardBottom}>
-                <div className={styles.burger}>
-              {/* выводить массив через arr.reverse.map ...  */}
-                  <svg className={styles.ingredient} width="64" height="64" viewBox="0 0 64 64" fill="#131316" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-                    <g clipPath="url(#clip0_16791_2983)">
-                      <rect width="64" height="64" rx="32" fill="#131316" />
-                      <mask id="mask0_16791_2983" maskUnits="userSpaceOnUse" x="-24" y="4" width="112" height="56">
-                        <rect x="-24" y="4" width="112" height="56" fill="black" />
-                      </mask>
-                      <g mask="url(#mask0_16791_2983)">
-                        <rect x="-24" y="4" width="112" height="56" fill="url(#pattern0)" />
-                      </g>
-                    </g>
-                    <rect x="1" y="1" width="62" height="62" rx="31" stroke="url(#paint0_linear_16791_2983)" strokeWidth="2" />
-                    <defs>
-                      <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
-                        <use xlinkHref="#image0_16791_2983" transform="scale(0.00150602 0.00301205)" />
-                      </pattern>
-                      <linearGradient id="paint0_linear_16791_2983" x1="1.44676e-06" y1="64" x2="76.7401" y2="25.1941" gradientUnits="userSpaceOnUse">
-                        <stop stopColor="#801AB3" />
-                        <stop offset="1" stopColor="#4C4CFF" />
-                      </linearGradient>
-                      <clipPath id="clip0_16791_2983">
-                        <rect width="64" height="64" rx="32" fill="white" />
-                      </clipPath>
-                    </defs>
-                    {/* вставлять нужную картинку! */}
-                    <image xlinkHref={`https://code.s3.yandex.net/react/code/bun-01.png`} width="112" height="56" x="0" y="0" />
-                  </svg>
-                 
-                  {/* для бургера с длинной >5 - отдельно выводить круг с opacity 0.6 с условным рендером */}
+              <div key={createdOrderIndex} onClick={handleClick} className={styles.order}>
+                <div className={styles.cardTop}>
+                  <p className="text text_type_digits-default">{`#${order.number}`}</p>
+                  <FormattedDate
+                    date={
+                      new Date(order.createdAt)
+                    }
+                    className={styles.date}
+                  />
                 </div>
-  
-                <div className={styles.price}>
-                  <p className="text text_type_digits-default">480</p>
-                  <CurrencyIcon type="primary" />
+                <h1 className="text text_type_main-medium ">
+                  {order.name}
+                </h1 >
+                <div className={styles.cardBottom}>
+                  <div className={styles.burger}>
+                    {order.ingredients.map((ingredientCreated, ingredientIndex, arrOrder) => {
+
+                      if (arrOrder.length < 6) {
+
+                        return (
+                          <svg key={ingredientIndex} className={styles.ingredient} width="64" height="64" viewBox="0 0 64 64" fill="#131316" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                            <g clipPath="url(#clip0_16791_2983)">
+                              <rect width="64" height="64" rx="32" fill="#131316" />
+                              <mask id="mask0_16791_2983" maskUnits="userSpaceOnUse" x="-24" y="4" width="112" height="56">
+                                <rect x="-24" y="4" width="112" height="56" fill="black" />
+                              </mask>
+                              <g mask="url(#mask0_16791_2983)">
+                                <rect x="-24" y="4" width="112" height="56" fill="url(#pattern0)" />
+                              </g>
+                            </g>
+                            <rect x="1" y="1" width="62" height="62" rx="31" stroke="url(#paint0_linear_16791_2983)" strokeWidth="2" />
+                            <defs>
+                              <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                <use xlinkHref="#image0_16791_2983" transform="scale(0.00150602 0.00301205)" />
+                              </pattern>
+                              <linearGradient id="paint0_linear_16791_2983" x1="1.44676e-06" y1="64" x2="76.7401" y2="25.1941" gradientUnits="userSpaceOnUse">
+                                <stop stopColor="#801AB3" />
+                                <stop offset="1" stopColor="#4C4CFF" />
+                              </linearGradient>
+                              <clipPath id="clip0_16791_2983">
+                                <rect width="64" height="64" rx="32" fill="white" />
+                              </clipPath>
+                            </defs>
+                            {ingredients?.map((ingredientProduct, index) => {
+
+                              if (ingredientProduct._id === ingredientCreated)
+                                return (<image key={index} xlinkHref={`${ingredientProduct.image}`}
+                                  width="112" height="56" x="0" y="0" />)
+                            })}
+
+                          </svg>
+                        )
+                      }
+
+                    })}
+                    {order.ingredients.map((ingredientCreated, productIndex, arr) => {
+
+                      const classForLastIng = `${styles.lastIngredient}`
+
+                      if (arr.length >= 6 && productIndex !== 5 && productIndex < 6) {
+
+                        return (
+                          <svg key={productIndex} className={styles.ingredient} width="64" height="64" viewBox="0 0 64 64" fill="#131316" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                            <g clipPath="url(#clip0_16791_2983)">
+                              <rect width="64" height="64" rx="32" fill="#131316" />
+                              <mask id="mask0_16791_2983" maskUnits="userSpaceOnUse" x="-24" y="4" width="112" height="56">
+                                <rect x="-24" y="4" width="112" height="56" fill="black" />
+                              </mask>
+                              <g mask="url(#mask0_16791_2983)">
+                                <rect x="-24" y="4" width="112" height="56" fill="url(#pattern0)" />
+                              </g>
+                            </g>
+                            <rect x="1" y="1" width="62" height="62" rx="31" stroke="url(#paint0_linear_16791_2983)" strokeWidth="2" />
+                            <defs>
+                              <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                <use xlinkHref="#image0_16791_2983" transform="scale(0.00150602 0.00301205)" />
+                              </pattern>
+                              <linearGradient id="paint0_linear_16791_2983" x1="1.44676e-06" y1="64" x2="76.7401" y2="25.1941" gradientUnits="userSpaceOnUse">
+                                <stop stopColor="#801AB3" />
+                                <stop offset="1" stopColor="#4C4CFF" />
+                              </linearGradient>
+                              <clipPath id="clip0_16791_2983">
+                                <rect width="64" height="64" rx="32" fill="white" />
+                              </clipPath>
+                            </defs>
+                            {ingredients?.map((ingredientProduct, index) => {
+
+                              if (ingredientProduct._id === ingredientCreated)
+                                return (<image key={index} xlinkHref={`${ingredientProduct.image}`}
+                                  width="112" height="56" x="0" y="0" />)
+                            })
+                            }
+
+                          </svg>
+                        )
+                      }
+
+                    else if (productIndex === 5 ) {
+                        return (
+                          <svg key={productIndex} className={`${styles.ingredient} ${classForLastIng}`} width="64" height="64" viewBox="0 0 64 64" fill="#131316" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                            <g clipPath="url(#clip0_16791_2983)">
+                              <rect width="64" height="64" rx="32" fill="#131316" />
+                              <mask id="mask0_16791_2983" maskUnits="userSpaceOnUse" x="-24" y="4" width="112" height="56">
+                                <rect x="-24" y="4" width="112" height="56" fill="black" />
+                              </mask>
+                              <g mask="url(#mask0_16791_2983)">
+                                <rect x="-24" y="4" width="112" height="56" fill="url(#pattern0)" />
+                              </g>
+                            </g>
+                            <rect x="1" y="1" width="62" height="62" rx="31" stroke="url(#paint0_linear_16791_2983)" strokeWidth="2" />
+                            <defs>
+                              <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+                                <use xlinkHref="#image0_16791_2983" transform="scale(0.00150602 0.00301205)" />
+                              </pattern>
+                              <linearGradient id="paint0_linear_16791_2983" x1="1.44676e-06" y1="64" x2="76.7401" y2="25.1941" gradientUnits="userSpaceOnUse">
+                                <stop stopColor="#801AB3" />
+                                <stop offset="1" stopColor="#4C4CFF" />
+                              </linearGradient>
+                              <clipPath id="clip0_16791_2983">
+                                <rect width="64" height="64" rx="32" fill="white" />
+                              </clipPath>
+                            </defs>
+                            {ingredients?.slice().map((ingredientProduct, index) => {
+
+                              if (ingredientProduct._id === ingredientCreated)
+                                return (<image key={index} xlinkHref={`${ingredientProduct.image}`}
+                                  width="112" height="56" x="0" y="0" />)
+                            })
+                            }
+
+                          </svg>
+                        )
+                      }
+
+                    })}
+
+                  </div>
+                  <div className={styles.price}>
+                    <p className="text text_type_digits-default">480</p>
+                    <CurrencyIcon type="primary" />
+                  </div>
                 </div>
               </div>
-            </div>
             )
           })
-          
-        }
+          }
 
         </div>
         <div className={styles.details}>

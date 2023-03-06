@@ -82,14 +82,17 @@
 .ingredient {
   position: relative;
   display: flex;
-
-  z-index: 1000;
+  z-index: 30;
 
 }
 
-.ingredient:nth-of-type(n) {
+.lastIngredient {
+  opacity: 0.6;
+}
 
-  margin-right: -15px;
+.ingredient:not(:last-child) {
+
+  margin-left: -15px;
 
 }
 
@@ -102,6 +105,7 @@
   position: relative;
   display: flex;
   flex-direction: row-reverse;
+  overflow-x:hidden;
 }
 
 .price {

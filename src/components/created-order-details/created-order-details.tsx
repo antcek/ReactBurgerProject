@@ -60,7 +60,7 @@ export const CreatedOrderDetails: FC = () => {
               Флюоресцентная булка R2-D3
             </p>
             <div className={styles.price}>
-              <p className="text text_type_digits-default ">2 x 20</p>
+              <p className="text text_type_digits-default "> 20</p>
               <CurrencyIcon type="primary" />
             </div>
           </div>
