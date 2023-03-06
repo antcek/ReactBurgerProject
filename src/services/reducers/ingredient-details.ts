@@ -5,19 +5,21 @@ import {
     PERSONAL_MODAL_DETAILS,
     TAllDetailsActions
 } from '../actions/ingredient-details';
-import { IIngredientType } from '../types/types';
+import { IIngredientType, IOrderData } from '../types/types';
 
 
 
 interface IInitialState {
     current: IIngredientType | null;
     visible: boolean;
+    targetOrder: IOrderData | null;
 }
 
 const initialState: IInitialState = {
 
     current: null,
     visible: false,
+    targetOrder: null,
 }
 
 export const ingredientDetailsReducer = (state = initialState, action: TAllDetailsActions): IInitialState => {
@@ -45,6 +47,8 @@ export const ingredientDetailsReducer = (state = initialState, action: TAllDetai
             return {
                 ...state,
                 visible: action.visible,
+                targetOrder: action.targetOrder,
+
             }
         }
 

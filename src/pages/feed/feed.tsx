@@ -9,9 +9,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { CreatedOrderDetails } from '../../components/created-order-details/created-order-details';
 import Modal from '../../components/modal/modal';
 import { IUseLocation } from '../../services/types/types';
-import { WS_CONNECTION_CLOSED, WS_CONNECTION_START, WS_GET_MESSAGE } from '../../services/actions/web-socket';
-import { ALL_CREATED_ORDERS_URL } from '../../utils/api';
-
+import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from '../../services/actions/web-socket';
+import { useOrderFullPrice } from '../../services/custom-hooks/custom-hooks';
 
 
 export const FeedPage: FC = () => {
@@ -32,8 +31,6 @@ export const FeedPage: FC = () => {
   let wsData = useSelector(store => store.wsReducer);
   const ingredients = useSelector(store => store.getProducts.products);
 
-  // сравнить ingredients с wsData и записать резалт в новую переменную, от
-
   function onCloseModal(): void {
 
     dispatch({
@@ -48,16 +45,21 @@ export const FeedPage: FC = () => {
 
   };
 
-  const handleClick = () => {
+  const openModal = (event: React.MouseEvent<HTMLDivElement>): void => {
+
+    const currentTargetNumber = Number(event.currentTarget.textContent?.slice(1, 6));
+    const targetOrder = wsData?.messages[wsData.messages.length - 1].orders?.find(order => order.number === currentTargetNumber);
 
     dispatch({
       type: FEED_MODAl_DETAILS,
-      visible: true
+      visible: true,
+      targetOrder: targetOrder
     });
 
-    navigate(`/feed/${123}`) // айдишник заказа
-
+    navigate(`/feed/${targetOrder?._id}/`);
   }
+
+  const orderPrice = useOrderFullPrice();
 
   return (
     <>
@@ -70,10 +72,10 @@ export const FeedPage: FC = () => {
       <div className={styles.container}>
         <div className={styles.cardWrapper}>
 
-          {wsData.messages[0]?.orders?.map((order, createdOrderIndex) => {
+          {wsData?.messages[wsData.messages.length - 1]?.orders?.map((order, createdOrderIndex) => {
 
             return (
-              <div key={createdOrderIndex} onClick={handleClick} className={styles.order}>
+              <div key={createdOrderIndex} onClick={openModal} className={styles.order}>
                 <div className={styles.cardTop}>
                   <p className="text text_type_digits-default">{`#${order.number}`}</p>
                   <FormattedDate
@@ -89,7 +91,7 @@ export const FeedPage: FC = () => {
                 <div className={styles.cardBottom}>
                   <div className={styles.burger}>
                     <p className={`text text_type_digits-default ${styles.additionalQuantity}`}>
-                      {order.ingredients.length > 5 ? `+${order.ingredients.length - 5}`: null}
+                      {order.ingredients.length > 5 ? `+${order.ingredients.length - 5}` : null}
                     </p>
                     {order?.ingredients.map((ingredientCreated, ingredientIndex, arrOrder) => {
 
@@ -125,21 +127,18 @@ export const FeedPage: FC = () => {
                                 return (<image key={index} xlinkHref={`${ingredientProduct.image}`}
                                   width="112" height="56" x="0" y="0" />)
                               }
-
                               else return null
                             })}
 
                           </svg>
                         )
                       }
-
                       else return null
 
                     })}
                     {order.ingredients.map((ingredientCreated, productIndex, arr) => {
 
                       const reversedIndex = arr.length - 1 - productIndex;
-
                       const classForLastIng = `${styles.lastIngredient}`
 
                       if (arr.length >= 6 && reversedIndex !== 5 && reversedIndex < 6) {
@@ -217,7 +216,6 @@ export const FeedPage: FC = () => {
                                     width="112" height="56" x="0" y="0" />
                                 )
                               }
-
                               else return null;
                             })
                             }
@@ -225,14 +223,13 @@ export const FeedPage: FC = () => {
                           </svg>
                         )
                       }
-
                       else return null
 
                     })}
 
                   </div>
                   <div className={styles.price}>
-                    <p className="text text_type_digits-default">480</p>
+                    <p className="text text_type_digits-default">{orderPrice}</p>
                     <CurrencyIcon type="primary" />
                   </div>
                 </div>
@@ -249,11 +246,15 @@ export const FeedPage: FC = () => {
                 Готовы:
               </h2 >
               <div className={styles.readyOrders}>
-                <p className="text text_type_digits-default ">034533</p>
-                <p className="text text_type_digits-default ">034532</p>
-                <p className="text text_type_digits-default ">034537</p>
-                <p className="text text_type_digits-default ">034530</p>
-                <p className="text text_type_digits-default ">034536</p>
+                {wsData?.messages[wsData.messages.length - 1]?.orders?.slice(0, 10).map((order, index) => {
+
+                  return (
+                    <p key={index} className="text text_type_digits-default ">
+                      {order.status === 'done' ? order.number : null}
+                    </p>
+                  )
+                })}
+
               </div>
             </div>
             <div className={styles.currentTop}>
@@ -261,21 +262,29 @@ export const FeedPage: FC = () => {
                 В работе:
               </h2 >
               <div className={styles.upcomingOrders}>
-                <p className="text text_type_digits-default ">034538</p>
-                <p className="text text_type_digits-default ">034541</p>
-                <p className="text text_type_digits-default ">034542</p>
+                {wsData?.messages[wsData.messages.length - 1]?.orders?.slice(0, 10).map((order, index) => {
+
+                  return (
+                    <p key={index} className="text text_type_digits-default ">
+                      {order.status === 'created' ? order.number :
+                        order.status === 'pending' ? order.number : null
+                      }
+                    </p>
+                  )
+                })}
               </div>
             </div>
           </div>
           <h2 className="text text_type_main-medium">
             Выполнено за все время:
           </h2 >
-          <p className={`text text_type_digits-large pb-15 ${styles.numbers}`}>{wsData?.messages[0]?.total}</p>
+          <p className={`text text_type_digits-large pb-15 ${styles.numbers}`}>
+            {wsData?.messages[wsData.messages.length - 1]?.total}</p>
           <h2 className="text text_type_main-medium">
             Выполнено за сегодня:
           </h2 >
           <p className={`text text_type_digits-large ${styles.numbers}`}>
-            {wsData?.messages[0]?.totalToday}</p>
+            {wsData?.messages[wsData.messages.length - 1]?.totalToday}</p>
         </div>
       </div>
       <AnimatePresence>
@@ -284,7 +293,7 @@ export const FeedPage: FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
           >
             <Modal onCloseModal={onCloseModal}>
               {<CreatedOrderDetails />}

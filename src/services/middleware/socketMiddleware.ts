@@ -27,6 +27,7 @@ export const socketMiddleware = (wsUrl: string): Middleware => {
         socket.onmessage = (event) => {
 
           const { data } = event;
+         
           
           dispatch({
             type: 'WS_GET_MESSAGE',

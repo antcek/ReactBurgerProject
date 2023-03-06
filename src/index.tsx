@@ -14,7 +14,7 @@ import { ALL_CREATED_ORDERS_URL, PERSONAL_ORDERS_URL } from './utils/api';
 export const store = createStore(rootReducer,
   composeWithDevTools(applyMiddleware(thunk,
     socketMiddleware(ALL_CREATED_ORDERS_URL),
-    socketMiddleware(PERSONAL_ORDERS_URL)
+    // socketMiddleware(PERSONAL_ORDERS_URL)
   )
   ));
 // applyMiddleware через запятую socketMiddleware(url...)

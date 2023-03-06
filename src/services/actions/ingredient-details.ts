@@ -1,4 +1,4 @@
-import { IIngredientType } from "../types/types";
+import { IIngredientType, IOrderData } from "../types/types";
 
 export const CURRENT_INGREDIENT_DETAILS: 'CURRENT_INGREDIENT_DETAILS' = 'CURRENT_INGREDIENT_DETAILS';
 export const CURRENT_INGREDIENTS_DETAILS_MODAL: 'CURRENT_INGREDIENTS_DETAILS_MODAL' = 'CURRENT_INGREDIENTS_DETAILS_MODAL';
@@ -19,6 +19,7 @@ export interface ICurrentIngsDetailsModalAction {
 export interface IFeedModalDetails {
   readonly type: typeof FEED_MODAl_DETAILS;
   visible: boolean;
+  targetOrder: IOrderData;
 }
 
 export interface IPersonalModalDetails {

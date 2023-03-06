@@ -49,6 +49,13 @@
   max-width: 584px;
   margin-right: 8px;
   cursor: pointer;
+  transition:transform 300ms ease-in-out;
+}
+
+.order:hover {
+  transform: scale(95%);
+  transition:transform 250ms ease-in-out;
+
 }
 
 .heading {
@@ -139,12 +146,14 @@
   flex-direction: column;
   gap: 8px;
   padding-bottom: 60px;
+  
 
 }
 
 .readyOrders {
   composes: upcomingOrders;
   color: #00CCCC;
+ 
 }
 
 .numbers {

@@ -33,6 +33,16 @@ export interface IIngredients {
   data?: Array<IIngredientType>;
 }
 
+export interface IOrderData {
+  ingredients: string[];
+  _id: string;
+  status: string;
+  number: number;
+  name:string;
+  createdAt: string;
+  updateAt: string;
+}
+
 
 
 
