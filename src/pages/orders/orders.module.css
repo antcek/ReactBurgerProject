@@ -17,6 +17,10 @@
 
 }
 
+.statusColor {
+  color: #00CCCC;
+}
+
 .cardWrapper::-webkit-scrollbar {
   background: #2F2F37;
   width: 8px;

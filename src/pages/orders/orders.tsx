@@ -86,7 +86,7 @@ export const OrderPage: FC = () => {
                 <h1 className="text text_type_main-medium pb-2 ">
                   {order.name}
                 </h1 >
-                <p className="text text_type_main-default pb-6">
+                <p className={`text text_type_main-default pb-6 ${order.status === 'done' ? styles.statusColor : null}`}>
                   {order.status === 'done' ? 'Выполнен' : 'Готовится'}
                 </p>
                 <div className={styles.cardBottom}>
