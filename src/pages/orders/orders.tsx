@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from "react-router";
 import { FormattedDate, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { FEED_MODAl_DETAILS } from "../../services/actions/ingredient-details";
 import { IUseLocation } from "../../services/types/types";
-import { AnimatePresence,motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Modal from "../../components/modal/modal";
 import { CreatedOrderDetails } from "../../components/created-order-details/created-order-details";
 import { useSelector, useDispatch } from "../../services/types/hooks";
@@ -23,6 +23,7 @@ export const OrderPage: FC = () => {
 
   const wsData = useSelector(store => store.wsReducer);
   const ingredients = useSelector(store => store.getProducts.products);
+  // бэк возвращает не 50, а 340+ заказов, поэтому обрезаю до последних 50 
   const userOrders = wsData.userOrders[0]?.orders?.slice(wsData.userOrders[0].orders.length - 50);
 
   useEffect(() => {
@@ -48,10 +49,10 @@ export const OrderPage: FC = () => {
   };
 
   const openModal = (event: React.MouseEvent<HTMLDivElement>) => {
-    
+
     const currentTargetNumber = Number(event.currentTarget.textContent?.slice(1, 6));
     const targetOrder = userOrders.find(order => order.number === currentTargetNumber);
-    
+
     dispatch({
       type: FEED_MODAl_DETAILS,
       visible: true,
@@ -86,8 +87,8 @@ export const OrderPage: FC = () => {
                   {order.name}
                 </h1 >
                 <p className="text text_type_main-default pb-6">
-                {order.status === 'done' ? 'Выполнен' : 'Готовится'}
-            </p>
+                  {order.status === 'done' ? 'Выполнен' : 'Готовится'}
+                </p>
                 <div className={styles.cardBottom}>
                   <div className={styles.burger}>
                     <p className={`text text_type_digits-default ${styles.additionalQuantity}`}>
@@ -232,7 +233,7 @@ export const OrderPage: FC = () => {
 
                     <p className="text text_type_digits-default">
                       {order.ingredients.map(item => {
-                      
+
                         return ingredients?.find(ingredient => (ingredient._id === item))
 
                       }).reduce((accumulator, item) => {
