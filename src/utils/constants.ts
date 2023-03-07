@@ -1,3 +1,15 @@
+import {
+  WS_CONNECTION_START,
+  WS_CONNECTION_SUCCESS,
+  WS_GET_MESSAGE,
+  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_ERROR,
+  WS_USER_CONNECTION_START,
+  WS_USER_CONNECTION_ERROR,
+  WS_USER_CONNECTION_CLOSED,
+  WS_USER_GET_MESSAGE,
+  WS_USER_CONNECTION_SUCCESS
+} from "../services/actions/web-socket";
 
 
 export const validateEmail = (email: string): boolean => {
@@ -6,3 +18,19 @@ export const validateEmail = (email: string): boolean => {
 }
 
 export const SCROLL_DURATION = 400;
+
+export const wsAllActions = {
+  wsInit: WS_CONNECTION_START,
+  onOpen: WS_CONNECTION_SUCCESS,
+  onClose: WS_CONNECTION_CLOSED,
+  onError: WS_CONNECTION_ERROR,
+  onMessage: WS_GET_MESSAGE
+}
+
+export const wsUserActions  = {
+  wsInit: WS_USER_CONNECTION_START,
+  onOpen: WS_USER_CONNECTION_SUCCESS,
+  onClose: WS_USER_CONNECTION_CLOSED,
+  onError: WS_USER_CONNECTION_ERROR,
+  onMessage: WS_USER_GET_MESSAGE
+}

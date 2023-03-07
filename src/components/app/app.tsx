@@ -70,7 +70,7 @@ const App: FC = () => {
                         <Route path='/forgot-password/' element={<ForgotPasswordPage />} />
                         <Route path='/reset-password/' element={<ResetPasswordPage />} />
                         <Route path='/profile/' element={<ProtectedRouteElement element={<ProfilPage />} />} />
-                        <Route path='/profile/orders/' element={<ProtectedRouteElement element={<OrderPage />} />} >
+                        <Route path='/profile/orders' element={<ProtectedRouteElement element={<OrderPage />} />} >
                             {detailsVisible && <Route path=':id' element={
                                 <Modal onCloseModal={onCloseModal}>
                                     <CreatedOrderDetails />

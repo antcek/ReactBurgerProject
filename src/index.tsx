@@ -9,15 +9,16 @@ import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { socketMiddleware } from './services/middleware/socketMiddleware';
 import { ALL_CREATED_ORDERS_URL, PERSONAL_ORDERS_URL } from './utils/api';
+import { wsUserActions, wsAllActions } from './utils/constants';
 
 
 export const store = createStore(rootReducer,
   composeWithDevTools(applyMiddleware(thunk,
-    socketMiddleware(ALL_CREATED_ORDERS_URL),
-    // socketMiddleware(PERSONAL_ORDERS_URL)
+    socketMiddleware(ALL_CREATED_ORDERS_URL, wsAllActions),
+    socketMiddleware(PERSONAL_ORDERS_URL, wsUserActions)
   )
   ));
-// applyMiddleware через запятую socketMiddleware(url...)
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

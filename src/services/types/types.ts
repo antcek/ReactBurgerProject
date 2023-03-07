@@ -37,10 +37,18 @@ export interface IOrderData {
   ingredients: string[];
   _id: string;
   status: string;
-  number: number;
+  number: number | '';
   name:string;
   createdAt: string;
   updateAt: string;
+}
+
+export type TWSActionType = {
+  wsInit: string;
+  onOpen: string;
+  onClose: string;
+  onError: string;
+  onMessage: string;
 }
 
 

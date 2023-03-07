@@ -4,7 +4,7 @@ import styles from './feed-details.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from '../../services/types/hooks';
 import { useOrderFullPrice } from '../../services/custom-hooks/custom-hooks';
-import { WS_CONNECTION_START, WS_CONNECTION_CLOSED } from '../../services/actions/web-socket';
+import { WS_CONNECTION_START, WS_CONNECTION_CLOSED, WS_USER_CONNECTION_START, WS_USER_CONNECTION_CLOSED } from '../../services/actions/web-socket';
 import { useLocation } from 'react-router';
 import { IUseLocation } from '../../services/types/types';
 
@@ -15,16 +15,38 @@ export const FeedDetailsPage: FC = () => {
 
 
   useEffect(() => {
-    dispatch({ type: WS_CONNECTION_START })
+
+    if (location.pathname.startsWith('/feed')) {
+      console.log('feed')
+      dispatch({ type: WS_CONNECTION_START })
+    }
+
+    else if (location.pathname.startsWith('/profile')) {
+      console.log('profile')
+      dispatch({ type: WS_USER_CONNECTION_START })
+    }
 
     return () => {
-      dispatch({ type: WS_CONNECTION_CLOSED })
+      if (location.pathname.startsWith('/feed')) {
+        dispatch({ type: WS_CONNECTION_CLOSED })
+      }
+      else if (location.pathname.startsWith('/profile')) {
+        dispatch({ type: WS_USER_CONNECTION_CLOSED })
+      }
     }
   }, [dispatch]);
 
   const wsData = useSelector(store => store.wsReducer);
+
   const allIngredients = useSelector(store => store.getProducts.products);
-  const targetOrder = wsData.messages[wsData.messages.length - 1]?.orders?.find(order => order?._id === location.pathname.slice(6));
+
+  const targetOrder = location.pathname.startsWith('/feed') ? wsData.messages[0]?.orders?.find(order => {
+    return order?._id === location.pathname.slice(6)
+  })
+    : wsData.userOrders[0]?.orders?.find(order => {
+      return order?._id === location.pathname.slice(16)
+    });
+
   const orderAllData = targetOrder?.ingredients?.map(orderItem => {
 
     return allIngredients?.find(ingredient => (ingredient._id === orderItem))

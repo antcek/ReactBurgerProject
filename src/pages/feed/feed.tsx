@@ -10,7 +10,7 @@ import { CreatedOrderDetails } from '../../components/created-order-details/crea
 import Modal from '../../components/modal/modal';
 import { IUseLocation } from '../../services/types/types';
 import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from '../../services/actions/web-socket';
-import { useOrderFullPrice } from '../../services/custom-hooks/custom-hooks';
+
 
 
 export const FeedPage: FC = () => {
@@ -48,7 +48,7 @@ export const FeedPage: FC = () => {
   const openModal = (event: React.MouseEvent<HTMLDivElement>): void => {
 
     const currentTargetNumber = Number(event.currentTarget.textContent?.slice(1, 6));
-    const targetOrder = wsData?.messages[wsData.messages.length - 1].orders?.find(order => order.number === currentTargetNumber);
+    const targetOrder = wsData?.messages[0].orders?.find(order => order.number === currentTargetNumber);
 
     dispatch({
       type: FEED_MODAl_DETAILS,
@@ -70,7 +70,7 @@ export const FeedPage: FC = () => {
       <div className={styles.container}>
         <div className={styles.cardWrapper}>
 
-          {wsData?.messages[wsData.messages.length - 1]?.orders?.map((order, createdOrderIndex) => {
+          {wsData.messages[0].orders?.map((order, createdOrderIndex) => {
 
             return (
               <div key={createdOrderIndex} onClick={openModal} className={styles.order}>
@@ -91,7 +91,7 @@ export const FeedPage: FC = () => {
                     <p className={`text text_type_digits-default ${styles.additionalQuantity}`}>
                       {order.ingredients.length > 5 ? `+${order.ingredients.length - 5}` : null}
                     </p>
-                    {order?.ingredients.map((ingredientCreated, ingredientIndex, arrOrder) => {
+                    {order.ingredients.map((ingredientCreated, ingredientIndex, arrOrder) => {
 
                       if (arrOrder.length < 6) {
 
@@ -230,7 +230,7 @@ export const FeedPage: FC = () => {
 
                     <p className="text text_type_digits-default">
                       {order.ingredients.map(item => {
-                      
+
                         return ingredients?.find(ingredient => (ingredient._id === item))
 
                       }).reduce((accumulator, item) => {
@@ -254,7 +254,7 @@ export const FeedPage: FC = () => {
                 Готовы:
               </h2 >
               <div className={styles.readyOrders}>
-                {wsData?.messages[wsData.messages.length - 1]?.orders?.slice(0, 10).map((order, index) => {
+                {wsData.messages[0].orders?.slice(0, 10).map((order, index) => {
 
                   return (
                     <p key={index} className="text text_type_digits-default ">
@@ -270,7 +270,7 @@ export const FeedPage: FC = () => {
                 В работе:
               </h2 >
               <div className={styles.upcomingOrders}>
-                {wsData?.messages[wsData.messages.length - 1]?.orders?.slice(0, 10).map((order, index) => {
+                {wsData.messages[0].orders?.slice(0, 10).map((order, index) => {
 
                   return (
                     <p key={index} className="text text_type_digits-default ">
@@ -287,12 +287,12 @@ export const FeedPage: FC = () => {
             Выполнено за все время:
           </h2 >
           <p className={`text text_type_digits-large pb-15 ${styles.numbers}`}>
-            {wsData?.messages[wsData.messages.length - 1]?.total}</p>
+            {wsData.messages[0].total}</p>
           <h2 className="text text_type_main-medium">
             Выполнено за сегодня:
           </h2 >
           <p className={`text text_type_digits-large ${styles.numbers}`}>
-            {wsData?.messages[wsData.messages.length - 1]?.totalToday}</p>
+            {wsData.messages[0].totalToday}</p>
         </div>
       </div>
       <AnimatePresence>
@@ -304,7 +304,7 @@ export const FeedPage: FC = () => {
             transition={{ duration: 0.2 }}
           >
             <Modal onCloseModal={onCloseModal}>
-              {<CreatedOrderDetails />}
+              <CreatedOrderDetails />
             </Modal>
           </motion.div>}
       </AnimatePresence>

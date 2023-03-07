@@ -10,6 +10,7 @@ import { TUserActions } from '../actions/user';
 import { ThunkAction } from 'redux-thunk';
 import { Action, ActionCreator, Dispatch } from 'redux';
 import { TWSActions } from '../actions/web-socket';
+import { TWSActionType } from './types';
 
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -23,9 +24,9 @@ export type TApplicationActions =
   TRegisterActions |
   TResetActions |
   TUserActions |
-  TWSActions;
+  TWSActions ;
 
-export type AppDispatch = Dispatch<TApplicationActions>;
+export type AppDispatch = typeof store.dispatch;
 
 export type AppThunk<ReturnType = void> = ActionCreator<ThunkAction<ReturnType, Action, RootState, TApplicationActions>>;
 
