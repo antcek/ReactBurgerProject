@@ -54,10 +54,15 @@
   max-width: 844px;
   margin-right: 8px;
   cursor: pointer;
+  transition: transform 250ms ease-in-out;
 
 }
 
+.order:hover {
+  transform: scale(96%);
+  transition: transform 250ms ease-in-out;
 
+}
 
 .cardTop {
   display: flex;
