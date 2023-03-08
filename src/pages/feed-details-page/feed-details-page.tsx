@@ -38,7 +38,7 @@ export const FeedDetailsPage: FC = () => {
         dispatch({ type: WS_USER_CONNECTION_CLOSED })
       }
     }
-  }, [dispatch,userData,location]);
+  }, [dispatch, userData, location]);
 
   const wsData = useSelector(store => store.wsReducer);
 
@@ -55,8 +55,13 @@ export const FeedDetailsPage: FC = () => {
 
     return allIngredients?.find(ingredient => (ingredient._id === orderItem))
   });
-
+  const duplicateBuns = orderAllData?.filter((item, bunIndex) => {
+    if (item?.type === 'bun') {
+      return (orderAllData.indexOf(((item))) !== bunIndex)
+    }
+  })
   const orderPrice = useOrderFullPrice(targetOrder);
+
 
   return (
     <>
@@ -110,11 +115,11 @@ export const FeedDetailsPage: FC = () => {
               </p>
               <div className={styles.price}>
                 <p className="text text_type_digits-default ">
-                  {`${ingredient?.type === 'bun' ? 2 : 1} x ${ingredient?.price}`}</p>
+                  {`${ingredient?.type === 'bun' && duplicateBuns?.length === 1 ? 1 :
+                    ingredient?.type !== 'bun' ? 1 : 2} x ${ingredient?.price}`}</p>
                 <CurrencyIcon type="primary" />
               </div>
             </div>
-
             )
           })}
         </div>
