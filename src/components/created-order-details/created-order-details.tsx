@@ -3,6 +3,7 @@ import styles from './created-order-details.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector } from '../../services/types/hooks';
 import { useOrderFullPrice } from '../../services/custom-hooks/custom-hooks';
+import { IIngredientType } from '../../services/types/types';
 
 
 export const CreatedOrderDetails: FC = () => {
@@ -10,10 +11,16 @@ export const CreatedOrderDetails: FC = () => {
   const targetOrder = useSelector(store => store.ingredientDetails.targetOrder);
   const allIngredients = useSelector(store => store.getProducts.products);
 
+
   const orderAllData = targetOrder?.ingredients?.map(orderItem => {
 
     return allIngredients?.find(ingredient => (ingredient._id === orderItem))
   });
+  const duplicateBuns = orderAllData?.filter((item, bunIndex) => {
+    if (item?.type === 'bun') {
+      return (orderAllData.indexOf(((item))) !== bunIndex)
+    }
+  })
 
   const orderPrice = useOrderFullPrice(targetOrder);
 
@@ -67,7 +74,8 @@ export const CreatedOrderDetails: FC = () => {
             </p>
             <div className={styles.price}>
               <p className="text text_type_digits-default ">
-                {`${ingredient?.type === 'bun' ? 2 : 1} x ${ingredient?.price}`}</p>
+                {`${ingredient?.type === 'bun' && duplicateBuns?.length === 1 ? 1 :
+                  ingredient?.type !== 'bun' ? 1 : 2} x ${ingredient?.price}`}</p>
               <CurrencyIcon type="primary" />
             </div>
           </div>

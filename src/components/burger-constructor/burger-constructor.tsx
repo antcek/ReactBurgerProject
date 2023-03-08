@@ -85,8 +85,7 @@ const BurgerConstructor: FC = () => {
 
                 type: SORT_CONSTRUCTOR_INGREDIENT,
                 ingredients: sortedIngredients
-
-            })
+            });
         }
     }, [constructorIngredients, dispatch])
 
@@ -159,7 +158,7 @@ const BurgerConstructor: FC = () => {
     const createOrder = (): void => {
 
         if (accessToken && burgerAllId.ingredients[0] !== undefined) {
-            dispatch(sendOrder(burgerAllId) );
+            dispatch(sendOrder(burgerAllId));
         }
 
         else navigate('/login', { replace: true })
@@ -280,8 +279,8 @@ const BurgerConstructor: FC = () => {
                     {modalVisible && !currentIngredient &&
                         <motion.div
                             initial={{ opacity: 0 }}
-                            animate={{ opacity: 1}}
-                            exit={{ opacity: 0}}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
                             transition={{ duration: 0.2 }}
                         >
                             <Modal onCloseModal={onCloseModal}>

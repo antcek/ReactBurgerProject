@@ -236,9 +236,14 @@ export const OrderPage: FC = () => {
 
                         return ingredients?.find(ingredient => (ingredient._id === item))
 
-                      }).reduce((accumulator, item) => {
+                      }).reduce((accumulator, item, index, arrIngredients) => {
+                        const duplicateBuns = arrIngredients?.filter((duplicateItem, bunIndex) => {
+                          if (duplicateItem?.type === 'bun') {
+                            return (arrIngredients.indexOf(((duplicateItem))) !== bunIndex)
+                          }
+                        });
 
-                        return accumulator + (item?.type === 'bun' ?
+                        return accumulator + (item?.type === 'bun' && duplicateBuns.length === 0 ?
                           item!.price * 2 : item!.price)
                       }, 0)}</p>
                     <CurrencyIcon type="primary" />

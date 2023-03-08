@@ -72,6 +72,7 @@ export const FeedPage: FC = () => {
 
           {wsData.messages[0].orders?.map((order, createdOrderIndex) => {
 
+
             return (
               <div key={createdOrderIndex} onClick={openModal} className={styles.order}>
                 <div className={styles.cardTop}>
@@ -231,11 +232,18 @@ export const FeedPage: FC = () => {
                     <p className="text text_type_digits-default">
                       {order.ingredients.map(item => {
 
+
                         return ingredients?.find(ingredient => (ingredient._id === item))
 
-                      }).reduce((accumulator, item) => {
+                      }).reduce((accumulator, item, index, arrIngredients) => {
 
-                        return accumulator + (item?.type === 'bun' ?
+                        const duplicateBuns = arrIngredients?.filter((duplicateItem, bunIndex) => {
+                          if (duplicateItem?.type === 'bun') {
+                            return (arrIngredients.indexOf(((duplicateItem))) !== bunIndex)
+                          }
+                        });
+
+                        return accumulator + (item?.type === 'bun' && duplicateBuns.length === 0 ?
                           item!.price * 2 : item!.price)
                       }, 0)}</p>
                     <CurrencyIcon type="primary" />

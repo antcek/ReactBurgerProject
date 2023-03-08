@@ -57,10 +57,15 @@ export const useOrderFullPrice = (targetOrder: IOrderData | undefined | null): n
 
         return allIngredients?.find(ingredient => (ingredient._id === orderItem))
     });
+    const duplicateBuns = orderAllData?.filter((item, bunIndex) => {
+        if (item?.type === 'bun') {
+          return (orderAllData.indexOf(((item))) !== bunIndex)
+        }
+      });
 
     return orderAllData?.reduce((accumulator, item): number => {
 
-        return accumulator + (item?.type === 'bun' ? item!.price * 2 : item!.price)
+        return accumulator + (item?.type === 'bun' && duplicateBuns?.length === 0 ? item!.price * 2 : item!.price)
     }, 0);
 
 }
