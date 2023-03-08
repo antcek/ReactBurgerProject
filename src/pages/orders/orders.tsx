@@ -10,16 +10,17 @@ import { AnimatePresence, motion } from "framer-motion";
 import Modal from "../../components/modal/modal";
 import { CreatedOrderDetails } from "../../components/created-order-details/created-order-details";
 import { useSelector, useDispatch } from "../../services/types/hooks";
-import { WS_USER_CONNECTION_CLOSED, WS_USER_CONNECTION_START } from "../../services/actions/web-socket";
+import { WS_USER_CONNECTION_CLOSED, WS_USER_CONNECTION_START, WS_SEND_MESSAGE } from "../../services/actions/web-socket";
 
 
 export const OrderPage: FC = () => {
 
   const navigate = useNavigate();
-
+  const userData = useSelector((store) => store.loginUser.user);
   const dispatch = useDispatch();
   const location: IUseLocation = useLocation();
   const createdOrderVisible = useSelector((store) => store.ingredientDetails.visible);
+
 
   const wsData = useSelector(store => store.wsReducer);
   const ingredients = useSelector(store => store.getProducts.products);
@@ -27,12 +28,17 @@ export const OrderPage: FC = () => {
   const userOrders = wsData.userOrders[0]?.orders?.slice(wsData.userOrders[0].orders.length - 50);
 
   useEffect(() => {
-    dispatch({ type: WS_USER_CONNECTION_START })
+    dispatch({ type: WS_USER_CONNECTION_START });
+
+    if (userData === null ) {
+      dispatch({type: WS_SEND_MESSAGE})
+    }
 
     return () => {
       dispatch({ type: WS_USER_CONNECTION_CLOSED })
     }
-  }, [dispatch]);
+  }, [dispatch,userData]);
+  
 
   function onCloseModal(): void {
 
@@ -241,6 +247,8 @@ export const OrderPage: FC = () => {
                           if (duplicateItem?.type === 'bun') {
                             return (arrIngredients.indexOf(((duplicateItem))) !== bunIndex)
                           }
+
+                          else return 0
                         });
 
                         return accumulator + (item?.type === 'bun' && duplicateBuns.length === 0 ?

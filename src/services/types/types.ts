@@ -49,6 +49,7 @@ export type TWSActionType = {
   onClose: string;
   onError: string;
   onMessage: string;
+  wsSendMessage: string;
 }
 
 

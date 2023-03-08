@@ -8,6 +8,7 @@ export const WS_USER_CONNECTION_SUCCESS: 'WS_USER_CONNECTION_SUCCESS' = 'WS_USER
 export const WS_USER_GET_MESSAGE: 'WS_USER_GET_MESSAGE' = 'WS_USER_GET_MESSAGE';
 export const WS_USER_CONNECTION_CLOSED: 'WS_USER_CONNECTION_CLOSED' = 'WS_USER_CONNECTION_CLOSED';
 export const WS_USER_CONNECTION_ERROR: 'WS_USER_CONNECTION_ERROR' = 'WS_USER_CONNECTION_ERROR';
+export const WS_SEND_MESSAGE: 'WS_SEND_MESSAGE' = 'WS_SEND_MESSAGE';
 
 
 export interface IMessage {
@@ -25,6 +26,10 @@ export interface IMessage {
   total: number | '';
   totalToday: number | '';
 
+}
+
+export interface IWSSendMessage {
+  readonly type: typeof WS_SEND_MESSAGE
 }
 
 export interface IWSStart {
@@ -76,15 +81,15 @@ export interface IUserWSError {
   error: Event;
 }
 
-export type TWSActions =
+export type TWSActions = | IWSSendMessage
   | IWSStart |
   IWSSuccess |
   IWSGetMessage |
   IWSClosed |
   IWSError |
   IUserWSStart |
-  IUserWSSuccess | 
-  IUserWSGetMessage | 
+  IUserWSSuccess |
+  IUserWSGetMessage |
   IUserWSClosed |
   IUserWSError;
 

@@ -8,7 +8,8 @@ import {
   WS_USER_CONNECTION_ERROR,
   WS_USER_CONNECTION_CLOSED,
   WS_USER_GET_MESSAGE,
-  WS_USER_CONNECTION_SUCCESS
+  WS_USER_CONNECTION_SUCCESS,
+  WS_SEND_MESSAGE
 } from "../services/actions/web-socket";
 
 
@@ -24,7 +25,8 @@ export const wsAllActions = {
   onOpen: WS_CONNECTION_SUCCESS,
   onClose: WS_CONNECTION_CLOSED,
   onError: WS_CONNECTION_ERROR,
-  onMessage: WS_GET_MESSAGE
+  onMessage: WS_GET_MESSAGE,
+  wsSendMessage: WS_SEND_MESSAGE
 }
 
 export const wsUserActions  = {
@@ -32,5 +34,7 @@ export const wsUserActions  = {
   onOpen: WS_USER_CONNECTION_SUCCESS,
   onClose: WS_USER_CONNECTION_CLOSED,
   onError: WS_USER_CONNECTION_ERROR,
-  onMessage: WS_USER_GET_MESSAGE
+  onMessage: WS_USER_GET_MESSAGE,
+  wsSendMessage:WS_SEND_MESSAGE
+
 }

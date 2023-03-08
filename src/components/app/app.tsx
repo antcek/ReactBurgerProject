@@ -25,16 +25,18 @@ import { OrderPage } from '../../pages/orders/orders';
 import { FeedPage } from '../../pages/feed/feed';
 import { FeedDetailsPage } from '../../pages/feed-details-page/feed-details-page';
 import { CreatedOrderDetails } from '../created-order-details/created-order-details';
+import { RootState } from '../../services/types/redux-index';
 
-
+const getDetailsVisible = (store: RootState) => store.ingredientDetails.visible;
+const getProductsFailed = (store: RootState) => store.getProducts.productsFailed;
 
 const App: FC = () => {
 
     const dispatch = useDispatch();
     let accessToken = Cookies.get('accessToken');
 
-    const productsFailed = useSelector((store) => store.getProducts.productsFailed);
-    const detailsVisible = useSelector((store) => store.ingredientDetails.visible);
+    const productsFailed = useSelector(getProductsFailed);
+    const detailsVisible = useSelector(getDetailsVisible);
 
     function onCloseModal(): void {
         localStorage.removeItem('modalData');

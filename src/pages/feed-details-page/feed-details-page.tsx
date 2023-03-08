@@ -4,7 +4,7 @@ import styles from './feed-details.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch, useSelector } from '../../services/types/hooks';
 import { useOrderFullPrice } from '../../services/custom-hooks/custom-hooks';
-import { WS_CONNECTION_START, WS_CONNECTION_CLOSED, WS_USER_CONNECTION_START, WS_USER_CONNECTION_CLOSED } from '../../services/actions/web-socket';
+import { WS_CONNECTION_START, WS_CONNECTION_CLOSED, WS_USER_CONNECTION_START, WS_USER_CONNECTION_CLOSED, WS_SEND_MESSAGE } from '../../services/actions/web-socket';
 import { useLocation } from 'react-router';
 import { IUseLocation } from '../../services/types/types';
 
@@ -12,18 +12,22 @@ export const FeedDetailsPage: FC = () => {
 
   const dispatch = useDispatch();
   const location: IUseLocation = useLocation();
-
+  const userData = useSelector((store) => store.loginUser.user);
 
   useEffect(() => {
 
     if (location.pathname.startsWith('/feed')) {
-      console.log('feed')
+
       dispatch({ type: WS_CONNECTION_START })
     }
 
     else if (location.pathname.startsWith('/profile')) {
-      console.log('profile')
+
       dispatch({ type: WS_USER_CONNECTION_START })
+    }
+
+    if (userData === null) {
+      dispatch({ type: WS_SEND_MESSAGE })
     }
 
     return () => {
@@ -34,13 +38,13 @@ export const FeedDetailsPage: FC = () => {
         dispatch({ type: WS_USER_CONNECTION_CLOSED })
       }
     }
-  }, [dispatch]);
+  }, [dispatch,userData,location]);
 
   const wsData = useSelector(store => store.wsReducer);
 
   const allIngredients = useSelector(store => store.getProducts.products);
 
-  const targetOrder = location.pathname.startsWith('/feed') ? wsData.messages[0]?.orders?.find(order => {
+  const targetOrder = location.pathname.startsWith('/feed') ? wsData.allOrders[0]?.orders?.find(order => {
     return order?._id === location.pathname.slice(6)
   })
     : wsData.userOrders[0]?.orders?.find(order => {

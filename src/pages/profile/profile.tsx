@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 import { userGetData } from '../../services/thunk-actions/thunk-actions';
 import { LeftSideMenu } from '../../components/left-side-menu/left-side-menu';
 import { useForm } from '../../services/custom-hooks/custom-hooks';
-import { IUser } from '../../services/actions/register';
+
 
 
 const initialInput = {

@@ -15,14 +15,14 @@ import {
 interface TWSState {
 
   wsConnected: boolean;
-  messages: IMessage[];
+  allOrders: IMessage[];
   error?: Event;
   userOrders: IMessage[];
 }
 
 const initialState: TWSState = {
   wsConnected: false,
-  messages: [{
+  allOrders: [{
     success: false,
     orders: [{
       ingredients: [],
@@ -87,7 +87,7 @@ export const wsReducer = (state = initialState, action: TWSActions): TWSState =>
       return {
         ...state,
         error: undefined,
-        messages: [action.payload]
+        allOrders: [action.payload]
       };
     }
 

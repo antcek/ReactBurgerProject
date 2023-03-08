@@ -1,8 +1,8 @@
 import type { Middleware, MiddlewareAPI } from "redux";
-import type { AppDispatch, RootState, TApplicationActions } from '../types/redux-index';
-import { TWSActions, WS_CONNECTION_CLOSED, WS_CONNECTION_START, WS_CONNECTION_SUCCESS, WS_GET_MESSAGE, WS_USER_CONNECTION_START, WS_USER_CONNECTION_SUCCESS } from "../actions/web-socket";
+import type { AppDispatch, RootState } from '../types/redux-index';
 import Cookies from 'js-cookie'
 import { TWSActionType } from "../types/types";
+
 
 
 export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any): Middleware => {
@@ -11,19 +11,23 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
     let socket: WebSocket | null = null;
 
     return next => (action) => {
-      const { dispatch } = store;
-      const { type } = action;
-      const { wsInit, onOpen, onClose, onError, onMessage } = wsActions;
+      const { dispatch, getState } = store;
+      const { type, payload } = action;
+      const { wsInit, onOpen, onClose, onError, onMessage, wsSendMessage } = wsActions;
+      const { user } = getState().loginUser;
+
 
       if (type === wsInit) {
 
         socket = new WebSocket(wsUrl);
       }
 
-      if (type === wsInit && Cookies.get('accessToken')) {
+      if (type === wsInit && user) {
 
         socket = new WebSocket(`${wsUrl}?token=${Cookies.get('accessToken')}`)
       }
+
+
 
       if (socket) {
 
@@ -38,6 +42,12 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
 
           const { data } = event;
           const parsedData = JSON.parse(data);
+    
+          if (type === wsSendMessage && parsedData.message === 'Invalid or missing token') {
+
+            const sendData = {...payload, token: localStorage.getItem('refreshToken') };
+             socket?.send(JSON.stringify(sendData));
+          }
 
           dispatch({
             type: onMessage,
@@ -59,7 +69,6 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
             payload: event
           });
         };
-
 
       }
 

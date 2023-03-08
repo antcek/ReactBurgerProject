@@ -31,6 +31,7 @@ export const FeedPage: FC = () => {
   const wsData = useSelector(store => store.wsReducer);
   const ingredients = useSelector(store => store.getProducts.products);
 
+
   function onCloseModal(): void {
 
     dispatch({
@@ -48,7 +49,7 @@ export const FeedPage: FC = () => {
   const openModal = (event: React.MouseEvent<HTMLDivElement>): void => {
 
     const currentTargetNumber = Number(event.currentTarget.textContent?.slice(1, 6));
-    const targetOrder = wsData?.messages[0].orders?.find(order => order.number === currentTargetNumber);
+    const targetOrder = wsData?.allOrders[0].orders?.find(order => order.number === currentTargetNumber);
 
     dispatch({
       type: FEED_MODAl_DETAILS,
@@ -70,7 +71,7 @@ export const FeedPage: FC = () => {
       <div className={styles.container}>
         <div className={styles.cardWrapper}>
 
-          {wsData.messages[0].orders?.map((order, createdOrderIndex) => {
+          {wsData.allOrders[0].orders?.map((order, createdOrderIndex) => {
 
 
             return (
@@ -262,7 +263,7 @@ export const FeedPage: FC = () => {
                 Готовы:
               </h2 >
               <div className={styles.readyOrders}>
-                {wsData.messages[0].orders?.slice(0, 10).map((order, index) => {
+                {wsData.allOrders[0].orders?.slice(0, 10).map((order, index) => {
 
                   return (
                     <p key={index} className="text text_type_digits-default ">
@@ -278,7 +279,7 @@ export const FeedPage: FC = () => {
                 В работе:
               </h2 >
               <div className={styles.upcomingOrders}>
-                {wsData.messages[0].orders?.slice(0, 10).map((order, index) => {
+                {wsData.allOrders[0].orders?.slice(0, 10).map((order, index) => {
 
                   return (
                     <p key={index} className="text text_type_digits-default ">
@@ -295,12 +296,12 @@ export const FeedPage: FC = () => {
             Выполнено за все время:
           </h2 >
           <p className={`text text_type_digits-large pb-15 ${styles.numbers}`}>
-            {wsData.messages[0].total}</p>
+            {wsData.allOrders[0].total}</p>
           <h2 className="text text_type_main-medium">
             Выполнено за сегодня:
           </h2 >
           <p className={`text text_type_digits-large ${styles.numbers}`}>
-            {wsData.messages[0].totalToday}</p>
+            {wsData.allOrders[0].totalToday}</p>
         </div>
       </div>
       <AnimatePresence>
