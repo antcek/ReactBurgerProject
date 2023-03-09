@@ -32,7 +32,7 @@ export const OrderPage: FC = () => {
 
     if (userData === null ) {
       dispatch({type: WS_SEND_MESSAGE})
-    }
+    };
 
     return () => {
       dispatch({ type: WS_USER_CONNECTION_CLOSED })

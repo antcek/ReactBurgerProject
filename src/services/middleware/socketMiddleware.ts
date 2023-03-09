@@ -18,18 +18,17 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
       const { wsInit, onOpen, onClose, onError, onMessage, wsSendMessage } = wsActions;
       const { user } = getState().loginUser;
       let accessToken = Cookies.get('accessToken');
-    
 
 
       if (type === wsInit) {
         socket = new WebSocket(wsUrl);
+      };
+
+      if (type === wsInit && user) {
+
+        socket = new WebSocket(`${wsUrl}?token=${Cookies.get('accessToken')}`)
       }
 
-      if (type === wsInit && user && accessToken) {
-        socket = new WebSocket(`${wsUrl}?token=${accessToken}`)
-          console.log(type)
-      }  // ЗАСОВЫВАТЬ СЮДА КАК-ТО ОБНОВЛЕННЫЙ ТОКЕН
-    
 
       if (socket) {
         socket.onopen = (event) => {
@@ -43,13 +42,9 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
           const { data } = event;
           const parsedData = JSON.parse(data);
 
-          if (parsedData.message === 'Invalid or missing token') {
-            accessToken = await updateToken().then(data => data?.accessToken);
-         
-            socket = new WebSocket(`${wsUrl}?token=${accessToken}`); 
-          
-          console.log(socket)
-            return; 
+          if (parsedData?.message === 'Invalid or missing token') {
+            // updateToken();
+        
           }
 
           dispatch({
@@ -59,6 +54,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
         };
 
         socket.onerror = (event) => {
+
           dispatch({
             type: onError,
             payload: event
@@ -71,8 +67,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
             payload: event
           });
         };
-       
-       
+
       }
 
       next(action);

@@ -319,6 +319,7 @@ export const updateToken = async (): Promise<{ refreshToken: string, accessToken
                 accessToken = accessToken.split('Bearer')[1].trim();
             };
             saveTokens(refreshToken, accessToken);
+
             return { refreshToken, accessToken }
         })
         .finally(() => {

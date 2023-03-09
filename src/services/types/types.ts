@@ -26,6 +26,7 @@ export interface IIngredientType {
   image_large: string;
   __v: number;
   key?: number;
+  count?: number;
 }
 
 export interface IIngredients {

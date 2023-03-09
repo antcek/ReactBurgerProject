@@ -2,7 +2,7 @@ import { useLocation } from "react-router";
 import { useEffect, useState } from 'react';
 import { CURRENT_INGREDIENT_DETAILS } from "../actions/ingredient-details";
 import { useDispatch, useSelector } from '../../services/types/hooks';
-import { IOrderData, IUseLocation } from "../types/types";
+import { IIngredientType, IOrderData, IUseLocation } from "../types/types";
 
 
 export type TValues = {
@@ -57,15 +57,20 @@ export const useOrderFullPrice = (targetOrder: IOrderData | undefined | null): n
 
         return allIngredients?.find(ingredient => (ingredient._id === orderItem))
     });
-    const duplicateBuns = orderAllData?.filter((item, bunIndex) => {
-        if (item?.type === 'bun') {
-          return (orderAllData.indexOf(((item))) !== bunIndex)
-        }
-      });
+    const orderWithCount = orderAllData && Object.values(
+        orderAllData.reduce((acc: any, obj: any) => {
+            const { name } = obj;
+            if (!acc[name]) {
+                acc[name] = { name, count: 0, ...obj };
+            }
+            acc[name].count++;
+            return acc;
+        }, {})
+    );
 
-    return orderAllData?.reduce((accumulator, item): number => {
-
-        return accumulator + (item?.type === 'bun' && duplicateBuns?.length === 0 ? item!.price * 2 : item!.price)
+    return (orderWithCount as IIngredientType[])?.reduce((accumulator, item: IIngredientType): number => {
+      
+        return accumulator + (item?.type === 'bun' ? item!.price * 2 : item!.price * (item.count as number))
     }, 0);
 
 }

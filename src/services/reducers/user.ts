@@ -26,6 +26,7 @@ interface IInitialState {
   updateDataRequest: boolean;
   updateDataFailed: boolean;
   dataFailed: boolean;
+  token:string | null;
 }
 
 const initialState: IInitialState = {
@@ -39,7 +40,7 @@ const initialState: IInitialState = {
   updateDataRequest: false,
   updateDataFailed: false,
   dataFailed: false,
-  
+  token: null,
 
 }
 
@@ -136,6 +137,7 @@ export const loginUserReducer = (state = initialState, action: TUserActions): II
         updateDataRequest: false,
         updateDataFailed: false,
         user: action.user,
+        token: action.token
         
 
       }
