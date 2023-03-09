@@ -242,6 +242,7 @@ export const FeedPage: FC = () => {
                           if (duplicateItem?.type === 'bun') {
                             return (arrIngredients.indexOf(((duplicateItem))) !== bunIndex)
                           }
+                          else return null
                         });
 
                         return accumulator + (item?.type === 'bun' && duplicateBuns.length === 0 ?

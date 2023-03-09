@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from '../../services/types/hooks';
 import { useOrderFullPrice } from '../../services/custom-hooks/custom-hooks';
 import { WS_CONNECTION_START, WS_CONNECTION_CLOSED, WS_USER_CONNECTION_START, WS_USER_CONNECTION_CLOSED, WS_SEND_MESSAGE } from '../../services/actions/web-socket';
 import { useLocation } from 'react-router';
-import { IUseLocation } from '../../services/types/types';
+import { IIngredientType, IUseLocation } from '../../services/types/types';
 
 export const FeedDetailsPage: FC = () => {
 
@@ -55,12 +55,18 @@ export const FeedDetailsPage: FC = () => {
 
     return allIngredients?.find(ingredient => (ingredient._id === orderItem))
   });
-  const duplicateBuns = orderAllData?.filter((item, bunIndex) => {
-    if (item?.type === 'bun') {
-      return (orderAllData.indexOf(((item))) !== bunIndex)
-    }
-  })
+  
   const orderPrice = useOrderFullPrice(targetOrder);
+  const orderWithCount = orderAllData && Object.values(
+    orderAllData.reduce((acc: any, obj: any) => {
+      const { name } = obj;
+      if (!acc[name]) {
+        acc[name] = { name, count: 0, ...obj };
+      }
+      acc[name].count++;
+      return acc;
+    }, {})
+  );
 
 
   return (
@@ -81,7 +87,7 @@ export const FeedDetailsPage: FC = () => {
         </p>
         <div className={styles.structure}>
 
-          {orderAllData?.map((ingredient, index) => {
+          {(orderWithCount as IIngredientType[])?.map((ingredient, index) => {
 
             return (<div key={index} className={styles.info}>
               <svg className={styles.ingredient} width="64" height="64" viewBox="0 0 64 64" fill="#131316" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
@@ -115,8 +121,8 @@ export const FeedDetailsPage: FC = () => {
               </p>
               <div className={styles.price}>
                 <p className="text text_type_digits-default ">
-                  {`${ingredient?.type === 'bun' && duplicateBuns?.length === 1 ? 1 :
-                    ingredient?.type !== 'bun' ? 1 : 2} x ${ingredient?.price}`}</p>
+                {`${ingredient?.type === 'bun' ? 2 :
+                  ingredient?.count} x ${ingredient?.price}`}</p>
                 <CurrencyIcon type="primary" />
               </div>
             </div>
