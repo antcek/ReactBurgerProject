@@ -2,6 +2,8 @@ import type { Middleware, MiddlewareAPI } from "redux";
 import type { AppDispatch, RootState } from '../types/redux-index';
 import Cookies from 'js-cookie'
 import { TWSActionType } from "../types/types";
+import { updateToken } from "../thunk-actions/thunk-actions";
+import { WS_SEND_MESSAGE, WS_USER_CONNECTION_SUCCESS } from "../actions/web-socket";
 
 
 
@@ -15,22 +17,21 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
       const { type, payload } = action;
       const { wsInit, onOpen, onClose, onError, onMessage, wsSendMessage } = wsActions;
       const { user } = getState().loginUser;
+      let accessToken = Cookies.get('accessToken');
+    
 
 
       if (type === wsInit) {
-
         socket = new WebSocket(wsUrl);
       }
 
-      if (type === wsInit && user) {
-
-        socket = new WebSocket(`${wsUrl}?token=${Cookies.get('accessToken')}`)
-      }
-
-
+      if (type === wsInit && user && accessToken) {
+        socket = new WebSocket(`${wsUrl}?token=${accessToken}`)
+          console.log(type)
+      }  // ЗАСОВЫВАТЬ СЮДА КАК-ТО ОБНОВЛЕННЫЙ ТОКЕН
+    
 
       if (socket) {
-
         socket.onopen = (event) => {
           dispatch({
             type: onOpen,
@@ -38,22 +39,23 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
           });
         };
 
-        socket.onmessage = (event) => {
-
+        socket.onmessage = async (event) => {
           const { data } = event;
           const parsedData = JSON.parse(data);
-    
-          if (type === wsSendMessage && parsedData.message === 'Invalid or missing token') {
 
-            const sendData = {...payload, token: localStorage.getItem('refreshToken') };
-             socket?.send(JSON.stringify(sendData));
+          if (parsedData.message === 'Invalid or missing token') {
+            accessToken = await updateToken().then(data => data?.accessToken);
+         
+            socket = new WebSocket(`${wsUrl}?token=${accessToken}`); 
+          
+          console.log(socket)
+            return; 
           }
 
           dispatch({
             type: onMessage,
             payload: parsedData
           });
-
         };
 
         socket.onerror = (event) => {
@@ -69,7 +71,8 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
             payload: event
           });
         };
-
+       
+       
       }
 
       next(action);

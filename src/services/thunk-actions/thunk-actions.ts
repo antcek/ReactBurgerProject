@@ -290,40 +290,42 @@ export const loginUser: AppThunk = (loginValue: string, passwordValue: string) =
     }
 }
 
-export const updateToken = (): Promise<{ refreshToken: string, accessToken: string }> => {
+let tokenPromise: Promise<{ refreshToken: string, accessToken: string }> | null = null;
 
-    return fetch(`${API_REFRESH_TOKEN}/auth/token`,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
+export const updateToken = async (): Promise<{ refreshToken: string, accessToken: string }> => {
 
-            },
-            body: JSON.stringify({
-                token: localStorage.getItem('refreshToken')
-            })
+    if (tokenPromise !== null) {
+        return tokenPromise;
+    }
+
+    tokenPromise = fetch(`${API_REFRESH_TOKEN}/auth/token`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            token: localStorage.getItem('refreshToken')
         })
+    })
         .then((res) => {
-
             if (res.ok) {
                 return res.json()
             }
-
-        }).then(res => {
-
+        })
+        .then(res => {
             let accessToken = res.accessToken;
             let refreshToken = res.refreshToken;
             if (accessToken.indexOf('Bearer') === 0) {
                 accessToken = accessToken.split('Bearer')[1].trim();
-
             };
-
             saveTokens(refreshToken, accessToken);
-
             return { refreshToken, accessToken }
         })
+        .finally(() => {
+            tokenPromise = null;
+        });
 
-
+    return tokenPromise;
 }
 
 export const fetchWithRefresh = async <T>(url: RequestInfo, options: RequestInit) => {
