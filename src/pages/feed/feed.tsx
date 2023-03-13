@@ -246,7 +246,7 @@ export const FeedPage: FC = () => {
                         });
 
                         return accumulator + (item?.type === 'bun' && duplicateBuns.length === 0 ?
-                          item!.price * 2 : item!.price)
+                          item!?.price * 2 : item!?.price)
                       }, 0)}</p>
                     <CurrencyIcon type="primary" />
                   </div>

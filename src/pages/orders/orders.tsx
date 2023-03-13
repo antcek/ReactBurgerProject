@@ -10,13 +10,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import Modal from "../../components/modal/modal";
 import { CreatedOrderDetails } from "../../components/created-order-details/created-order-details";
 import { useSelector, useDispatch } from "../../services/types/hooks";
-import { WS_USER_CONNECTION_CLOSED, WS_USER_CONNECTION_START, WS_SEND_MESSAGE } from "../../services/actions/web-socket";
+import { WS_USER_CONNECTION_CLOSED, WS_USER_CONNECTION_START } from "../../services/actions/web-socket";
 
 
 export const OrderPage: FC = () => {
 
   const navigate = useNavigate();
-  const userData = useSelector((store) => store.loginUser.user);
   const dispatch = useDispatch();
   const location: IUseLocation = useLocation();
   const createdOrderVisible = useSelector((store) => store.ingredientDetails.visible);
@@ -30,14 +29,10 @@ export const OrderPage: FC = () => {
   useEffect(() => {
     dispatch({ type: WS_USER_CONNECTION_START });
 
-    if (userData === null ) {
-      dispatch({type: WS_SEND_MESSAGE})
-    };
-
     return () => {
       dispatch({ type: WS_USER_CONNECTION_CLOSED })
     }
-  }, [dispatch,userData]);
+  }, [dispatch]);
   
 
   function onCloseModal(): void {

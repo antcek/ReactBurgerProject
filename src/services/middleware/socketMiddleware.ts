@@ -3,7 +3,6 @@ import type { AppDispatch, RootState } from '../types/redux-index';
 import Cookies from 'js-cookie'
 import { TWSActionType } from "../types/types";
 import { updateToken } from "../thunk-actions/thunk-actions";
-import { WS_SEND_MESSAGE, WS_USER_CONNECTION_SUCCESS } from "../actions/web-socket";
 
 
 
@@ -14,11 +13,9 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
 
     return next => (action) => {
       const { dispatch, getState } = store;
-      const { type, payload } = action;
-      const { wsInit, onOpen, onClose, onError, onMessage, wsSendMessage } = wsActions;
+      const { type } = action;
+      const { wsInit, onOpen, onClose, onError, onMessage } = wsActions;
       const { user } = getState().loginUser;
-      let accessToken = Cookies.get('accessToken');
-
 
       if (type === wsInit) {
         socket = new WebSocket(wsUrl);
@@ -43,8 +40,11 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
           const parsedData = JSON.parse(data);
 
           if (parsedData?.message === 'Invalid or missing token') {
-            // updateToken();
-        
+
+            let newToken = await updateToken().then(data => data.accessToken);
+            if (newToken) {
+              socket = new WebSocket(`${wsUrl}?token=${newToken}`);
+            }
           }
 
           dispatch({
@@ -73,4 +73,4 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
       next(action);
     };
   }) as Middleware
-};
+}
