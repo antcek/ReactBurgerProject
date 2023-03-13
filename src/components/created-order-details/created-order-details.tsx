@@ -30,7 +30,6 @@ export const CreatedOrderDetails: FC = () => {
     }, {})
   );
 
-  console.log(orderWithCount);
 
   const orderPrice = useOrderFullPrice(targetOrder);
 
