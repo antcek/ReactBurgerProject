@@ -71,13 +71,13 @@ export const FeedPage: FC = () => {
       <div className={styles.container}>
         <div className={styles.cardWrapper}>
 
-          {wsData.allOrders[0].orders?.map((order, createdOrderIndex) => {
+          {wsData.allOrders[0]?.orders?.map((order, createdOrderIndex) => {
 
 
             return (
               <div key={createdOrderIndex} onClick={openModal} className={styles.order}>
                 <div className={styles.cardTop}>
-                  <p className="text text_type_digits-default">{`#${order.number}`}</p>
+                  <p className="text text_type_digits-default">{`#${order?.number}`}</p>
                   <FormattedDate
                     date={
                       new Date(order.createdAt)
@@ -91,11 +91,11 @@ export const FeedPage: FC = () => {
                 <div className={styles.cardBottom}>
                   <div className={styles.burger}>
                     <p className={`text text_type_digits-default ${styles.additionalQuantity}`}>
-                      {order.ingredients.length > 5 ? `+${order.ingredients.length - 5}` : null}
+                      {order.ingredients?.length > 5 ? `+${order.ingredients?.length - 5}` : null}
                     </p>
                     {order.ingredients.map((ingredientCreated, ingredientIndex, arrOrder) => {
 
-                      if (arrOrder.length < 6) {
+                      if (arrOrder?.length < 6) {
 
                         return (
                           <svg key={ingredientIndex} className={styles.ingredient} width="64" height="64" viewBox="0 0 64 64" fill="#131316" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
@@ -136,7 +136,7 @@ export const FeedPage: FC = () => {
                       else return null
 
                     })}
-                    {order.ingredients.map((ingredientCreated, productIndex, arr) => {
+                    {order.ingredients?.map((ingredientCreated, productIndex, arr) => {
 
                       const reversedIndex = arr.length - 1 - productIndex;
                       const classForLastIng = `${styles.lastIngredient}`
@@ -246,8 +246,8 @@ export const FeedPage: FC = () => {
                         });
 
                         return accumulator + (item?.type === 'bun' && duplicateBuns.length === 0 ?
-                          item!?.price * 2 : item!?.price)
-                      }, 0)}</p>
+                          item!?.price * 2 : item!?.price) 
+                      }, 0) || null}</p>
                     <CurrencyIcon type="primary" />
                   </div>
                 </div>
@@ -302,7 +302,7 @@ export const FeedPage: FC = () => {
             Выполнено за сегодня:
           </h2 >
           <p className={`text text_type_digits-large ${styles.numbers}`}>
-            {wsData.allOrders[0].totalToday}</p>
+            {wsData.allOrders[0]?.totalToday}</p>
         </div>
       </div>
       <AnimatePresence>
