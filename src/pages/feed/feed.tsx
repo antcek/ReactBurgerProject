@@ -17,16 +17,17 @@ export const FeedPage: FC = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const userData = useSelector(store => store.loginUser.user)
   const createdOrderVisible = useSelector((store) => store.ingredientDetails.visible);
   const location: IUseLocation = useLocation();
 
   useEffect(() => {
     dispatch({ type: WS_CONNECTION_START })
-
+   
     return () => {
       dispatch({ type: WS_CONNECTION_CLOSED })
     }
-  }, [dispatch]);
+  }, [dispatch,userData]);
 
   const wsData = useSelector(store => store.wsReducer);
   const ingredients = useSelector(store => store.getProducts.products);

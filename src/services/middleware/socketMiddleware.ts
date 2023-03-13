@@ -22,8 +22,9 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
       };
 
       if (type === wsInit && user) {
-
+     
         socket = new WebSocket(`${payload?.href || wsUrl}`)
+        console.log(socket)
       }
 
 
@@ -44,11 +45,12 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
             updateToken()   //вызываем обновление токена
               .then((refreshData) => {
                 const wssUrl = new URL(wsUrl);
+                console.log( refreshData.accessToken)
                 wssUrl.searchParams.set(
                   'token',
                   refreshData.accessToken
                 );
-
+       
                 dispatch({    //диспатчи экшен нового подключения
                   type: wsInit,
                   payload: wssUrl,
