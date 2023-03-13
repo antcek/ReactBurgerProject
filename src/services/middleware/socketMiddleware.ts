@@ -1,6 +1,5 @@
 import type { Middleware, MiddlewareAPI } from "redux";
 import type { AppDispatch, RootState } from '../types/redux-index';
-import Cookies from 'js-cookie'
 import { TWSActionType } from "../types/types";
 import { updateToken } from "../thunk-actions/thunk-actions";
 
@@ -12,21 +11,16 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
     let socket: WebSocket | null = null;
 
     return next => (action) => {
-      const { dispatch, getState } = store;
+      const { dispatch } = store;
       const { type, payload } = action;
       const { wsInit, onOpen, onClose, onError, onMessage } = wsActions;
-      const { user } = getState().loginUser;
 
+  
       if (type === wsInit) {
-        socket = new WebSocket(wsUrl);
-      };
-
-      if (type === wsInit && user) {
-     
-        socket = new WebSocket(`${payload?.href || wsUrl}`)
-        console.log(socket)
+          
+        socket = new WebSocket(`${payload ? payload: wsUrl}`)
+      console.log(socket)
       }
-
 
       if (socket) {
         socket.onopen = (event) => {
@@ -45,15 +39,15 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
             updateToken()   //вызываем обновление токена
               .then((refreshData) => {
                 const wssUrl = new URL(wsUrl);
-                console.log( refreshData.accessToken)
+            
                 wssUrl.searchParams.set(
                   'token',
                   refreshData.accessToken
                 );
-       
+                
                 dispatch({    //диспатчи экшен нового подключения
                   type: wsInit,
-                  payload: wssUrl,
+                  payload: wssUrl.href,
                 });
               })
               .catch((err: any) => {

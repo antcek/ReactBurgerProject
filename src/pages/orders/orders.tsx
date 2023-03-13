@@ -11,7 +11,8 @@ import Modal from "../../components/modal/modal";
 import { CreatedOrderDetails } from "../../components/created-order-details/created-order-details";
 import { useSelector, useDispatch } from "../../services/types/hooks";
 import { WS_USER_CONNECTION_CLOSED, WS_USER_CONNECTION_START } from "../../services/actions/web-socket";
-
+import { PERSONAL_ORDERS_URL } from "../../utils/api";
+import Cookies from "js-cookie";
 
 export const OrderPage: FC = () => {
 
@@ -19,7 +20,7 @@ export const OrderPage: FC = () => {
   const dispatch = useDispatch();
   const location: IUseLocation = useLocation();
   const createdOrderVisible = useSelector((store) => store.ingredientDetails.visible);
-
+  const startURL = PERSONAL_ORDERS_URL + `?token=${Cookies.get('accessToken')}`;
 
   const wsData = useSelector(store => store.wsReducer);
   const ingredients = useSelector(store => store.getProducts.products);
@@ -27,12 +28,14 @@ export const OrderPage: FC = () => {
   const userOrders = wsData.userOrders[0]?.orders?.slice(wsData.userOrders[0].orders.length - 50);
 
   useEffect(() => {
-    dispatch({ type: WS_USER_CONNECTION_START });
+    dispatch({ type: WS_USER_CONNECTION_START,
+      payload: startURL
+     });
 
     return () => {
       dispatch({ type: WS_USER_CONNECTION_CLOSED })
     }
-  }, [dispatch]);
+  }, [dispatch, startURL]);
   
 
   function onCloseModal(): void {
