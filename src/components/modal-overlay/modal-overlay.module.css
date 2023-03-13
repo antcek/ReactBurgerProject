@@ -8,4 +8,6 @@
     position: absolute;
     height: 100vh;
     cursor: pointer;
+    z-index:31;
+   
 }

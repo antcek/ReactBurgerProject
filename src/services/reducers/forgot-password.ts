@@ -1,12 +1,18 @@
-import { RECOVER_FAILED, RECOVER_SUCCESS, RECOVER_REQUEST } from "../actions/forgot-password";
+import { RECOVER_FAILED, RECOVER_SUCCESS, RECOVER_REQUEST, TRecoverActions } from "../actions/forgot-password";
 
-const initialState = {
+interface IinitialState {
+    recoverRequest: boolean;
+    recoverFailed: boolean;
+    recoverSuccess: boolean;
+  }
+
+const initialState: IinitialState = {
   recoverRequest: false,
   recoverFailed: false,
   recoverSuccess: false,
 }
 
-export const recoverPasswordReducer = (state = initialState, action) => {
+export const recoverPasswordReducer = (state = initialState, action: TRecoverActions): IinitialState => {
 
     switch (action.type) {
 

@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import styles from './left-side-menu.module.css';
 import { NavLink } from 'react-router-dom';
 import { logout } from '../../services/thunk-actions/thunk-actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../services/types/hooks';
 import { useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import { IUseLocation } from '../../services/types/types';
@@ -31,7 +31,7 @@ export const LeftSideMenu: FC = () => {
         <NavLink
           to='/profile/orders'
           className={() =>
-            classNames(`${location.pathname === '/profile/orders' ? styles.elementActive
+            classNames(`${location.pathname.startsWith('/profile/orders') ? styles.elementActive
               : styles.elementDisactive}`,
             )}
         >
@@ -42,7 +42,7 @@ export const LeftSideMenu: FC = () => {
         <div
           className={styles.logout}
           onClick={() => {
-            dispatch(logout() as any);
+            dispatch(logout());
           }}
         >
           <p className={`text text_type_main-medium text_color_inactive ${styles.logout}`}>

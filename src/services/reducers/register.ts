@@ -1,14 +1,19 @@
-import { REGISTER_FAILED, REGISTER_SUCCESS, REGISTER_REQUEST } from "../actions/register";
+import { REGISTER_FAILED, REGISTER_SUCCESS, REGISTER_REQUEST,TRegisterActions, IUser } from "../actions/register";
 
-const initialState = {
+interface IInitialState {
+  registerRequest: boolean;
+  registerFailed: boolean;
+  registerNewUser: boolean | IUser ;
+}
+
+const initialState: IInitialState = {
   registerRequest: false,
   registerFailed: false,
   registerNewUser: false,
- 
-   
+
 }
 
-export const registerUserReducer = (state = initialState, action) => {
+export const registerUserReducer = (state = initialState, action: TRegisterActions): IInitialState => {
 
   switch (action.type) {
 
@@ -21,12 +26,11 @@ export const registerUserReducer = (state = initialState, action) => {
     }
 
     case REGISTER_SUCCESS: {
-
+        console.log(action.user)
       return {
         ...state,
         registerRequest: false,
         registerNewUser: action.user,
-      
 
       }
     }

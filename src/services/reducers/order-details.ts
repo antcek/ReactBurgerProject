@@ -1,21 +1,28 @@
-import { ORDER_FAILED, ORDER_SUCCESS, ORDER_REQUEST } from "../actions/order-details";
+import { ORDER_FAILED, ORDER_SUCCESS, ORDER_REQUEST, TOrderActions } from "../actions/order-details";
 
-const initialState = {
+interface IInitialState {
+    orderRequest: boolean;
+    orderFailed: boolean;
+    orderNumber: null | number;
+}
+
+const initialState: IInitialState = {
     orderRequest: false,
     orderFailed: false,
-    orderNumber: ''
+    orderNumber: null,
 
 }
 
-export const orderNumberReducer = (state = initialState, action) => {
+export const orderNumberReducer = (state = initialState, action: TOrderActions): IInitialState => {
 
     switch (action.type) {
 
         case ORDER_REQUEST: {
+
             return {
                 ...state,
                 orderRequest: true,
-                orderFailed:false,
+                orderFailed: false,
             }
         }
 
@@ -25,7 +32,7 @@ export const orderNumberReducer = (state = initialState, action) => {
                 ...state,
                 orderRequest: false,
                 orderNumber: action.orderNumber,
-                orderFailed:false,
+                orderFailed: false,
             }
         }
 

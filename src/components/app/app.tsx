@@ -4,7 +4,7 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 import styles from './app.module.css';
 import React, { useEffect, FC } from 'react';
 import { getIngredients } from '../../services/thunk-actions/thunk-actions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/types/hooks';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -23,16 +23,20 @@ import { CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-de
 import Modal from '../modal/modal';
 import { OrderPage } from '../../pages/orders/orders';
 import { FeedPage } from '../../pages/feed/feed';
+import { FeedDetailsPage } from '../../pages/feed-details-page/feed-details-page';
+import { CreatedOrderDetails } from '../created-order-details/created-order-details';
+import { RootState } from '../../services/types/redux-index';
 
+const getDetailsVisible = (store: RootState) => store.ingredientDetails.visible;
+const getProductsFailed = (store: RootState) => store.getProducts.productsFailed;
 
-
- const App: FC = () => {
+const App: FC = () => {
 
     const dispatch = useDispatch();
     let accessToken = Cookies.get('accessToken');
 
-    const productsFailed = useSelector((store: any) => store.getProducts.productsFailed);
-    const detailsVisible = useSelector((store: any) => store.ingredientDetails.visible);
+    const productsFailed = useSelector(getProductsFailed);
+    const detailsVisible = useSelector(getDetailsVisible);
 
     function onCloseModal(): void {
         localStorage.removeItem('modalData');
@@ -46,10 +50,10 @@ import { FeedPage } from '../../pages/feed/feed';
 
     useEffect(() => {
 
-        dispatch(getIngredients() as any);
+        dispatch(getIngredients());
 
         if (accessToken) {
-            dispatch(userGetData() as any);
+            dispatch(userGetData());
         };
 
     }, [accessToken, dispatch]);
@@ -63,13 +67,18 @@ import { FeedPage } from '../../pages/feed/feed';
                 </div> :
                 <Router>
                     <Routes>
-
                         <Route path="/login" element={<LoginPage />} />
-                        <Route path="/register" element={<RegisterPage />} />
-                        <Route path='/forgot-password' element={<ForgotPasswordPage />} />
-                        <Route path='/reset-password' element={<ResetPasswordPage />} />
-                        <Route path='/profile' element={<ProtectedRouteElement element={<ProfilPage />} />} />
-                        <Route path='/profile/orders' element={<ProtectedRouteElement element={<OrderPage />} />} />
+                        <Route path="/register/" element={<RegisterPage />} />
+                        <Route path='/forgot-password/' element={<ForgotPasswordPage />} />
+                        <Route path='/reset-password/' element={<ResetPasswordPage />} />
+                        <Route path='/profile/' element={<ProtectedRouteElement element={<ProfilPage />} />} />
+                        <Route path='/profile/orders' element={<ProtectedRouteElement element={<OrderPage />} />} >
+                            {detailsVisible && <Route path=':id' element={
+                                <Modal onCloseModal={onCloseModal}>
+                                    <CreatedOrderDetails />
+                                </Modal>} />}
+                        </Route>
+                        <Route path='/profile/orders/:id' element={<ProtectedRouteElement element={<FeedDetailsPage />} />} />
                         <Route path="/" element={<> <AppHeader />
                             <main>
                                 <div className={styles.sections}>
@@ -80,20 +89,24 @@ import { FeedPage } from '../../pages/feed/feed';
                                 </div>
                             </main>
                         </>} >
-                            {detailsVisible && <Route path={`/ingredients/:id`}
+                            {detailsVisible && <Route path='/ingredients/:id'
                                 element={<Modal onCloseModal={onCloseModal}>
                                     <IngredientDetails />
                                 </Modal>} />}
                         </Route>
-                        <Route path='/feed' element={<FeedPage />}>
+                        <Route path='/feed/' element={<FeedPage />} >
 
+                            {detailsVisible && <Route path=':id' element={
+                                <Modal onCloseModal={onCloseModal}>
+                                    <CreatedOrderDetails />
+                                </Modal>} />}
                         </Route>
+                        <Route path='/feed/:id' element={<FeedDetailsPage />} />
                         <Route path='*' element={<Error404Page />} />
-                        <Route path='/ingredients' element={<IngredientsPage />} >
+                        <Route path='/ingredients/' element={<IngredientsPage />} >
                             <Route path=':id'
                                 element={<IngredientDetails />} />
                         </Route>
-
                     </Routes>
                 </Router>
             }

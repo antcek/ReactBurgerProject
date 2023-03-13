@@ -1,12 +1,18 @@
-import { RESET_FAILED, RESET_SUCCESS, RESET_REQUEST } from "../actions/reset-password";
+import { RESET_FAILED, RESET_SUCCESS, RESET_REQUEST, TResetActions, IReset } from "../actions/reset-password";
 
-const initialState = {
+interface IInitialState {
+    resetRequest: boolean;
+    resetFailed: boolean;
+    resetSuccess: boolean | IReset;
+}
+
+const initialState: IInitialState = {
   resetRequest: false,
   resetFailed: false,
   resetSuccess: false,
 }
 
-export const resetPasswordReducer = (state = initialState, action) => {
+export const resetPasswordReducer = (state = initialState, action: TResetActions): IInitialState => {
 
     switch (action.type) {
 

@@ -1,0 +1,162 @@
+.container {
+  box-sizing: border-box;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1240px;
+  max-height: auto;
+  padding-top: 20px;
+  display: flex;
+  gap: 60px;
+
+
+}
+
+.cardWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-height: 812px;
+  max-width: 600px;
+  overflow-y: auto;
+
+}
+
+.cardWrapper::-webkit-scrollbar {
+  background: #2F2F37;
+  width: 8px;
+  border-radius: 3px;
+
+}
+
+.cardWrapper::-webkit-scrollbar-thumb {
+  background: #8585AD;
+  border: 3px solid #8585AD;
+  border-radius: 3px;
+
+}
+
+.order {
+  display: flex;
+  position: relative;
+  align-content: center;
+  padding: 24px;
+  gap: 24px;
+  background: #1C1C21;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.06), 0px 0px 1px rgba(0, 0, 0, 0.04);
+  border-radius: 40px;
+  flex-direction: column;
+  max-width: 584px;
+  margin-right: 8px;
+  cursor: pointer;
+  transition:transform 300ms ease-in-out;
+}
+
+.order:hover {
+  transform: scale(95%);
+  transition:transform 250ms ease-in-out;
+
+}
+
+.heading {
+  margin: 0 auto;
+  max-width: 1240px;
+
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.date {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+
+}
+
+.cardBottom {
+  width: 100%;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ingredient {
+  position: relative;
+  display: flex;
+  z-index: 30;
+
+}
+
+.lastIngredient {
+  opacity: 0.6;
+}
+
+.additionalQuantity {
+  
+  z-index:31;
+  top: 32px;
+  right: 32px;
+  transform:translate(50%, -50%);
+  position:absolute;
+ 
+}
+
+.ingredient:not(:last-child) {
+
+  margin-left: -15px;
+
+}
+
+.ingredient>image {
+  transform: translate(-36.5%, 6%);
+}
+
+
+.burger {
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+  overflow-x: hidden;
+}
+
+.price {
+  display: flex;
+  gap: 10px;
+}
+
+.currentOrders {
+
+  display: flex;
+  gap: 36px;
+}
+
+.currentTop {
+  width: 100%;
+  max-width: 272px;
+}
+
+.upcomingOrders {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 60px;
+  
+
+}
+
+.readyOrders {
+  composes: upcomingOrders;
+  color: #00CCCC;
+ 
+}
+
+.numbers {
+  text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25), 0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+
+}

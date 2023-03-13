@@ -3,11 +3,12 @@ import AppHeader from '../../components/app-header/app-header';
 import styles from './profile.module.css';
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { updateUserInfo } from '../../services/thunk-actions/thunk-actions';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/types/hooks';
 import Cookies from 'js-cookie';
 import { userGetData } from '../../services/thunk-actions/thunk-actions';
 import { LeftSideMenu } from '../../components/left-side-menu/left-side-menu';
 import { useForm } from '../../services/custom-hooks/custom-hooks';
+
 
 
 const initialInput = {
@@ -21,7 +22,7 @@ export const ProfilPage: FC = () => {
 
   const dispatch = useDispatch();
 
-  const userData = useSelector((store: any) => store.loginUser.user);
+  const userData = useSelector((store) => store.loginUser.user);
   const accessToken = Cookies.get('accessToken');
 
   const { values, handleChange, setValues } = useForm(initialInput);
@@ -43,8 +44,8 @@ export const ProfilPage: FC = () => {
     if (userData) {
       setValues({
         ...values,
-        name: userData?.name,
-        email: userData?.email
+        name: userData?.name || '',
+        email: userData?.email || '',
       })
     }
     // отключил эслинт, т.к при добавлении values в зависимости происходит бесконечный рендер
@@ -54,15 +55,15 @@ export const ProfilPage: FC = () => {
   useEffect(() => {
 
     if (accessToken) {
-      dispatch(userGetData() as any);
+      dispatch(userGetData());
     };
 
   }, [accessToken, dispatch])
 
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    dispatch(updateUserInfo(values.name, values.email, values.password) as any);
+    dispatch(updateUserInfo(values.name, values.email, values.password));
     setValues({
       ...values,
       password: ''
@@ -74,8 +75,8 @@ export const ProfilPage: FC = () => {
     if (userData) {
       setValues({
         ...values,
-        name: userData?.name,
-        email: userData?.email
+        name: userData?.name || '',
+        email: userData?.email || ''
       });
 
     }
@@ -109,7 +110,7 @@ export const ProfilPage: FC = () => {
               onChange={handleChange}
               value={values?.password}
               name={'password'}
-              
+
             />
 
             {isChanging() ? <div className={styles.formButtons}>

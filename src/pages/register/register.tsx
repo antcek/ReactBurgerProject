@@ -4,8 +4,7 @@ import styles from './register.module.css';
 import { EmailInput, PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link } from 'react-router-dom';
 import { registerUser } from '../../services/thunk-actions/thunk-actions';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/types/hooks';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -14,8 +13,8 @@ export const RegisterPage: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const registeredUser = useSelector((store: any) => store.registerUser.registerNewUser);
-  const loggedUser = useSelector((store: any) => store.loginUser.userAuthorizied);
+  const registeredUser = useSelector((store) => store.registerUser.registerNewUser);
+  const loggedUser = useSelector((store) => store.loginUser.userAuthorizied);
   const [nameValue, setNameValue] = useState('');
   const [loginValue, setLoginValue] = useState('');
 
@@ -29,7 +28,7 @@ export const RegisterPage: FC = () => {
 
   useEffect(() => {
     if (registeredUser && !loggedUser) {
-      navigate('/login', { replace: true });
+      navigate('/login/', { replace: true });
     }
 
     if (loggedUser) {
@@ -41,7 +40,7 @@ export const RegisterPage: FC = () => {
 
     event.preventDefault();
 
-    dispatch(registerUser(nameValue, loginValue, passwordValue) as any);
+    dispatch(registerUser(nameValue, loginValue, passwordValue));
   }
 
   return (

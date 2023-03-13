@@ -7,6 +7,8 @@ import {recoverPasswordReducer} from './forgot-password';
 import {resetPasswordReducer} from './reset-password';
 import { registerUserReducer } from './register';
 import { loginUserReducer } from './user';
+import { wsReducer } from './web-socket';
+
 
 export const rootReducer = combineReducers({
 
@@ -18,4 +20,5 @@ export const rootReducer = combineReducers({
     resetPassword: resetPasswordReducer,
     registerUser: registerUserReducer,
     loginUser: loginUserReducer,
+    wsReducer: wsReducer,
 })

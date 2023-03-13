@@ -1,8 +1,9 @@
 import { useLocation } from "react-router";
 import { useEffect, useState } from 'react';
 import { CURRENT_INGREDIENT_DETAILS } from "../actions/ingredient-details";
-import { useDispatch } from "react-redux";
-import { IUseLocation } from "../types/types";
+import { useDispatch, useSelector } from '../../services/types/hooks';
+import { IIngredientType, IOrderData, IUseLocation } from "../types/types";
+
 
 export type TValues = {
     name: string;
@@ -47,4 +48,29 @@ export function useForm(nameValue: TValues): TFormValues {
     };
 
     return { values, handleChange, setValues };
+}
+
+export const useOrderFullPrice = (targetOrder: IOrderData | undefined | null): number | undefined => {
+
+    const allIngredients = useSelector(store => store.getProducts.products);
+    const orderAllData = targetOrder?.ingredients?.map(orderItem => {
+
+        return allIngredients?.find(ingredient => (ingredient._id === orderItem))
+    });
+    const orderWithCount = orderAllData && Object.values(
+        orderAllData.reduce((acc: any, obj: any) => {
+            const { name } = obj;
+            if (!acc[name]) {
+                acc[name] = { name, count: 0, ...obj };
+            }
+            acc[name].count++;
+            return acc;
+        }, {})
+    );
+
+    return (orderWithCount as IIngredientType[])?.reduce((accumulator, item: IIngredientType): number => {
+      
+        return accumulator + (item?.type === 'bun' ? item!.price * 2 : item!.price * (item.count as number))
+    }, 0);
+
 }

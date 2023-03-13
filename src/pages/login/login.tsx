@@ -3,7 +3,7 @@ import AppHeader from '../../components/app-header/app-header';
 import styles from './login.module.css';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/types/hooks';
 import { loginUser } from '../../services/thunk-actions/thunk-actions';
 import { REGISTER_SUCCESS } from '../../services/actions/register';
 
@@ -11,7 +11,7 @@ import { REGISTER_SUCCESS } from '../../services/actions/register';
 export const LoginPage: FC = () => {
 
   const dispatch = useDispatch();
-  const loggedUser = useSelector((store: any) => store.loginUser.userAuthorizied);
+  const loggedUser = useSelector((store) => store.loginUser.userAuthorizied);
   const navigate = useNavigate();
   const [loginValue, setLoginValue] = useState('');
 
@@ -36,7 +36,7 @@ export const LoginPage: FC = () => {
     event.preventDefault();
 
     if (passwordValue.length > 5) {
-      dispatch(loginUser(loginValue, passwordValue) as any)
+      dispatch(loginUser(loginValue, passwordValue))
     };
   }
 

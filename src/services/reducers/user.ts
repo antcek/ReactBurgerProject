@@ -10,23 +10,41 @@ import {
   LOGIN_GET_DATA_FAILED,
   USER_UPDATE_INFO_REQUEST,
   USER_UPDATE_INFO,
-  USER_UPDATE_INFO_FAILED
+  USER_UPDATE_INFO_FAILED,
+  TUserActions
 } from "../actions/user";
+import { IUser } from "../actions/register";
 
-const initialState = {
+interface IInitialState {
+  loginRequest: boolean;
+  loginFailed: boolean;
+  userAuthorizied: boolean | IUser | null;
+  logoutRequest: boolean;
+  logoutFailed: boolean;
+  dataRequest: boolean;
+  user: null | IUser;
+  updateDataRequest: boolean;
+  updateDataFailed: boolean;
+  dataFailed: boolean;
+  token:string | null;
+}
+
+const initialState: IInitialState = {
   loginRequest: false,
   loginFailed: false,
   userAuthorizied: false,
   logoutRequest: false,
   logoutFailed: false,
+  dataRequest: false,
   user: null,
   updateDataRequest: false,
   updateDataFailed: false,
-  
+  dataFailed: false,
+  token: null,
 
 }
 
-export const loginUserReducer = (state = initialState, action) => {
+export const loginUserReducer = (state = initialState, action: TUserActions): IInitialState => {
 
   switch (action.type) {
 
@@ -119,6 +137,7 @@ export const loginUserReducer = (state = initialState, action) => {
         updateDataRequest: false,
         updateDataFailed: false,
         user: action.user,
+        token: action.token
         
 
       }

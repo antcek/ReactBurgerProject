@@ -18,7 +18,7 @@ import {
 } from "../../utils/api";
 import { RECOVER_FAILED, RECOVER_SUCCESS, RECOVER_REQUEST } from "../actions/forgot-password";
 import { RESET_FAILED, RESET_SUCCESS, RESET_REQUEST } from "../actions/reset-password";
-import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILED } from "../actions/register";
+import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILED, IUser } from "../actions/register";
 import {
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
@@ -34,31 +34,43 @@ import {
     USER_UPDATE_INFO_REQUEST,
 } from "../actions/user";
 import Cookies from 'js-cookie';
+import { AppDispatch, AppThunk } from "../types/redux-index";
+import { IIngredients } from "../types/types";
 
+type TRecover = {
+    success: boolean;
+    message: string;
+}
 
-const checkResponse = (res) => {
+const checkResponse = <T>(res: Response): Promise<T> => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err))
 };
 
-const saveTokens = (refreshToken, accessToken) => {
+const saveTokens = (refreshToken: string, accessToken: string): void => {
     Cookies.set('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
 }
 
 
-export function getIngredients() {
 
-    return async function (dispatch) {
+export const getIngredients: AppThunk = () => {
+
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: ALL_INGREDIENTS_REQUEST
         });
 
         try {
             const response = await fetch(`${BURGER_API_URL}/ingredients`);
-            checkResponse(response).then(ingredients => dispatch({
-                type: ALL_INGREDIENTS_SUCCESS,
-                products: ingredients.data
-            }));
+
+            checkResponse<IIngredients>(response).then((ingredients) => {
+
+                dispatch({
+                    type: ALL_INGREDIENTS_SUCCESS,
+                    products: ingredients.data
+                })
+            }
+            );
 
         } catch (err) {
             dispatch({
@@ -71,14 +83,14 @@ export function getIngredients() {
 };
 
 
-export function sendOrder(idConstructor) {
-    return async function (dispatch) {
+export const sendOrder: AppThunk = (idConstructor) => {
+    return async function (dispatch: AppDispatch | AppThunk) {
         dispatch({
             type: ORDER_REQUEST
         });
 
         try {
-            await fetchWithRefresh(`${NORMA_API}/orders`,
+            await fetchWithRefresh<TCreatePostResponse>(`${NORMA_API}/orders`,
                 {
                     method: 'POST',
                     headers: {
@@ -87,9 +99,9 @@ export function sendOrder(idConstructor) {
                     },
                     body: JSON.stringify(idConstructor),
                 })
-                .then(result => dispatch({
+                .then((result) => dispatch({
                     type: ORDER_SUCCESS,
-                    orderNumber: result.order.number
+                    orderNumber: result.order?.number
                 }))
 
         } catch (err) {
@@ -107,9 +119,9 @@ export function sendOrder(idConstructor) {
     }
 }
 
-export function recoverPassword(loginValue) {
+export const recoverPassword: AppThunk = (loginValue: string) => {
 
-    return async function (dispatch) {
+    return async function (dispatch: AppDispatch) {
 
         dispatch({
             type: RECOVER_REQUEST,
@@ -129,7 +141,7 @@ export function recoverPassword(loginValue) {
 
                 });
 
-            checkResponse(response).then(result => {
+            checkResponse<TRecover>(response).then((result) => {
 
                 dispatch({
                     type: RECOVER_SUCCESS,
@@ -147,9 +159,11 @@ export function recoverPassword(loginValue) {
     }
 }
 
-export function resetPassword(passwordValue, tokenValue) {
 
-    return async function (dispatch) {
+
+export const resetPassword: AppThunk = (passwordValue: string, tokenValue: string) => {
+
+    return async function (dispatch: AppDispatch) {
 
         dispatch({
             type: RESET_REQUEST,
@@ -169,7 +183,7 @@ export function resetPassword(passwordValue, tokenValue) {
                     }),
                 });
 
-            checkResponse(response).then(result =>
+            checkResponse<TRecover>(response).then((result) =>
 
                 dispatch({
                     type: RESET_SUCCESS,
@@ -185,9 +199,9 @@ export function resetPassword(passwordValue, tokenValue) {
     }
 }
 
-export function registerUser(nameValue, loginValue, passwordValue) {
+export const registerUser: AppThunk = (nameValue: string, loginValue: string, passwordValue: string) => {
 
-    return async function (dispatch) {
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: REGISTER_REQUEST,
         })
@@ -208,7 +222,7 @@ export function registerUser(nameValue, loginValue, passwordValue) {
 
                 });
 
-            checkResponse(response).then(result => {
+            checkResponse<IUser>(response).then(result => {
 
                 dispatch({
                     type: REGISTER_SUCCESS,
@@ -224,9 +238,9 @@ export function registerUser(nameValue, loginValue, passwordValue) {
     }
 }
 
-export function loginUser(loginValue, passwordValue) {
+export const loginUser: AppThunk = (loginValue: string, passwordValue: string) => {
 
-    return async function (dispatch) {
+    return async function (dispatch: AppDispatch) {
         dispatch({
             type: LOGIN_REQUEST,
         })
@@ -245,7 +259,7 @@ export function loginUser(loginValue, passwordValue) {
                     }),
 
                 })
-            checkResponse(response).then(result => {
+            checkResponse<IUser>(response).then(result => {
 
                 let accessToken;
 
@@ -276,63 +290,66 @@ export function loginUser(loginValue, passwordValue) {
     }
 }
 
-export const updateToken = () => {
+let tokenPromise: Promise<{ refreshToken: string, accessToken: string }> | null = null;
 
+export const updateToken = async (): Promise<{ refreshToken: string, accessToken: string }> => {
 
-    return fetch(`${API_REFRESH_TOKEN}/auth/token`,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
+    if (tokenPromise !== null) {
+        return tokenPromise;
+    }
 
-            },
-            body: JSON.stringify({
-                token: localStorage.getItem('refreshToken')
-            })
+    tokenPromise = fetch(`${API_REFRESH_TOKEN}/auth/token`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            token: localStorage.getItem('refreshToken')
         })
+    })
         .then((res) => {
-
             if (res.ok) {
                 return res.json()
             }
-
-        }).then(res => {
-
+        })
+        .then(res => {
             let accessToken = res.accessToken;
             let refreshToken = res.refreshToken;
             if (accessToken.indexOf('Bearer') === 0) {
                 accessToken = accessToken.split('Bearer')[1].trim();
-
             };
-
             saveTokens(refreshToken, accessToken);
 
             return { refreshToken, accessToken }
         })
+        .finally(() => {
+            tokenPromise = null;
+        });
 
-
+    return tokenPromise;
 }
 
-export const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async <T>(url: RequestInfo, options: RequestInit) => {
 
     try {
 
         const response = await fetch(url, options);
-        return await checkResponse(response);
+        return await checkResponse<T>(response);
 
     }
     catch (err) {
 
-        if (err.message === 'jwt expired') {
+        if ((err as { message: string }).message === 'jwt expired') {
 
             const { refreshToken, accessToken } = await updateToken();
-            saveTokens(refreshToken, accessToken)
 
-            options.headers.authorization = 'Bearer ' + accessToken;
+            saveTokens(refreshToken, accessToken);
+
+            (options.headers as { [key: string]: string }).authorization = 'Bearer ' + accessToken;
 
             const response = await fetch(url, options);
 
-            return await checkResponse(response);
+            return await checkResponse<T>(response);
 
         } else {
 
@@ -343,9 +360,9 @@ export const fetchWithRefresh = async (url, options) => {
 
 
 
-export function logout() {
+export const logout: AppThunk = () => {
 
-    return async function (dispatch) {
+    return async function (dispatch: AppDispatch) {
 
         dispatch({
             type: LOGIN_EXIT_REQUEST
@@ -364,7 +381,7 @@ export function logout() {
                     }),
                 });
 
-            checkResponse(response).then(result => {
+            checkResponse<TRecover>(response).then(result => {
 
                 localStorage.removeItem('refreshToken');
                 Cookies.remove('accessToken');
@@ -383,21 +400,34 @@ export function logout() {
                 type: LOGIN_EXIT_FAILED
             })
         }
-
-
     }
 }
+type TServerResponse<T> = {
+    success: boolean;
+    user?: IUser;
+    order?: {
+        number: number
+    }
 
-export function userGetData() {
+} & T;
 
-    return async function (dispatch) {
+type TPost = {
+    title: string;
+    description: string;
+};
+
+type TCreatePostResponse = TServerResponse<TPost>;
+
+export const userGetData: AppThunk = () => {
+
+    return async function (dispatch: AppDispatch | AppThunk) {
 
         dispatch({
             type: LOGIN_GET_DATA_REQUEST
         })
 
         try {
-            await fetchWithRefresh(`${API_GET_USER_INFO}/auth/user`,
+            await fetchWithRefresh<TCreatePostResponse>(`${API_GET_USER_INFO}/auth/user`,
                 {
                     method: 'GET',
                     headers: {
@@ -405,36 +435,37 @@ export function userGetData() {
                         'Authorization': 'Bearer ' + Cookies.get('accessToken')
                     },
 
-                }).then(result => {
+                }).then((result) => {
 
                     dispatch({
                         type: LOGIN_GET_DATA,
                         user: result.user,
                         userAuthorizied: true,
-                    })
+                    });
+
                 })
         } catch (err) {
-            dispatch(userGetData())
 
             dispatch({
                 type: LOGIN_GET_DATA_FAILED
             });
 
+            dispatch(userGetData());
 
         }
     }
 }
 
-export function updateUserInfo(nameValue, loginValue, passwordValue) {
+export const updateUserInfo: AppThunk = (nameValue: string, loginValue: string, passwordValue: string) => {
 
-    return async function (dispatch) {
+    return async function (dispatch: AppDispatch | AppThunk) {
 
         dispatch({
             type: USER_UPDATE_INFO_REQUEST
         });
         try {
 
-            await fetchWithRefresh(`${API_UPDATE_USER_INFO}/auth/user`,
+            await fetchWithRefresh<TCreatePostResponse>(`${API_UPDATE_USER_INFO}/auth/user`,
                 {
                     method: 'PATCH',
                     headers: {
@@ -447,16 +478,15 @@ export function updateUserInfo(nameValue, loginValue, passwordValue) {
                         password: passwordValue
                     })
 
-                }).then(result => {
+                }).then((result) => {
 
                     dispatch({
                         type: USER_UPDATE_INFO,
                         user: result.user,
 
-                    })
+                    });
 
-                }
-                )
+                });
 
         } catch (err) {
             dispatch(updateUserInfo());
@@ -469,7 +499,3 @@ export function updateUserInfo(nameValue, loginValue, passwordValue) {
 
     }
 }
-
-
-// Patch ../user  - при нажатии 'сохранить' информацию
-//проверить updateToken несколько раз
