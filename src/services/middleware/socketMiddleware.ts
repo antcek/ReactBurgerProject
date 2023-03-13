@@ -13,7 +13,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
 
     return next => (action) => {
       const { dispatch, getState } = store;
-      const { type } = action;
+      const { type, payload } = action;
       const { wsInit, onOpen, onClose, onError, onMessage } = wsActions;
       const { user } = getState().loginUser;
 
@@ -23,7 +23,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
 
       if (type === wsInit && user) {
 
-        socket = new WebSocket(`${wsUrl}?token=${Cookies.get('accessToken')}`)
+        socket = new WebSocket(`${payload?.href || wsUrl}`)
       }
 
 
@@ -41,10 +41,28 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
 
           if (parsedData?.message === 'Invalid or missing token') {
 
-            let newToken = await updateToken().then(data => data.accessToken);
-            if (newToken) {
-              socket = new WebSocket(`${wsUrl}?token=${newToken}`);
-            }
+            updateToken()   //вызываем обновление токена
+              .then((refreshData) => {
+                const wssUrl = new URL(wsUrl);
+                wssUrl.searchParams.set(
+                  'token',
+                  refreshData.accessToken
+                );
+
+                dispatch({    //диспатчи экшен нового подключения
+                  type: wsInit,
+                  payload: wssUrl,
+                });
+              })
+              .catch((err: any) => {
+                dispatch({ type: onError, payload: err });
+              });
+
+
+            dispatch({ type: onClose });  //закрываем предыдущее подключение
+
+            return;
+
           }
 
           dispatch({

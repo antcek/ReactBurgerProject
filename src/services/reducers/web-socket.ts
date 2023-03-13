@@ -8,7 +8,8 @@ import {
   WS_USER_CONNECTION_SUCCESS,
   WS_USER_GET_MESSAGE,
   TWSActions,
-  IMessage
+  IMessage,
+  WS_USER_CONNECTION_START
 } from "../actions/web-socket";
 
 
@@ -18,6 +19,7 @@ interface TWSState {
   allOrders: IMessage[];
   error?: Event;
   userOrders: IMessage[];
+  url?: string | null;
 }
 
 const initialState: TWSState = {
@@ -52,6 +54,7 @@ const initialState: TWSState = {
     total: '',
     totalToday: '',
   }],
+  url: null
 }
 
 export const wsReducer = (state = initialState, action: TWSActions): TWSState => {
@@ -121,7 +124,15 @@ export const wsReducer = (state = initialState, action: TWSActions): TWSState =>
         error: undefined,
         userOrders: [action.payload]
       };
-    }
+    };
+
+    case WS_USER_CONNECTION_START: {
+       return {
+        ...state,
+        error: undefined,
+        url: action.payload
+       }
+    } 
 
     default:
       return state;

@@ -61,6 +61,7 @@ export interface IWSError {
 }
 export interface IUserWSStart {
   readonly type: typeof WS_USER_CONNECTION_START;
+  payload: string | null;
 }
 
 export interface IUserWSSuccess {
