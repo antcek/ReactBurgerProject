@@ -5,3 +5,120 @@
   gap: 60px;
   padding-top: 120px;
 }
+
+.cardWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-height: 868px;
+  max-width: 860px;
+  overflow-y: auto;
+
+}
+
+.statusColor {
+  color: #00CCCC;
+}
+
+.cardWrapper::-webkit-scrollbar {
+  background: #2F2F37;
+  width: 8px;
+  border-radius: 3px;
+
+}
+
+.cardWrapper::-webkit-scrollbar-thumb {
+  background: #8585AD;
+  border: 3px solid #8585AD;
+  border-radius: 3px;
+
+}
+
+.burger {
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.order {
+  box-sizing: border-box;
+  display: flex;
+  position: relative;
+  align-content: center;
+  padding: 24px;
+  background: #1C1C21;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.06), 0px 0px 1px rgba(0, 0, 0, 0.04);
+  border-radius: 40px;
+  flex-direction: column;
+  max-width: 844px;
+  margin-right: 8px;
+  cursor: pointer;
+  transition: transform 250ms ease-in-out;
+
+}
+
+.order:hover {
+  transform: scale(96%);
+  transition: transform 250ms ease-in-out;
+
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  padding-bottom: 24px;
+}
+
+.date {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+
+}
+
+.cardBottom {
+  width: 100%;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ingredient {
+  position: relative;
+  display: flex;
+  z-index: 30;
+
+}
+
+.additionalQuantity {
+  
+  z-index:31;
+  top: 32px;
+  right: 32px;
+  transform:translate(50%, -50%);
+  position:absolute;
+ 
+}
+
+.lastIngredient {
+  opacity: 0.6;
+}
+
+.ingredient:not(:last-child) {
+
+  margin-left: -15px;
+
+}
+
+.ingredient>image {
+  transform: translate(-36.5%, 6%);
+}
+
+.price {
+  display: flex;
+  gap: 10px;
+}

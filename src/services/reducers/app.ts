@@ -1,19 +1,26 @@
 import {
   ALL_INGREDIENTS_REQUEST,
   ALL_INGREDIENTS_SUCCESS,
-  ALL_INGREDIENTS_FAILED
+  ALL_INGREDIENTS_FAILED,
+  TAllIngredientsActions
 } from '../actions/app';
+import { IIngredientType } from '../types/types';
 
+interface IInitialAppState {
+  productsRequest: boolean;
+  productsFailed: boolean;
+  products: readonly IIngredientType[] | undefined ;
+}
 
-const initialState = {
+const initialAppState: IInitialAppState = {
 
   productsRequest: false,
   productsFailed: false,
-  products: []
+  products: [],
 
 }
 
-export const getProductsReducer = (state = initialState, action) => {
+export const getProductsReducer = (state = initialAppState, action: TAllIngredientsActions): IInitialAppState => {
 
   switch (action.type) {
 

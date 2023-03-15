@@ -1,7 +1,7 @@
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients-card.module.css';
 import { useDrag } from 'react-dnd';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/types/hooks';
 import React, { FC } from 'react';
 import { IIngredientType } from '../../services/types/types';
 
@@ -25,8 +25,8 @@ const IngredientCard: FC<IIngredientCard> = (({ onOpenModal, product }) => {
 
     });
 
-    const draggedBuns = useSelector((store: any) => store.burgerConstructor.buns);
-    const draggedIngredients = useSelector((store: any) => store.burgerConstructor.ingredients)
+    const draggedBuns = useSelector((store) => store.burgerConstructor.buns);
+    const draggedIngredients = useSelector((store) => store.burgerConstructor.ingredients)
 
     const setBunsCount = () => (draggedBuns.length * 2);
     const setIngredientCount = () => (draggedIngredients.filter((item: IIngredientType) => item.name === product.name).length);

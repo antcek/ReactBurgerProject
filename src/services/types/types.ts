@@ -26,7 +26,33 @@ export interface IIngredientType {
   image_large: string;
   __v: number;
   key?: number;
+  count?: number;
 }
+
+export interface IIngredients {
+  success: boolean;
+  data?: Array<IIngredientType>;
+}
+
+export interface IOrderData {
+  ingredients: string[];
+  _id: string;
+  status: string;
+  number: number | '';
+  name:string;
+  createdAt: string;
+  updateAt: string;
+}
+
+export type TWSActionType = {
+  wsInit: string;
+  onOpen: string;
+  onClose: string;
+  onError: string;
+  onMessage: string;
+  wsSendMessage: string;
+}
+
 
 
 

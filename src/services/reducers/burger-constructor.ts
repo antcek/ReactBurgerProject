@@ -3,22 +3,27 @@ import {
     SET_CONSTRUCTOR_INGREDIENT,
     DELETE_CONSTRUCTOR_INGREDIENT,
     SET_CONSTRUCTOR_BUN,
-    SORT_CONSTRUCTOR_INGREDIENT
+    SORT_CONSTRUCTOR_INGREDIENT,
+    TConstructorActions
 } from "../actions/burger-constructor";
+import { IIngredientType } from "../types/types";
 
-const initialState = {
-
-    ingredients: [],
-    buns: []
-
+interface IConstructorInitialState {
+    ingredients: ReadonlyArray<IIngredientType>;
+    buns: ReadonlyArray<IIngredientType>;
 }
 
-export const burgerConstructorReducer = (state = initialState, action) => {
+const initialConstructorState: IConstructorInitialState = {
+    ingredients: [],
+    buns: []
+}
+
+export const burgerConstructorReducer = (state = initialConstructorState, action: TConstructorActions): IConstructorInitialState => {
 
     switch (action.type) {
 
         case SET_CONSTRUCTOR_INGREDIENT: {
-
+    
             return {
                 ...state,
 
@@ -44,20 +49,15 @@ export const burgerConstructorReducer = (state = initialState, action) => {
 
         case SORT_CONSTRUCTOR_INGREDIENT: {
 
-
-
             return {
                 ...state,
 
                 ingredients: action.ingredients
-
-
             }
         }
 
         default: {
             return state
-
 
         }
     }

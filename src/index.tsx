@@ -7,20 +7,29 @@ import { applyMiddleware } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { socketMiddleware } from './services/middleware/socketMiddleware';
+import { ALL_CREATED_ORDERS_URL, PERSONAL_ORDERS_URL } from './utils/api';
+import { wsUserActions, wsAllActions } from './utils/constants';
 
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))
+export const store = createStore(rootReducer,
+  composeWithDevTools(applyMiddleware(thunk,
+    socketMiddleware(ALL_CREATED_ORDERS_URL, wsAllActions),
+    socketMiddleware(PERSONAL_ORDERS_URL, wsUserActions)
+  )
+  ));
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
 
 root.render(
-   <React.StrictMode>
+  <React.StrictMode>
     <Provider store={store}>
       <App />
     </Provider>
-   </React.StrictMode> 
+  </React.StrictMode>
 );
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

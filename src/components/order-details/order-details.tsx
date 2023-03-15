@@ -1,12 +1,12 @@
 import styles from './order-details.module.css';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/types/hooks';
 import { motion } from 'framer-motion';
 import { SyncLoader } from 'react-spinners';
 import { FC } from 'react';
 
 const OrderDetails:FC = () => {
 
-    const { orderNumber, orderFailed, orderRequest } = useSelector((store: any) => store.orderNumber);
+    const { orderNumber, orderFailed, orderRequest } = useSelector((store) => store.orderNumber);
 
     return (
         orderFailed ? <>

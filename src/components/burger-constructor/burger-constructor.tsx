@@ -3,7 +3,7 @@ import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktiku
 import styles from './burger-constructor.module.css';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/types/hooks';
 import { CURRENT_INGREDIENTS_DETAILS_MODAL, CURRENT_INGREDIENT_DETAILS } from '../../services/actions/ingredient-details';
 import { useDrop } from 'react-dnd';
 import {
@@ -27,15 +27,15 @@ const BurgerConstructor: FC = () => {
     const dispatch = useDispatch();
     useModalData();
 
-    const products = useSelector((store: any) => store.getProducts.products);
+    const products = useSelector((store) => store.getProducts.products);
     const location = useLocation();
     const accessToken = Cookies.get('accessToken');
 
-    const currentIngredient = useSelector((store: any) => store.ingredientDetails.current);
-    const modalVisible = useSelector((store: any) => store.ingredientDetails.visible);
+    const currentIngredient = useSelector((store) => store.ingredientDetails.current);
+    const modalVisible = useSelector((store) => store.ingredientDetails.visible);
 
-    const constructorIngredients = useSelector((store: any) => store.burgerConstructor.ingredients);
-    const constructorBuns = useSelector((store: any) => store.burgerConstructor.buns);
+    const constructorIngredients = useSelector((store) => store.burgerConstructor.ingredients);
+    const constructorBuns = useSelector((store) => store.burgerConstructor.buns);
 
     const bunsForOrder = useMemo(() => {
         return constructorBuns
@@ -85,8 +85,7 @@ const BurgerConstructor: FC = () => {
 
                 type: SORT_CONSTRUCTOR_INGREDIENT,
                 ingredients: sortedIngredients
-
-            })
+            });
         }
     }, [constructorIngredients, dispatch])
 
@@ -123,7 +122,7 @@ const BurgerConstructor: FC = () => {
     function onOpenModal(event: React.MouseEvent<HTMLDivElement>): void {
 
         const currentTarget = event.currentTarget;
-        const targetProduct = products.find((product: IIngredientType) => product._id === currentTarget?.getAttribute('id'));
+        const targetProduct = products?.find((product: IIngredientType) => product._id === currentTarget?.getAttribute('id'));
 
         if ((event.target as HTMLElement).closest('.constructor-element__action')) { return };
 
@@ -159,7 +158,7 @@ const BurgerConstructor: FC = () => {
     const createOrder = (): void => {
 
         if (accessToken && burgerAllId.ingredients[0] !== undefined) {
-            dispatch(sendOrder(burgerAllId) as any);
+            dispatch(sendOrder(burgerAllId));
         }
 
         else navigate('/login', { replace: true })
@@ -218,8 +217,8 @@ const BurgerConstructor: FC = () => {
                                 <div className={styles.wrapper}>
                                     {constructorIngredients.map((ingredient: IIngredientType, index: number) =>
                                         <motion.div
-                                            initial={{ scale: 0, }}
-                                            animate={{ scale: 1, }}
+                                            initial={{ opacity: 0, }}
+                                            animate={{ opacity: 1, }}
                                             transition={{ duration: 1 }}
                                             key={ingredient.key}>
                                             <DraggedIngredientCard
@@ -248,7 +247,6 @@ const BurgerConstructor: FC = () => {
                                     transition={{ duration: 0.6 }}
                                     key={bun._id} id={bun._id} onClick={onOpenModal} className={styles.buns}>
                                     <ConstructorElement
-
                                         type="bottom"
                                         isLocked={true}
                                         text={`${bun.name} (низ)`}
@@ -280,10 +278,10 @@ const BurgerConstructor: FC = () => {
                 <AnimatePresence>
                     {modalVisible && !currentIngredient &&
                         <motion.div
-                            initial={{ opacity: 0, scaleY: 1 }}
-                            animate={{ opacity: 1, scaleY: 1 }}
-                            exit={{ opacity: 0, scaleY: 0 }}
-                            transition={{ duration: 0.6 }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2 }}
                         >
                             <Modal onCloseModal={onCloseModal}>
                                 <OrderDetails />

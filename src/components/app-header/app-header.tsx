@@ -45,7 +45,7 @@ const AppHeader: FC = () => {
 
                         }
                     >
-                        <ListIcon type={currentPath === '/feed' ? 'primary' : "secondary"} />
+                        <ListIcon type={currentPath.startsWith('/feed') ? 'primary' : "secondary"} />
                         <p className="text text_type_main-default  ">
                             Лента заказов</p>
                     </NavLink>
@@ -64,8 +64,7 @@ const AppHeader: FC = () => {
                                     styles.iconHover : 'text_color_inactive'}`)
                     }
                 >
-                    <ProfileIcon type={currentPath === '/profile' ? 'primary' :
-                        currentPath === '/profile/orders' ? 'primary' : 'secondary'} />
+                    <ProfileIcon type={currentPath.startsWith('/profile') ? 'primary' : 'secondary'} />
                     <p className="text text_type_main-default  " >
                         Личный кабинет</p>
                 </NavLink>

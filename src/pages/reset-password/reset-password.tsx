@@ -3,7 +3,7 @@ import AppHeader from '../../components/app-header/app-header';
 import styles from './reset-password.module.css';
 import { PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/types/hooks';
 import { resetPassword } from '../../services/thunk-actions/thunk-actions';
 
 
@@ -14,14 +14,14 @@ export const ResetPasswordPage:FC = () => {
 
   const [tokenValue, setTokenValue] = useState('');
 
-  const loggedUser = useSelector((store: any) => store.loginUser.userAuthorizied);
-  const isEmailSended = useSelector((store: any) => store.recoverPassword.recoverSuccess)
+  const loggedUser = useSelector((store) => store.loginUser.userAuthorizied);
+  const isEmailSended = useSelector((store) => store.recoverPassword.recoverSuccess)
   const [passwordValue, setPasswordValue] = useState('');
   const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setPasswordValue(e.target.value)
   };
 
-  const isPasswordReset = useSelector((store: any) => store.resetPassword.resetSuccess)
+  const isPasswordReset = useSelector((store) => store.resetPassword.resetSuccess)
 
   useEffect(() => {
     if (loggedUser) {
@@ -41,7 +41,7 @@ export const ResetPasswordPage:FC = () => {
 
     event.preventDefault();
     if (passwordValue.length > 5) {
-      dispatch(resetPassword(passwordValue, tokenValue) as any);
+      dispatch(resetPassword(passwordValue, tokenValue));
     }
 
   }
