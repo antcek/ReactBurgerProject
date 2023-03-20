@@ -37,7 +37,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress:open": "./node_modules/.bin/cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -58,13 +59,15 @@
     ]
   },
   "devDependencies": {
+    "@types/cypress": "^1.1.3",
     "@types/js-cookie": "^3.0.3",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-scroll": "^1.8.6",
+    "cypress": "^12.8.1",
+    "eslint-plugin-cypress": "^2.12.1",
     "fetch-mock": "^9.11.0",
     "jest": "^27.5.1",
     "prettier": "2.8.3",
     "redux-mock-store": "^1.5.4"
-  },
-  "deploy-script": "npm run build && scp -r ./build/* wrongdawg555@51.250.6.208:/home/wrongdawg555/stellar-frontend"
+  }
 }
