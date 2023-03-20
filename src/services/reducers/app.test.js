@@ -4,11 +4,7 @@ import * as type from '../actions/app';
 
 describe('appReducer', () => {
 
-  const initialAppState = {
-    productsRequest: true,
-    productsFailed: false,
-    products: [],
-  }
+
 
   it('Должно вернуть начальное состояние', () => {
 
@@ -39,12 +35,12 @@ describe('appReducer', () => {
     const earlierState = {
       ...initialAppState,
       productsRequest: true
-    };
+    }
 
     const action = {
       type: type.ALL_INGREDIENTS_SUCCESS,
       products: [{}, {}]
-    };
+    }
 
     expect(getProductsReducer(earlierState, action)).toEqual({
       ...earlierState,
@@ -73,8 +69,5 @@ describe('appReducer', () => {
     })
 
   })
-
-
-
 
 })

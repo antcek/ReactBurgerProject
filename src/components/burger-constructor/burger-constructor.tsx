@@ -98,7 +98,7 @@ const BurgerConstructor: FC = () => {
 
         drop(product) {
             if (constructorBuns.length !== 0) {
-
+               
                 dispatch({
                     type: SET_CONSTRUCTOR_INGREDIENT,
                     ingredients: product,

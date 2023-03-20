@@ -13,7 +13,7 @@ interface IConstructorInitialState {
     buns: ReadonlyArray<IIngredientType>;
 }
 
-const initialConstructorState: IConstructorInitialState = {
+export const initialConstructorState: IConstructorInitialState = {
     ingredients: [],
     buns: []
 }
@@ -23,10 +23,9 @@ export const burgerConstructorReducer = (state = initialConstructorState, action
     switch (action.type) {
 
         case SET_CONSTRUCTOR_INGREDIENT: {
-    
+
             return {
                 ...state,
-
                 ingredients: [...state.ingredients,
                 { ...action.ingredients.product, key: action.key }]
 
@@ -42,7 +41,6 @@ export const burgerConstructorReducer = (state = initialConstructorState, action
         case DELETE_CONSTRUCTOR_INGREDIENT: {
             return {
                 ...state,
-
                 ingredients: state.ingredients.filter((ingredient, index) => index !== action.id)
             }
         }
@@ -51,7 +49,6 @@ export const burgerConstructorReducer = (state = initialConstructorState, action
 
             return {
                 ...state,
-
                 ingredients: action.ingredients
             }
         }

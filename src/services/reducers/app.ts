@@ -12,7 +12,7 @@ interface IInitialAppState {
   products: readonly IIngredientType[] | undefined ;
 }
 
-const initialAppState: IInitialAppState = {
+export const initialAppState: IInitialAppState = {
 
   productsRequest: false,
   productsFailed: false,
