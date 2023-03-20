@@ -61,6 +61,10 @@
     "@types/js-cookie": "^3.0.3",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-scroll": "^1.8.6",
-    "prettier": "2.8.3"
-  }
+    "fetch-mock": "^9.11.0",
+    "jest": "^27.5.1",
+    "prettier": "2.8.3",
+    "redux-mock-store": "^1.5.4"
+  },
+  "deploy-script": "npm run build && scp -r ./build/* wrongdawg555@51.250.6.208:/home/wrongdawg555/stellar-frontend"
 }

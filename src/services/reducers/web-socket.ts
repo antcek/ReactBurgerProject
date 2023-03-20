@@ -124,7 +124,7 @@ export const wsReducer = (state = initialState, action: TWSActions): TWSState =>
         error: undefined,
         userOrders: [action.payload]
       };
-    };
+    }
 
     case WS_USER_CONNECTION_START: {
        return {

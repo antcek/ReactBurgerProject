@@ -5,9 +5,6 @@ import { useSelector } from '../../services/types/hooks';
 import { useOrderFullPrice } from '../../services/custom-hooks/custom-hooks';
 import { IIngredientType } from '../../services/types/types';
 
-interface IOrderWIthCount {
-  [key: string]: string
-}
 export const CreatedOrderDetails: FC = () => {
 
   const targetOrder = useSelector(store => store.ingredientDetails.targetOrder);
