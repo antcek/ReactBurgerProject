@@ -6,7 +6,7 @@ interface IInitialState {
   registerNewUser: boolean | IUser ;
 }
 
-const initialState: IInitialState = {
+export const initialState: IInitialState = {
   registerRequest: false,
   registerFailed: false,
   registerNewUser: false,
@@ -26,7 +26,7 @@ export const registerUserReducer = (state = initialState, action: TRegisterActio
     }
 
     case REGISTER_SUCCESS: {
-        console.log(action.user)
+        
       return {
         ...state,
         registerRequest: false,

@@ -61,7 +61,7 @@ export interface IUserUpdateRequestAction {
 export interface IUserUpdateAction {
   readonly type: typeof USER_UPDATE_INFO;
   readonly user: IUser;
-  token: string;
+  
 }
 
 export interface IUserUpdateFailedAction {

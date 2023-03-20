@@ -22,7 +22,7 @@ interface TWSState {
   url?: string | null;
 }
 
-const initialState: TWSState = {
+export const initialState: TWSState = {
   wsConnected: false,
   allOrders: [{
     success: false,
@@ -127,16 +127,14 @@ export const wsReducer = (state = initialState, action: TWSActions): TWSState =>
     }
 
     case WS_USER_CONNECTION_START: {
-       return {
+      return {
         ...state,
         error: undefined,
         url: action.payload
-       }
-    } 
+      }
+    }
 
     default:
       return state;
-
-
   }
 }
