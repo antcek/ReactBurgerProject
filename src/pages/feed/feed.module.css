@@ -49,12 +49,12 @@
   max-width: 584px;
   margin-right: 8px;
   cursor: pointer;
-  transition:transform 300ms ease-in-out;
+  transition: transform 300ms ease-in-out;
 }
 
 .order:hover {
   transform: scale(95%);
-  transition:transform 250ms ease-in-out;
+  transition: transform 250ms ease-in-out;
 
 }
 
@@ -93,18 +93,25 @@
 
 }
 
+.loader {
+  display: flex;
+  padding-top: 15%;
+  align-items: center;
+  justify-content: center;
+}
+
 .lastIngredient {
   opacity: 0.6;
 }
 
 .additionalQuantity {
-  
-  z-index:31;
+
+  z-index: 31;
   top: 32px;
   right: 32px;
-  transform:translate(50%, -50%);
-  position:absolute;
- 
+  transform: translate(50%, -50%);
+  position: absolute;
+
 }
 
 .ingredient:not(:last-child) {
@@ -146,14 +153,14 @@
   flex-direction: column;
   gap: 8px;
   padding-bottom: 60px;
-  
+
 
 }
 
 .readyOrders {
   composes: upcomingOrders;
   color: #00CCCC;
- 
+
 }
 
 .numbers {

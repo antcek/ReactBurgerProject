@@ -17,7 +17,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useModalData } from '../../services/custom-hooks/custom-hooks';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FlapperSpinner } from "react-spinners-kit";
+import { RingSpinner } from "react-spinners-kit";
 import { IIngredientType } from '../../services/types/types';
 
 
@@ -182,7 +182,7 @@ const BurgerConstructor: FC = () => {
                     <div data-testid="drop-area" ref={dropBun}>
                         {constructorBuns.length === 0 ?
                             <div className={bunHovered}>
-                                <FlapperSpinner
+                                <RingSpinner
                                     color='#e104fc'
                                     size={30} />
                                 Перенесите сюда булку
@@ -234,7 +234,7 @@ const BurgerConstructor: FC = () => {
 
                         {constructorBuns.length === 0 ?
                             <div className={botBunHovered}>
-                                <FlapperSpinner
+                                <RingSpinner
                                     color='#e104fc'
                                     size={30} />
                                 Перенесите сюда булку
