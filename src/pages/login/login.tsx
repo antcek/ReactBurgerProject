@@ -48,19 +48,21 @@ export const LoginPage: FC = () => {
         <p className="text text_type_main-large">
           Вход
         </p>
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <form data-testid="login-form" onSubmit={handleSubmit} className={styles.form}>
           <EmailInput
             onChange={onLoginChange}
             value={loginValue}
             name={'email'}
-            isIcon={false} />
+            isIcon={false} 
+            id="login-email-input"/>
           <PasswordInput
             onChange={onPasswordChange}
             value={passwordValue}
             name={'password'}
+            id="login-password-input"
           />
 
-          <Button htmlType="submit" type="primary" size="large">
+          <Button id="login-button" htmlType="submit" type="primary" size="large">
             Войти
           </Button>
         </form>

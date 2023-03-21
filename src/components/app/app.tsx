@@ -7,7 +7,7 @@ import { getIngredients } from '../../services/thunk-actions/thunk-actions';
 import { useDispatch, useSelector } from '../../services/types/hooks';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { LoginPage } from '../../pages/login/login';
 import { RegisterPage } from '../../pages/register/register';
 import { Error404Page } from '../../pages/not-found/not-found';

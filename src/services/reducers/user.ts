@@ -26,10 +26,10 @@ interface IInitialState {
   updateDataRequest: boolean;
   updateDataFailed: boolean;
   dataFailed: boolean;
-  token:string | null;
+
 }
 
-const initialState: IInitialState = {
+export const initialState: IInitialState = {
   loginRequest: false,
   loginFailed: false,
   userAuthorizied: false,
@@ -40,7 +40,6 @@ const initialState: IInitialState = {
   updateDataRequest: false,
   updateDataFailed: false,
   dataFailed: false,
-  token: null,
 
 }
 
@@ -82,6 +81,7 @@ export const loginUserReducer = (state = initialState, action: TUserActions): II
 
       }
     }
+    
     case LOGIN_EXIT: {
       return {
         ...state,
@@ -127,7 +127,7 @@ export const loginUserReducer = (state = initialState, action: TUserActions): II
       return {
         ...state,
         updateDataRequest: true
-        
+
       }
     }
 
@@ -137,8 +137,6 @@ export const loginUserReducer = (state = initialState, action: TUserActions): II
         updateDataRequest: false,
         updateDataFailed: false,
         user: action.user,
-        token: action.token
-        
 
       }
     }
@@ -148,7 +146,7 @@ export const loginUserReducer = (state = initialState, action: TUserActions): II
         ...state,
         updateDataRequest: false,
         updateDataFailed: true
-        
+
       }
     }
 

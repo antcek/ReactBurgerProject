@@ -98,7 +98,7 @@ const BurgerConstructor: FC = () => {
 
         drop(product) {
             if (constructorBuns.length !== 0) {
-
+               
                 dispatch({
                     type: SET_CONSTRUCTOR_INGREDIENT,
                     ingredients: product,
@@ -178,8 +178,8 @@ const BurgerConstructor: FC = () => {
     return (
         <>
             <section id='constructor' className={styles.burgerConstructor}>
-                <div ref={dropIngredient} className={throwArea}  >
-                    <div ref={dropBun}>
+                <div data-testid="ing-drop-area" ref={dropIngredient} className={throwArea}  >
+                    <div data-testid="drop-area" ref={dropBun}>
                         {constructorBuns.length === 0 ?
                             <div className={bunHovered}>
                                 <FlapperSpinner
@@ -268,7 +268,7 @@ const BurgerConstructor: FC = () => {
                             Оформить заказ
                         </Button>
 
-                        : <div onClick={createOrder}>
+                        : <div data-testid="submit-order" onClick={createOrder}>
                             <Button onClick={isModalPossible} htmlType="button" type="primary" size="large">
                                 Оформить заказ
                             </Button>

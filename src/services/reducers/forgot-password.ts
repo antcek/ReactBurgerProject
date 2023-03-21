@@ -6,7 +6,7 @@ interface IinitialState {
     recoverSuccess: boolean;
   }
 
-const initialState: IinitialState = {
+export const initialState: IinitialState = {
   recoverRequest: false,
   recoverFailed: false,
   recoverSuccess: false,

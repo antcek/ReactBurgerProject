@@ -6,7 +6,7 @@ interface IInitialState {
     orderNumber: null | number;
 }
 
-const initialState: IInitialState = {
+export const initialState: IInitialState = {
     orderRequest: false,
     orderFailed: false,
     orderNumber: null,

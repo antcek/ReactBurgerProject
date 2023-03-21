@@ -18,8 +18,7 @@ export const socketMiddleware = (wsUrl: string, wsActions: TWSActionType | any):
   
       if (type === wsInit) {
           
-        socket = new WebSocket(`${payload ? payload: wsUrl}`)
-      console.log(socket)
+        socket = new WebSocket(`${payload ? payload: wsUrl}`);
       }
 
       if (socket) {

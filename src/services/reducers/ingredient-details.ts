@@ -15,7 +15,7 @@ interface IInitialState {
     targetOrder: IOrderData | null;
 }
 
-const initialState: IInitialState = {
+export const initialState: IInitialState = {
 
     current: null,
     visible: false,
@@ -43,7 +43,7 @@ export const ingredientDetailsReducer = (state = initialState, action: TAllDetai
         }
 
         case FEED_MODAl_DETAILS: {
-
+            
             return {
                 ...state,
                 visible: action.visible,

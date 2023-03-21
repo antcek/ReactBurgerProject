@@ -6,10 +6,10 @@ interface IInitialState {
     resetSuccess: boolean | IReset;
 }
 
-const initialState: IInitialState = {
-  resetRequest: false,
-  resetFailed: false,
-  resetSuccess: false,
+export const initialState: IInitialState = {
+    resetRequest: false,
+    resetFailed: false,
+    resetSuccess: false,
 }
 
 export const resetPasswordReducer = (state = initialState, action: TResetActions): IInitialState => {
@@ -18,8 +18,8 @@ export const resetPasswordReducer = (state = initialState, action: TResetActions
 
         case RESET_REQUEST: {
             return {
-             ...state,
-             resetRequest: true,
+                ...state,
+                resetRequest: true,
             }
         }
 
@@ -31,7 +31,6 @@ export const resetPasswordReducer = (state = initialState, action: TResetActions
                 resetSuccess: action.reset
             }
         }
-
 
         case RESET_FAILED: {
             return {

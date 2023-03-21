@@ -142,7 +142,7 @@ const BurgerIngredients: FC = () => {
                 <div className={styles.wrapper}>
 
                     {buns?.map((product: IIngredientType) =>
-                        <IngredientCard key={product._id} product={product} onOpenModal={onOpenModal} />
+                        <IngredientCard  key={product._id} product={product} onOpenModal={onOpenModal} />
                     )}
 
                 </div>
