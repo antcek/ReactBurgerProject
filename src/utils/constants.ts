@@ -18,6 +18,8 @@ export const validateEmail = (email: string): boolean => {
   return re.test(email);
 }
 export const URLHost = 'http://localhost:3000';
+export const fakeUser = 'fakeuser@mail.ru';
+export const fakePassword = '123456'
 
 export const SCROLL_DURATION = 400;
 

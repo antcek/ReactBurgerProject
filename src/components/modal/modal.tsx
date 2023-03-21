@@ -9,13 +9,13 @@ import { motion } from 'framer-motion';
 export interface IModal {
     onCloseModal: () => void;
     children?: ReactNode;
-  }
+}
 
 
 const Modal: FC<IModal> = ({ onCloseModal, children }) => {
 
     useEffect(() => {
-        
+
         function modalEscClose(event: KeyboardEvent): void {
 
             if (event.code === 'Escape')
@@ -36,15 +36,13 @@ const Modal: FC<IModal> = ({ onCloseModal, children }) => {
             initial={{ opacity: 0, }}
             animate={{ opacity: 1, }}
             transition={{ duration: 0.2 }}
-            exit={{ opacity: 0 }}>
-            <div className={styles.wrapper}>
-                <div onClick={onCloseModal} className={styles.close}>
+            exit={{ opacity: 0 }}
+        >
+            <div data-testid="modal" className={styles.wrapper}>
+                <div data-testid="close-mark" onClick={onCloseModal} className={styles.close}>
                     <CloseIcon type="primary" />
                 </div>
-
                 {children}
-
-
             </div>
             <ModalOverlay onCloseModal={onCloseModal} />
         </motion.div>,

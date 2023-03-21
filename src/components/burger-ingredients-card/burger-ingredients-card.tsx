@@ -38,6 +38,7 @@ const IngredientCard: FC<IIngredientCard> = (({ onOpenModal, product }) => {
             id={product._id}
             className={`${cardClasses}`}
             key={product._id}
+            data-testid="product"
         >
 
             {draggedBuns.map((item: IIngredientType) => item.name === product.name ?
