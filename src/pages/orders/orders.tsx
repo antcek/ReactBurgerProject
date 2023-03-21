@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from "../../services/types/hooks";
 import { WS_USER_CONNECTION_CLOSED, WS_USER_CONNECTION_START } from "../../services/actions/web-socket";
 import { PERSONAL_ORDERS_URL } from "../../utils/api";
 import Cookies from "js-cookie";
+import { WaveSpinner } from "react-spinners-kit";
 
 export const OrderPage: FC = () => {
 
@@ -28,15 +29,16 @@ export const OrderPage: FC = () => {
   const userOrders = wsData.userOrders[0]?.orders?.slice(wsData.userOrders[0].orders.length - 50);
 
   useEffect(() => {
-    dispatch({ type: WS_USER_CONNECTION_START,
+    dispatch({
+      type: WS_USER_CONNECTION_START,
       payload: startURL
-     });
+    });
 
     return () => {
       dispatch({ type: WS_USER_CONNECTION_CLOSED })
     }
   }, [dispatch, startURL]);
-  
+
 
   function onCloseModal(): void {
 
@@ -72,7 +74,7 @@ export const OrderPage: FC = () => {
       <AppHeader />
       <div className={styles.container}>
         <LeftSideMenu />
-        <div className={styles.cardWrapper}>
+        {wsData.wsConnected === true ? <div className={styles.cardWrapper}>
 
           {userOrders?.reverse().map((order, createdOrderIndex) => {
 
@@ -187,7 +189,6 @@ export const OrderPage: FC = () => {
                           </svg>
                         )
                       }
-
                       if (reversedIndex === 5) {
                         return (
                           <svg key={reversedIndex} className={`${styles.ingredient} ${classForLastIng}`} width="64" height="64" viewBox="0 0 64 64" fill="#131316" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
@@ -224,31 +225,26 @@ export const OrderPage: FC = () => {
                               else return null;
                             })
                             }
-
                           </svg>
                         )
                       }
                       else return null
-
                     })}
-
                   </div>
                   <div className={styles.price}>
-
                     <p className="text text_type_digits-default">
                       {order.ingredients.map(item => {
-
                         return ingredients?.find(ingredient => (ingredient._id === item))
 
                       }).reduce((accumulator, item, index, arrIngredients) => {
                         const duplicateBuns = arrIngredients?.filter((duplicateItem, bunIndex) => {
                           if (duplicateItem?.type === 'bun') {
+
                             return (arrIngredients.indexOf(((duplicateItem))) !== bunIndex)
                           }
 
                           else return 0
                         });
-
                         return accumulator + (item?.type === 'bun' && duplicateBuns.length === 0 ?
                           item!.price * 2 : item!.price)
                       }, 0)}</p>
@@ -259,8 +255,9 @@ export const OrderPage: FC = () => {
             )
           })
           }
-
-        </div>
+        </div> : <div className={styles.loader}>
+          <WaveSpinner size={100} />
+        </div>}
       </div>
       <AnimatePresence>
         {createdOrderVisible &&
