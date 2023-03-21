@@ -1,7 +1,7 @@
 import AppHeader from "../../components/app-header/app-header";
 import { LeftSideMenu } from "../../components/left-side-menu/left-side-menu";
 import styles from './orders.module.css';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from "react-router";
 import { FormattedDate, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { FEED_MODAl_DETAILS } from "../../services/actions/ingredient-details";
@@ -23,6 +23,7 @@ export const OrderPage: FC = () => {
   const createdOrderVisible = useSelector((store) => store.ingredientDetails.visible);
   const startURL = PERSONAL_ORDERS_URL + `?token=${Cookies.get('accessToken')}`;
 
+  const [isLoaded, setIsLoaded] = useState(false);
   const wsData = useSelector(store => store.wsReducer);
   const ingredients = useSelector(store => store.getProducts.products);
   // бэк возвращает не 50, а 340+ заказов, поэтому обрезаю до последних 50 
@@ -33,9 +34,11 @@ export const OrderPage: FC = () => {
       type: WS_USER_CONNECTION_START,
       payload: startURL
     });
+    setTimeout(() => setIsLoaded(true), 1500)
 
     return () => {
-      dispatch({ type: WS_USER_CONNECTION_CLOSED })
+      dispatch({ type: WS_USER_CONNECTION_CLOSED });
+      setIsLoaded(false);
     }
   }, [dispatch, startURL]);
 
@@ -74,7 +77,7 @@ export const OrderPage: FC = () => {
       <AppHeader />
       <div className={styles.container}>
         <LeftSideMenu />
-        {wsData.wsConnected === true ? <div className={styles.cardWrapper}>
+        {wsData.wsConnected === true && isLoaded ? <div className={styles.cardWrapper}>
 
           {userOrders?.reverse().map((order, createdOrderIndex) => {
 

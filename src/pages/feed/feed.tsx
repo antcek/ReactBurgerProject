@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import AppHeader from '../../components/app-header/app-header';
 import styles from './feed.module.css';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -20,17 +20,22 @@ export const FeedPage: FC = () => {
   const userData = useSelector(store => store.loginUser.user)
   const createdOrderVisible = useSelector((store) => store.ingredientDetails.visible);
   const location: IUseLocation = useLocation();
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    dispatch({ type: WS_CONNECTION_START })
+    dispatch({ type: WS_CONNECTION_START });
+
+    setTimeout(() => setIsLoaded(true), 1500)
 
     return () => {
-      dispatch({ type: WS_CONNECTION_CLOSED })
+      dispatch({ type: WS_CONNECTION_CLOSED });
+      setIsLoaded(false)
     }
   }, [dispatch, userData]);
 
   const wsData = useSelector(store => store.wsReducer);
   const ingredients = useSelector(store => store.getProducts.products);
+
 
   function onCloseModal(): void {
 
@@ -65,7 +70,7 @@ export const FeedPage: FC = () => {
   return (
     <>
       <AppHeader />
-      {wsData.wsConnected === true && ingredients?.length !== 0 ? <> <div className={styles.heading}>
+      {wsData.wsConnected === true && isLoaded ? <> <div className={styles.heading}>
         <h1 className="text text_type_main-large mt-10">
           Лента заказов
         </h1 >
