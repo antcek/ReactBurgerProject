@@ -178,7 +178,7 @@ const BurgerConstructor: FC = () => {
     return (
         <>
             <section id='constructor' className={styles.burgerConstructor}>
-                <div ref={dropIngredient} className={throwArea}  >
+                <div data-testid="ing-drop-area" ref={dropIngredient} className={throwArea}  >
                     <div data-testid="drop-area" ref={dropBun}>
                         {constructorBuns.length === 0 ?
                             <div className={bunHovered}>
