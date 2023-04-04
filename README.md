@@ -1,5 +1,5 @@
-### Проект космической бургерной 
-Доступен по ссылке:
+### The space burger project
+is available at the link:
 https://antcek.github.io/ReactBurgerProject/
 
 ## The project of the website of the space restaurant for food delivery
